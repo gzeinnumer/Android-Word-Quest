@@ -20,7 +20,7 @@ public class MainMenuViewModel extends ViewModel {
         mOnGameThemeLoaded = new MutableLiveData<>();
     }
 
-    public void loadData() {
+    public void loadThemes() {
         mOnGameThemeLoaded.setValue(mGameThemeRepository.getGameThemes());
     }
 
