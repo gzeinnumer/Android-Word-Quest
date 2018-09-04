@@ -7,9 +7,8 @@ import android.arch.lifecycle.ViewModel;
 
 import com.aar.app.wordsearch.commons.SingleLiveEvent;
 import com.aar.app.wordsearch.commons.Timer;
-import com.aar.app.wordsearch.data.GameDataSource;
-import com.aar.app.wordsearch.data.entity.GameDataMapper;
-import com.aar.app.wordsearch.data.WordDataSource;
+import com.aar.app.wordsearch.data.sqlite.GameDataSource;
+import com.aar.app.wordsearch.data.sqlite.WordDataSource;
 import com.aar.app.wordsearch.model.GameData;
 import com.aar.app.wordsearch.model.UsedWord;
 import com.aar.app.wordsearch.model.Word;
@@ -120,14 +119,11 @@ public class GamePlayViewModel extends ViewModel {
     public void loadGameRound(int gid) {
         if (!(mCurrentState instanceof Generating)) {
             setGameState(new Loading(gid));
-
-            mGameDataSource.getGameData(gid, gameRound -> {
-                mCurrentGameData = new GameDataMapper().map(gameRound);
-                mCurrentDuration = mCurrentGameData.getDuration();
-                if (!mCurrentGameData.isFinished())
-                    mTimer.start();
-                setGameState(new Playing(mCurrentGameData));
-            });
+            mCurrentGameData = mGameDataSource.getGameData(gid);
+            mCurrentDuration = mCurrentGameData.getDuration();
+            if (!mCurrentGameData.isFinished())
+                mTimer.start();
+            setGameState(new Playing(mCurrentGameData));
         }
     }
 
@@ -139,8 +135,7 @@ public class GamePlayViewModel extends ViewModel {
             Observable.create((ObservableOnSubscribe<GameData>) emitter -> {
                 List<Word> wordList = mWordDataSource.getWords();
                 GameData gr = mGameDataCreator.newGameData(wordList, rowCount, colCount, "Play me");
-                long gid = mGameDataSource.saveGameData(new GameDataMapper().revMap(gr));
-                gr.setId((int) gid);
+                mGameDataSource.saveGameData(gr);
                 emitter.onNext(gr);
                 emitter.onComplete();
             }).subscribeOn(Schedulers.computation())

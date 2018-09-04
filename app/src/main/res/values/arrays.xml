@@ -5,11 +5,17 @@
         <item>4 x 4</item>
         <item>5 x 5</item>
         <item>6 x 6</item>
+        <item>7 x 7</item>
+        <item>8 x 8</item>
+        <item>9 x 9</item>
     </string-array>
     <integer-array name="game_round_dimension_values">
         <item>4</item>
         <item>5</item>
         <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
     </integer-array>
 
 

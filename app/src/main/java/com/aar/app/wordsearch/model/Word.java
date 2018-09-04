@@ -7,7 +7,9 @@ package com.aar.app.wordsearch.model;
 public class Word {
 
     private int mId;
+    private int mGameThemeId;
     private String mString;
+    private String mSubString;
 
     public Word() {
         this(-1, "");
@@ -16,6 +18,13 @@ public class Word {
     public Word(int id, String string) {
         mId = id;
         mString = string;
+    }
+
+    public Word(int id, int gameThemeId, String string, String subString) {
+        mId = id;
+        mGameThemeId = gameThemeId;
+        mString = string;
+        mSubString = subString;
     }
 
     public int getId() {
@@ -32,5 +41,21 @@ public class Word {
 
     public void setString(String string) {
         mString = string;
+    }
+
+    public int getGameThemeId() {
+        return mGameThemeId;
+    }
+
+    public void setGameThemeId(int gameThemeId) {
+        mGameThemeId = gameThemeId;
+    }
+
+    public String getSubString() {
+        return mSubString;
+    }
+
+    public void setSubString(String subString) {
+        mSubString = subString;
     }
 }

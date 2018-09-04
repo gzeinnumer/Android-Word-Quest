@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.aar.app.wordsearch.data.sqlite.GameThemeDataSource;
 import com.aar.app.wordsearch.features.ViewModelFactory;
-import com.aar.app.wordsearch.data.GameDataSource;
-import com.aar.app.wordsearch.data.GameThemeRepository;
-import com.aar.app.wordsearch.data.WordDataSource;
+import com.aar.app.wordsearch.data.sqlite.GameDataSource;
+import com.aar.app.wordsearch.data.sqlite.WordDataSource;
 import com.aar.app.wordsearch.features.gamehistory.GameHistoryViewModel;
 import com.aar.app.wordsearch.features.gameover.GameOverViewModel;
 import com.aar.app.wordsearch.features.gameplay.GamePlayViewModel;
@@ -47,11 +47,12 @@ public class AppModule {
     @Provides
     @Singleton
     ViewModelFactory provideViewModelFactory(GameDataSource gameDataSource,
-                                             WordDataSource wordDataSource) {
+                                             WordDataSource wordDataSource,
+                                             GameThemeDataSource gameThemeDataSource) {
         return new ViewModelFactory(
                 new GameOverViewModel(gameDataSource),
                 new GamePlayViewModel(gameDataSource, wordDataSource),
-                new MainMenuViewModel(new GameThemeRepository()),
+                new MainMenuViewModel(gameThemeDataSource),
                 new GameHistoryViewModel(gameDataSource)
         );
     }

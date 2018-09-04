@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.aar.app.wordsearch.data.GameDataSource;
+import com.aar.app.wordsearch.data.sqlite.GameDataSource;
 import com.aar.app.wordsearch.model.GameDataInfo;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class GameHistoryViewModel extends ViewModel {
     }
 
     public void loadGameHistory() {
-        mGameDataSource.getGameDataInfos(infoList -> mOnGameDataInfoLoaded.setValue(infoList));
+        mOnGameDataInfoLoaded.setValue(mGameDataSource.getGameDataInfos());
     }
 
     public void deleteGameData(GameDataInfo gameDataInfo) {

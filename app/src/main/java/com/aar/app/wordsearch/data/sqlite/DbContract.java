@@ -8,10 +8,18 @@ import android.provider.BaseColumns;
 
 abstract class DbContract {
 
+    static class Theme implements BaseColumns {
+        static final String TABLE_NAME = "themes";
+
+        static final String COL_NAME = "name";
+    }
+
     static class WordBank implements BaseColumns {
         static final String TABLE_NAME = "word_bank";
 
+        static final String COL_GAME_THEME_ID = "game_theme_id";
         static final String COL_STRING = "string";
+        static final String COL_SUB_STRING = "sub_string";
     }
 
     static class GameRound implements BaseColumns {

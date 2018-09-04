@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.aar.app.wordsearch.data.GameDataSource;
+import com.aar.app.wordsearch.data.sqlite.GameDataSource;
 import com.aar.app.wordsearch.model.GameDataInfo;
 
 public class GameOverViewModel extends ViewModel {
@@ -17,7 +17,7 @@ public class GameOverViewModel extends ViewModel {
     }
 
     public void loadData(int gid) {
-        mGameDataSource.getGameDataInfo(gid, mOnGameDataInfoLoaded::setValue);
+        mOnGameDataInfoLoaded.setValue(mGameDataSource.getGameDataInfo(gid));
     }
 
     public void deleteGameRound(int gid) {
