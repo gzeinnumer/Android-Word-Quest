@@ -34,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/selector_btn"
+        android:background="@drawable/bg_btn_clear_all"
         android:text="Clear All"
         android:textColor="@android:color/white"
         android:textSize="12sp"
