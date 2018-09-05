@@ -155,20 +155,24 @@ public class GamePlayActivity extends FullscreenActivity {
 
     private void onAnswerResult(GamePlayViewModel.AnswerResult answerResult) {
         if (answerResult.correct) {
-            TextView textView = findUsedWordTextViewByUsedWordId(answerResult.usedWordId);
-            if (textView != null) {
-                UsedWord uw = (UsedWord) textView.getTag();
+            View item = findUsedWordViewItemByUsedWordId(answerResult.usedWordId);
+            if (item != null) {
+                UsedWord uw = (UsedWord) item.getTag();
 
                 if (getPreferences().grayscale()) {
                     uw.getAnswerLine().color = mGrayColor;
                 }
-                textView.setBackgroundColor(uw.getAnswerLine().color);
-                textView.setText(uw.getString());
-                textView.setTextColor(Color.WHITE);
-                textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                TextView str = item.findViewById(R.id.textStr);
+                TextView subStr = item.findViewById(R.id.textSubStr);
+
+                item.setBackgroundColor(uw.getAnswerLine().color);
+                str.setTextColor(Color.WHITE);
+                str.setPaintFlags(str.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                subStr.setTextColor(Color.WHITE);
 
                 Animator anim = AnimatorInflater.loadAnimator(this, R.animator.zoom_in_out);
-                anim.setTarget(textView);
+                anim.setTarget(item);
                 anim.start();
             }
 
@@ -220,12 +224,6 @@ public class GamePlayActivity extends FullscreenActivity {
         if (getPreferences().autoScaleGrid() || boardWidth > screenWidth) {
             float scale = (float)screenWidth / (float)boardWidth;
             mLetterBoard.scale(scale, scale);
-//            mLetterBoard.animate()
-//                    .scaleX(scale)
-//                    .scaleY(scale)
-//                    .setDuration(400)
-//                    .setInterpolator(new DecelerateInterpolator())
-//                    .start();
         }
     }
 
@@ -262,6 +260,7 @@ public class GamePlayActivity extends FullscreenActivity {
     }
 
     private void showUsedWords(List<UsedWord> usedWords) {
+        mFlowLayout.removeAllViews();
         for (UsedWord uw : usedWords) {
             mFlowLayout.addView( createUsedWordTextView(uw) );
         }
@@ -276,10 +275,12 @@ public class GamePlayActivity extends FullscreenActivity {
     }
 
     private void showFinishGame(int gameId) {
-        Intent intent = new Intent(this, GameOverActivity.class);
-        intent.putExtra(GameOverActivity.EXTRA_GAME_ROUND_ID, gameId);
-        startActivity(intent);
-        finish();
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(GamePlayActivity.this, GameOverActivity.class);
+            intent.putExtra(GameOverActivity.EXTRA_GAME_ROUND_ID, gameId);
+            startActivity(intent);
+            finish();
+        }, 500);
     }
 
     private void setGameAsAlreadyFinished() {
@@ -288,34 +289,38 @@ public class GamePlayActivity extends FullscreenActivity {
     }
 
     //
-    private TextView createUsedWordTextView(UsedWord uw) {
-        TextView tv = new TextView(this);
-        tv.setPadding(10, 5, 10, 5);
+    private View createUsedWordTextView(UsedWord uw) {
+        View v = getLayoutInflater().inflate(R.layout.item_word, mFlowLayout, false);
+        TextView str = v.findViewById(R.id.textStr);
+        TextView subStr = v.findViewById(R.id.textSubStr);
         if (uw.isAnswered()) {
             if (getPreferences().grayscale()) {
                 uw.getAnswerLine().color = mGrayColor;
             }
-            tv.setBackgroundColor(uw.getAnswerLine().color);
-            tv.setText(uw.getString());
-            tv.setTextColor(Color.WHITE);
-            tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            v.setBackgroundColor(uw.getAnswerLine().color);
+            str.setText(uw.getString());
+            str.setTextColor(Color.WHITE);
+            str.setPaintFlags(str.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            subStr.setText("(" + uw.getSubString() + ")");
+            subStr.setTextColor(Color.WHITE);
 
             mLetterBoard.addStreakLine(STREAK_LINE_MAPPER.map(uw.getAnswerLine()));
         }
         else {
-            tv.setText(uw.getString());
+            str.setText(uw.getString());
+            subStr.setText("(" + uw.getSubString() + ")");
         }
 
-        tv.setTag(uw);
-        return tv;
+        v.setTag(uw);
+        return v;
     }
 
-    private TextView findUsedWordTextViewByUsedWordId(int usedWordId) {
+    private View findUsedWordViewItemByUsedWordId(int usedWordId) {
         for (int i = 0; i < mFlowLayout.getChildCount(); i++) {
-            TextView tv = (TextView) mFlowLayout.getChildAt(i);
-            UsedWord uw = (UsedWord) tv.getTag();
+            View v = mFlowLayout.getChildAt(i);
+            UsedWord uw = (UsedWord) v.getTag();
             if (uw != null && uw.getId() == usedWordId) {
-                return tv;
+                return v;
             }
         }
 
