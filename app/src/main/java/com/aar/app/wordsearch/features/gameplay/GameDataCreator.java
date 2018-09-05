@@ -49,7 +49,6 @@ public class GameDataCreator {
     }
 
     private List<UsedWord> buildUsedWordFromString(List<String> strings) {
-        int mysteryWordCount = Util.getRandomIntRange(strings.size() / 2, strings.size());
         List<UsedWord> usedWords = new ArrayList<>();
         for (int i = 0; i < strings.size(); i++) {
             String str = strings.get(i);
@@ -57,11 +56,6 @@ public class GameDataCreator {
             UsedWord uw = new UsedWord();
             uw.setString(str);
             uw.setAnswered(false);
-            if (mysteryWordCount > 0) {
-                uw.setIsMystery(true);
-                uw.setRevealCount(Util.getRandomIntRange(0, str.length() - 1));
-                mysteryWordCount--;
-            }
 
             usedWords.add(uw);
         }

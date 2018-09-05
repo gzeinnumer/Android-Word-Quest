@@ -8,14 +8,10 @@ public class UsedWord extends Word {
 
     private AnswerLine mAnswerLine;
     private boolean mAnswered;
-    private boolean mIsMystery;
-    private int mRevealCount;
 
     public UsedWord() {
         mAnswerLine = null;
         mAnswered = false;
-        mIsMystery = false;
-        mRevealCount = 0;
     }
 
     public AnswerLine getAnswerLine() {
@@ -32,22 +28,6 @@ public class UsedWord extends Word {
 
     public void setAnswered(boolean answered) {
         mAnswered = answered;
-    }
-
-    public boolean isMystery() {
-        return mIsMystery;
-    }
-
-    public void setIsMystery(boolean isMystery) {
-        mIsMystery = isMystery;
-    }
-
-    public int getRevealCount() {
-        return mRevealCount;
-    }
-
-    public void setRevealCount(int revealCount) {
-        mRevealCount = revealCount;
     }
 
     public static final class AnswerLine {

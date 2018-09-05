@@ -300,22 +300,7 @@ public class GamePlayActivity extends FullscreenActivity {
             mLetterBoard.addStreakLine(STREAK_LINE_MAPPER.map(uw.getAnswerLine()));
         }
         else {
-            String str = uw.getString();
-            if (uw.isMystery()) {
-                int revealCount = uw.getRevealCount();
-                String uwString = uw.getString();
-                str = "";
-                for (int i = 0; i < uwString.length(); i++) {
-                    if (revealCount > 0) {
-                        str += uwString.charAt(i);
-                        revealCount--;
-                    }
-                    else {
-                        str += " ?";
-                    }
-                }
-            }
-            tv.setText(str);
+            tv.setText(uw.getString());
         }
 
         tv.setTag(uw);
