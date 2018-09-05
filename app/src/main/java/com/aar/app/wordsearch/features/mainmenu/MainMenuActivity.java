@@ -72,17 +72,9 @@ public class MainMenuActivity extends FullscreenActivity {
         mThemeSpinner.setAdapter(mThemeSpinnerAdapter);
     }
 
-    private void showThemeList(List<GameTheme> gameThemes) {
+    private void showThemeList(List<String> gameThemes) {
         mThemeSpinnerAdapter.clear();
-        mThemeSpinnerAdapter.addAll(getStringListFromThemes(gameThemes));
-    }
-
-    private List<String> getStringListFromThemes(List<GameTheme> gameThemes) {
-        List<String> strings = new ArrayList<>();
-        for (GameTheme gameTheme : gameThemes) {
-            strings.add(gameTheme.getName());
-        }
-        return strings;
+        mThemeSpinnerAdapter.addAll(gameThemes);
     }
 
     @OnClick(R.id.settings_button)
@@ -93,8 +85,10 @@ public class MainMenuActivity extends FullscreenActivity {
 
     @OnClick(R.id.new_game_btn)
     public void onNewGameClick() {
+        int gameThemeId = mViewModel.getGameThemeIdByIndex(mThemeSpinner.getSelectedItemPosition());
         int dim = mGameRoundDimValues[ mGridSizeSpinner.getSelectedItemPosition() ];
         Intent intent = new Intent(MainMenuActivity.this, GamePlayActivity.class);
+        intent.putExtra(GamePlayActivity.EXTRA_GAME_THEME_ID, gameThemeId);
         intent.putExtra(GamePlayActivity.EXTRA_ROW_COUNT, dim);
         intent.putExtra(GamePlayActivity.EXTRA_COL_COUNT, dim);
         startActivity(intent);

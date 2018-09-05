@@ -128,12 +128,17 @@ public class GamePlayViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public void generateNewGameRound(int rowCount, int colCount) {
+    public void generateNewGameRound(int rowCount, int colCount, int gameThemeId) {
         if (!(mCurrentState instanceof Generating)) {
             setGameState(new Generating(rowCount, colCount, "Play me"));
 
             Observable.create((ObservableOnSubscribe<GameData>) emitter -> {
-                List<Word> wordList = mWordDataSource.getWords();
+                List<Word> wordList;
+                if (gameThemeId <= -1) {
+                    wordList = mWordDataSource.getWords();
+                } else {
+                    wordList = mWordDataSource.getWords(gameThemeId);
+                }
                 GameData gr = mGameDataCreator.newGameData(wordList, rowCount, colCount, "Play me");
                 mGameDataSource.saveGameData(gr);
                 emitter.onNext(gr);

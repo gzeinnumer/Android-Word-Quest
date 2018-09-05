@@ -38,6 +38,7 @@ public class GamePlayActivity extends FullscreenActivity {
 
     public static final String EXTRA_GAME_ROUND_ID =
             "com.aar.app.wordsearch.features.gameplay.GamePlayActivity.ID";
+    public static final String EXTRA_GAME_THEME_ID = "game_theme_id";
     public static final String EXTRA_ROW_COUNT =
             "com.aar.app.wordsearch.features.gameplay.GamePlayActivity.ROW";
     public static final String EXTRA_COL_COUNT =
@@ -117,9 +118,10 @@ public class GamePlayActivity extends FullscreenActivity {
                 int gid = extras.getInt(EXTRA_GAME_ROUND_ID);
                 mViewModel.loadGameRound(gid);
             } else {
+                int gameThemeId = extras.getInt(EXTRA_GAME_THEME_ID);
                 int rowCount = extras.getInt(EXTRA_ROW_COUNT);
                 int colCount = extras.getInt(EXTRA_COL_COUNT);
-                mViewModel.generateNewGameRound(rowCount, colCount);
+                mViewModel.generateNewGameRound(rowCount, colCount, gameThemeId);
             }
         }
 
