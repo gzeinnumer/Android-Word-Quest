@@ -34,7 +34,8 @@ public class DbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + DbContract.UsedWord.TABLE_NAME + " (" +
                     DbContract.UsedWord._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     DbContract.UsedWord.COL_GAME_ROUND_ID + " INTEGER," +
-                    DbContract.UsedWord.COL_WORD_STRING + " TEXT," +
+                    DbContract.UsedWord.COL_STRING + " TEXT," +
+                    DbContract.UsedWord.COL_SUB_STRING + " TEXT," +
                     DbContract.UsedWord.COL_ANSWER_LINE_DATA + " TEXT," +
                     DbContract.UsedWord.COL_LINE_COLOR + " INTEGER)";
 

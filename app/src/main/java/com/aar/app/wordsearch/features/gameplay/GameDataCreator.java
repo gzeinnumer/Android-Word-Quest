@@ -30,11 +30,11 @@ public class GameDataCreator {
 
         Grid grid = new Grid(rowCount, colCount);
         int maxCharCount = Math.min(rowCount, colCount);
-        List<String> usedStrings =
+        List<Word> usedWords =
                 new StringListGridGenerator()
-                        .setGrid(getStringListFromWord(words, 100, maxCharCount), grid.getArray());
+                        .setGrid(filterWordList(words, 100, maxCharCount), grid.getArray());
 
-        gameData.addUsedWords(buildUsedWordFromString(usedStrings));
+        gameData.addUsedWords(buildUsedWordFromWord(usedWords));
         gameData.setGrid(grid);
         if (name == null || name.isEmpty()) {
             String name1 = "Puzzle " +
@@ -48,13 +48,16 @@ public class GameDataCreator {
         return gameData;
     }
 
-    private List<UsedWord> buildUsedWordFromString(List<String> strings) {
+    private List<UsedWord> buildUsedWordFromWord(List<Word> words) {
         List<UsedWord> usedWords = new ArrayList<>();
-        for (int i = 0; i < strings.size(); i++) {
-            String str = strings.get(i);
+        for (int i = 0; i < words.size(); i++) {
+            Word word = words.get(i);
 
             UsedWord uw = new UsedWord();
-            uw.setString(str);
+            uw.setId(word.getId());
+            uw.setGameThemeId(word.getGameThemeId());
+            uw.setString(word.getString());
+            uw.setSubString(word.getSubString());
             uw.setAnswered(false);
 
             usedWords.add(uw);
@@ -64,20 +67,18 @@ public class GameDataCreator {
         return usedWords;
     }
 
-    private List<String> getStringListFromWord(List<Word> words, int count, int maxCharCount) {
+    private List<Word> filterWordList(List<Word> words, int count, int maxCharCount) {
         count = Math.min(count, words.size());
 
-        List<String> stringList = new ArrayList<>();
-        String temp;
+        List<Word> wordList = new ArrayList<>();
         for (int i = 0; i < words.size(); i++) {
-            if (stringList.size() >= count) break;
+            if (wordList.size() >= count) break;
 
-            temp = words.get(i).getString();
-            if (temp.length() <= maxCharCount) {
-                stringList.add(temp);
+            if (words.get(i).getString().length() <= maxCharCount) {
+                wordList.add(words.get(i));
             }
         }
 
-        return stringList;
+        return wordList;
     }
 }

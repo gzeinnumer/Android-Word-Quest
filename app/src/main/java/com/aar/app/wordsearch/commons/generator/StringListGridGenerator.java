@@ -2,6 +2,7 @@ package com.aar.app.wordsearch.commons.generator;
 
 import com.aar.app.wordsearch.commons.Direction;
 import com.aar.app.wordsearch.commons.Util;
+import com.aar.app.wordsearch.model.Word;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,25 +13,25 @@ import java.util.List;
  * Try to pack all string list into grid array
  */
 
-public class StringListGridGenerator extends GridGenerator<List<String>, List<String>> {
+public class StringListGridGenerator extends GridGenerator<List<Word>, List<Word>> {
 
     private static final int MIN_GRID_ITERATION_ATTEMPT = 1;
 
     @Override
-    public List<String> setGrid(List<String> dataInput, char[][] grid) {
+    public List<Word> setGrid(List<Word> dataInput, char[][] grid) {
 //        Util.sortByLength(dataInput);
 
-        List<String> usedStrings = new ArrayList<>();
+        List<Word> usedWords = new ArrayList<>();
         int usedCount;
         for (int i = 0; i < MIN_GRID_ITERATION_ATTEMPT; i++) {
 
             usedCount = 0;
-            usedStrings.clear();
+            usedWords.clear();
             resetGrid(grid);
-            for (String word : dataInput) {
-                if (tryPlaceWord(word, grid)) {
+            for (Word word : dataInput) {
+                if (tryPlaceWord(word.getString(), grid)) {
                     usedCount++;
-                    usedStrings.add(word);
+                    usedWords.add(word);
                 }
             }
 
@@ -39,7 +40,7 @@ public class StringListGridGenerator extends GridGenerator<List<String>, List<St
         }
 
         Util.fillNullCharWidthRandom(grid);
-        return usedStrings;
+        return usedWords;
     }
 
     private Direction getRandomDirection() {

@@ -117,7 +117,8 @@ public class GameDataSource {
         for (UsedWord usedWord : gameRound.getUsedWords()) {
             values.clear();
             values.put(DbContract.UsedWord.COL_GAME_ROUND_ID, gid);
-            values.put(DbContract.UsedWord.COL_WORD_STRING, usedWord.getString());
+            values.put(DbContract.UsedWord.COL_STRING, usedWord.getString());
+            values.put(DbContract.UsedWord.COL_SUB_STRING, usedWord.getSubString());
             if (usedWord.getAnswerLine() != null) {
                 values.put(DbContract.UsedWord.COL_ANSWER_LINE_DATA, usedWord.getAnswerLine().toString());
                 values.put(DbContract.UsedWord.COL_LINE_COLOR, usedWord.getAnswerLine().color);
@@ -206,7 +207,8 @@ public class GameDataSource {
 
         String cols[] = {
                 DbContract.UsedWord._ID,
-                DbContract.UsedWord.COL_WORD_STRING,
+                DbContract.UsedWord.COL_STRING,
+                DbContract.UsedWord.COL_SUB_STRING,
                 DbContract.UsedWord.COL_ANSWER_LINE_DATA,
                 DbContract.UsedWord.COL_LINE_COLOR
         };
@@ -220,8 +222,9 @@ public class GameDataSource {
             while (!c.isAfterLast()) {
                 int id = c.getInt(0);
                 String str = c.getString(1);
-                String lineData = c.getString(2);
-                int col = c.getInt(3);
+                String subStr = c.getString(2);
+                String lineData = c.getString(3);
+                int col = c.getInt(4);
 
                 UsedWord.AnswerLine answerLine = null;
                 if (lineData != null) {
@@ -233,6 +236,7 @@ public class GameDataSource {
                 UsedWord usedWord = new UsedWord();
                 usedWord.setId(id);
                 usedWord.setString(str);
+                usedWord.setSubString(subStr);
                 usedWord.setAnswered(lineData != null);
                 usedWord.setAnswerLine(answerLine);
 
