@@ -11,16 +11,24 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".features.settings.SettingsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
         </activity>
-        <activity android:name=".features.gameplay.GamePlayActivity">
+        <activity
+            android:name=".features.gameplay.GamePlayActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".features.mainmenu.MainMenuActivity">
+        <activity
+            android:name=".features.mainmenu.MainMenuActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".features.gameover.GameOverActivity">
+        <activity
+            android:name=".features.gameover.GameOverActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".features.SplashScreenActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -28,7 +36,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".features.gamehistory.GameHistoryActivity">
+        <activity
+            android:name=".features.gamehistory.GameHistoryActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
