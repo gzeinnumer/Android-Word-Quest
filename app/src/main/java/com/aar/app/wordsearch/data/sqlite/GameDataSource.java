@@ -28,6 +28,18 @@ public class GameDataSource {
         mHelper = helper;
     }
 
+    public int getMaxIdForGameData() {
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        String query = "SELECT MAX(_id) AS max_id FROM " + DbContract.GameRound.TABLE_NAME;
+        Cursor c = db.rawQuery(query, null);
+        int seq = 0;
+        if (c.moveToFirst()) {
+            seq = c.getInt(c.getColumnIndex("max_id"));
+        }
+        c.close();
+        return seq;
+    }
+
     public GameData getGameData(int gid) {
         SQLiteDatabase db = mHelper.getReadableDatabase();
 

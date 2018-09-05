@@ -132,7 +132,8 @@ public class GamePlayViewModel extends ViewModel {
     @SuppressLint("CheckResult")
     public void generateNewGameRound(int rowCount, int colCount, int gameThemeId) {
         if (!(mCurrentState instanceof Generating)) {
-            setGameState(new Generating(rowCount, colCount, "Play me"));
+            String gameName = getGameDataName();
+            setGameState(new Generating(rowCount, colCount, gameName));
 
             Observable.create((ObservableOnSubscribe<GameData>) emitter -> {
                 List<Word> wordList;
@@ -141,7 +142,7 @@ public class GamePlayViewModel extends ViewModel {
                 } else {
                     wordList = mWordDataSource.getWords(gameThemeId);
                 }
-                GameData gr = mGameDataCreator.newGameData(wordList, rowCount, colCount, "Play me");
+                GameData gr = mGameDataCreator.newGameData(wordList, rowCount, colCount, gameName);
                 mGameDataSource.saveGameData(gr);
                 emitter.onNext(gr);
                 emitter.onComplete();
@@ -188,5 +189,9 @@ public class GamePlayViewModel extends ViewModel {
     private void setGameState(GameState state) {
         mCurrentState = state;
         mOnGameState.setValue(mCurrentState);
+    }
+
+    private String getGameDataName() {
+        return "Puzzle " + (mGameDataSource.getMaxIdForGameData() + 1);
     }
 }
