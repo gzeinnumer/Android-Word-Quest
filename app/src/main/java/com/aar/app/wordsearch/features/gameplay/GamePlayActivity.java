@@ -172,6 +172,7 @@ public class GamePlayActivity extends FullscreenActivity {
                 anim.start();
             }
 
+            showAnsweredWordsCount(answerResult.totalAnsweredWord);
             mSoundPlayer.play(SoundPlayer.Sound.Correct);
         }
         else {

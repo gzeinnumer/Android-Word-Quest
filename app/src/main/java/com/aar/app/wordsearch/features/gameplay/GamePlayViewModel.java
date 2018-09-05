@@ -61,9 +61,11 @@ public class GamePlayViewModel extends ViewModel {
     static class AnswerResult {
         public boolean correct;
         public int usedWordId;
-        AnswerResult(boolean correct, int usedWordId) {
+        public int totalAnsweredWord;
+        AnswerResult(boolean correct, int usedWordId, int totalAnsweredWord) {
             this.correct = correct;
             this.usedWordId = usedWordId;
+            this.totalAnsweredWord = totalAnsweredWord;
         }
     }
 
@@ -158,7 +160,11 @@ public class GamePlayViewModel extends ViewModel {
         UsedWord correctWord = mCurrentGameData.markWordAsAnswered(answerStr, answerLine, reverseMatching);
 
         boolean correct = correctWord != null;
-        mOnAnswerResult.setValue(new AnswerResult(correct, correctWord != null ? correctWord.getId() : -1));
+        mOnAnswerResult.setValue(new AnswerResult(
+                correct,
+                correctWord != null ? correctWord.getId() : -1,
+                mCurrentGameData.getAnsweredWordsCount()
+        ));
         if (correct) {
             mGameDataSource.markWordAsAnswered(correctWord);
             if (mCurrentGameData.isFinished()) {
