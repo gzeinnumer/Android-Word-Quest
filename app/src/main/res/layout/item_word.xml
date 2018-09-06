@@ -16,12 +16,12 @@
         android:id="@+id/textStr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         tools:text="String"/>
 
     <TextView
         android:id="@+id/textSubStr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
         tools:text="(sub string)"/>
 </LinearLayout>
