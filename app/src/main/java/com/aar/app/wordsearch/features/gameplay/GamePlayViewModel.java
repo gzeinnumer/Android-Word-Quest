@@ -13,7 +13,10 @@ import com.aar.app.wordsearch.model.GameData;
 import com.aar.app.wordsearch.model.UsedWord;
 import com.aar.app.wordsearch.model.Word;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
@@ -192,6 +195,8 @@ public class GamePlayViewModel extends ViewModel {
     }
 
     private String getGameDataName() {
-        return "Puzzle " + (mGameDataSource.getMaxIdForGameData() + 1);
+        String date = new SimpleDateFormat("yyyy-M-d H:m:s", Locale.getDefault())
+                .format(new Date(System.currentTimeMillis()));
+        return "Puzzle - " + date;
     }
 }
