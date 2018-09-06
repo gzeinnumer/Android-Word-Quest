@@ -31,11 +31,6 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="FlowLayout">
-        <attr name="horizontalSpacing" format="dimension"/>
-        <attr name="verticalSpacing" format="dimension"/>
-    </declare-styleable>
-
     <!--
         LetterBoard merupakan Compound View
         jadi reuse attr yang sudah didefinisikan diatas

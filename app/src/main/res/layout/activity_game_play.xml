@@ -140,13 +140,87 @@
                 android:layout_height="match_parent"
                 android:background="#dfdfdf">
 
-                <com.aar.app.wordsearch.custom.layout.FlowLayout
-                    android:id="@+id/flow_layout"
+                <!--<com.aar.app.wordsearch.custom.layout.FlowLayout-->
+                    <!--android:id="@+id/flow_layout"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--app:horizontalSpacing="5dp"-->
+                    <!--app:verticalSpacing="5dp"-->
+                    <!--android:visibility="gone">-->
+                <!--</com.aar.app.wordsearch.custom.layout.FlowLayout>-->
+                <!--<com.nex3z.flowlayout.FlowLayout-->
+                    <!--android:id="@+id/flow_layout"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:padding="8dp"-->
+                    <!--app:flChildSpacing="auto"-->
+                    <!--app:flRowSpacing="8dp">-->
+                <!--</com.nex3z.flowlayout.FlowLayout>-->
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/flexbox_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:horizontalSpacing="5dp"
-                    app:verticalSpacing="5dp">
-                </com.aar.app.wordsearch.custom.layout.FlowLayout>
+                    android:padding="3dp"
+                    app:flexWrap="wrap"
+                    app:justifyContent="center">
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Hello"-->
+                        <!--android:background="@color/colorAccent"-->
+                        <!--android:padding="8dp"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Hello World"-->
+                        <!--android:background="@color/colorAccent"-->
+                        <!--android:padding="8dp"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Hello Aris"-->
+                        <!--android:background="@color/colorAccent"-->
+                        <!--android:padding="8dp"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Hello"-->
+                        <!--android:background="@color/colorAccent"-->
+                        <!--android:padding="8dp"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Hello"-->
+                        <!--android:background="@color/colorAccent"-->
+                        <!--android:padding="8dp"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Hello"-->
+                        <!--android:background="@color/colorAccent"-->
+                        <!--android:padding="8dp"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Hello"-->
+                        <!--android:background="@color/colorAccent"-->
+                        <!--android:padding="8dp"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Hello"-->
+                        <!--android:background="@color/colorAccent"-->
+                        <!--android:padding="8dp"/>-->
+
+                </com.google.android.flexbox.FlexboxLayout>
 
             </ScrollView>
 

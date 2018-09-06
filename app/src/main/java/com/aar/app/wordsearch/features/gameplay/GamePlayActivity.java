@@ -21,10 +21,10 @@ import com.aar.app.wordsearch.commons.Util;
 import com.aar.app.wordsearch.model.GameData;
 import com.aar.app.wordsearch.custom.LetterBoard;
 import com.aar.app.wordsearch.custom.StreakView;
-import com.aar.app.wordsearch.custom.layout.FlowLayout;
 import com.aar.app.wordsearch.features.gameover.GameOverActivity;
 import com.aar.app.wordsearch.features.FullscreenActivity;
 import com.aar.app.wordsearch.model.UsedWord;
+import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class GamePlayActivity extends FullscreenActivity {
 
     @BindView(R.id.text_duration) TextView mTextDuration;
     @BindView(R.id.letter_board) LetterBoard mLetterBoard;
-    @BindView(R.id.flow_layout) FlowLayout mFlowLayout;
+    @BindView(R.id.flexbox_layout) FlexboxLayout mFlexLayout;
 
     @BindView(R.id.text_sel_layout) View mTextSelLayout;
     @BindView(R.id.text_selection) TextView mTextSelection;
@@ -260,9 +260,9 @@ public class GamePlayActivity extends FullscreenActivity {
     }
 
     private void showUsedWords(List<UsedWord> usedWords) {
-        mFlowLayout.removeAllViews();
+        mFlexLayout.removeAllViews();
         for (UsedWord uw : usedWords) {
-            mFlowLayout.addView( createUsedWordTextView(uw) );
+            mFlexLayout.addView( createUsedWordTextView(uw) );
         }
     }
 
@@ -290,7 +290,7 @@ public class GamePlayActivity extends FullscreenActivity {
 
     //
     private View createUsedWordTextView(UsedWord uw) {
-        View v = getLayoutInflater().inflate(R.layout.item_word, mFlowLayout, false);
+        View v = getLayoutInflater().inflate(R.layout.item_word, mFlexLayout, false);
         TextView str = v.findViewById(R.id.textStr);
         TextView subStr = v.findViewById(R.id.textSubStr);
         if (uw.isAnswered()) {
@@ -316,8 +316,8 @@ public class GamePlayActivity extends FullscreenActivity {
     }
 
     private View findUsedWordViewItemByUsedWordId(int usedWordId) {
-        for (int i = 0; i < mFlowLayout.getChildCount(); i++) {
-            View v = mFlowLayout.getChildAt(i);
+        for (int i = 0; i < mFlexLayout.getChildCount(); i++) {
+            View v = mFlexLayout.getChildAt(i);
             UsedWord uw = (UsedWord) v.getTag();
             if (uw != null && uw.getId() == usedWordId) {
                 return v;
