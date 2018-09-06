@@ -3,6 +3,7 @@ package com.aar.app.wordsearch.features.gamehistory;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -93,6 +94,7 @@ public class GameHistoryActivity extends FullscreenActivity {
         mAdapter.addDelegate(gameDataAdapterDelegate);
 
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 }
