@@ -3,10 +3,14 @@ package com.aar.app.wordsearch.features.mainmenu;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.aar.app.wordsearch.R;
+import com.aar.app.wordsearch.easyadapter.MultiTypeAdapter;
 import com.aar.app.wordsearch.features.ViewModelFactory;
 import com.aar.app.wordsearch.WordSearchApp;
 import com.aar.app.wordsearch.features.FullscreenActivity;
@@ -14,9 +18,6 @@ import com.aar.app.wordsearch.features.gamehistory.GameHistoryActivity;
 import com.aar.app.wordsearch.features.gameplay.GamePlayActivity;
 import com.aar.app.wordsearch.model.GameTheme;
 import com.aar.app.wordsearch.features.settings.SettingsActivity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -27,9 +28,9 @@ import butterknife.OnClick;
 
 public class MainMenuActivity extends FullscreenActivity {
 
+    @BindView(R.id.rvThemes)
+    RecyclerView mRvThemes;
     @BindView(R.id.spinnerGridSize) Spinner mGridSizeSpinner;
-    @BindView(R.id.spinnerTheme) Spinner mThemeSpinner;
-    private ArrayAdapter<String> mThemeSpinnerAdapter;
 
     @BindArray(R.array.game_round_dimension_values)
     int[] mGameRoundDimValues;
@@ -37,6 +38,8 @@ public class MainMenuActivity extends FullscreenActivity {
     @Inject
     ViewModelFactory mViewModelFactory;
     MainMenuViewModel mViewModel;
+
+    private MultiTypeAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +51,19 @@ public class MainMenuActivity extends FullscreenActivity {
 
         ((WordSearchApp) getApplication()).getAppComponent().inject(this);
 
+        mAdapter = new MultiTypeAdapter();
+        mAdapter.addDelegate(
+                GameTheme.class,
+                R.layout.item_theme,
+                (model, holder) -> holder.<TextView>find(R.id.textTheme).setText(model.getName()),
+                null
+        );
+
+        mRvThemes.setLayoutManager(new GridLayoutManager(this, 3));
+        mRvThemes.setAdapter(mAdapter);
+
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(MainMenuViewModel.class);
-        mViewModel.getOnGameThemeLoaded().observe(this, this::showThemeList);
+        mViewModel.getOnGameThemeLoaded().observe(this, mAdapter::setItems);
     }
 
     @Override
@@ -64,17 +78,6 @@ public class MainMenuActivity extends FullscreenActivity {
                 R.layout.item_spinner,
                 getResources().getStringArray(R.array.game_round_dimensions)
         ));
-
-        mThemeSpinnerAdapter = new ArrayAdapter<>(
-                this,
-                R.layout.item_spinner
-        );
-        mThemeSpinner.setAdapter(mThemeSpinnerAdapter);
-    }
-
-    private void showThemeList(List<String> gameThemes) {
-        mThemeSpinnerAdapter.clear();
-        mThemeSpinnerAdapter.addAll(gameThemes);
     }
 
     @OnClick(R.id.settings_button)
@@ -85,10 +88,9 @@ public class MainMenuActivity extends FullscreenActivity {
 
     @OnClick(R.id.new_game_btn)
     public void onNewGameClick() {
-        int gameThemeId = mViewModel.getGameThemeIdByIndex(mThemeSpinner.getSelectedItemPosition());
         int dim = mGameRoundDimValues[ mGridSizeSpinner.getSelectedItemPosition() ];
         Intent intent = new Intent(MainMenuActivity.this, GamePlayActivity.class);
-        intent.putExtra(GamePlayActivity.EXTRA_GAME_THEME_ID, gameThemeId);
+        intent.putExtra(GamePlayActivity.EXTRA_GAME_THEME_ID, -1);
         intent.putExtra(GamePlayActivity.EXTRA_ROW_COUNT, dim);
         intent.putExtra(GamePlayActivity.EXTRA_COL_COUNT, dim);
         startActivity(intent);

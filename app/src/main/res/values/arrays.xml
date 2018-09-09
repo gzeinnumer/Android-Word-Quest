@@ -8,6 +8,9 @@
         <item>7 x 7</item>
         <item>8 x 8</item>
         <item>9 x 9</item>
+        <item>10 x 10</item>
+        <item>11 x 11</item>
+        <item>12 x 12</item>
     </string-array>
     <integer-array name="game_round_dimension_values">
         <item>4</item>
@@ -16,6 +19,9 @@
         <item>7</item>
         <item>8</item>
         <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
     </integer-array>
 
 

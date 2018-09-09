@@ -27,7 +27,7 @@
     <string name="settings">Settings</string>
     <string name="congratulations">Congratulations!</string>
     <string name="main_menu">Main Menu</string>
-    <string name="new_game">NEW GAME</string>
+    <string name="new_game">Start</string>
     <string name="auto_scale_grid_summary">Automatically scale grid based on the screen width</string>
     <string name="pref_reverseMatching">reverseMatching</string>
     <string name="reverse_matching">Reverse matching</string>

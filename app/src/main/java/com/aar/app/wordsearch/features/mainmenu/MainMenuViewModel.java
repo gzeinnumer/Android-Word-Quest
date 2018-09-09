@@ -24,8 +24,7 @@ public class MainMenuViewModel extends ViewModel {
 
     private GameThemeDataSource mGameThemeRepository;
 
-    private List<GameTheme> mGameThemes;
-    private MutableLiveData<List<String>> mOnGameThemeLoaded;
+    private MutableLiveData<List<GameTheme>> mOnGameThemeLoaded;
 
     public MainMenuViewModel(GameThemeDataSource gameThemeRepository) {
         mGameThemeRepository = gameThemeRepository;
@@ -34,29 +33,17 @@ public class MainMenuViewModel extends ViewModel {
 
     @SuppressLint("CheckResult")
     public void loadThemes() {
-        Observable.create((ObservableOnSubscribe<List<GameTheme>>) e -> {
-            mGameThemes = mGameThemeRepository.getThemes();
-            mGameThemes.add(0, new GameTheme(-1, "- All Theme -"));
-            e.onNext(mGameThemes);
-            e.onComplete();
-        })
+        Observable
+                .create((ObservableOnSubscribe<List<GameTheme>>) e -> {
+                    e.onNext(mGameThemeRepository.getThemes());
+                    e.onComplete();
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMap((Function<List<GameTheme>, Observable<GameTheme>>) Observable::fromIterable)
-                .map(GameTheme::getName)
-                .toList()
-                .toObservable()
                 .subscribe(mOnGameThemeLoaded::setValue);
     }
 
-    public int getGameThemeIdByIndex(int index) {
-        if (mGameThemes == null || index < 0 || index >= mGameThemes.size()) {
-            return -1;
-        }
-        return mGameThemes.get(index).getId();
-    }
-
-    public LiveData<List<String>> getOnGameThemeLoaded() {
+    public LiveData<List<GameTheme>> getOnGameThemeLoaded() {
         return mOnGameThemeLoaded;
     }
 }
