@@ -92,8 +92,10 @@ public class GamePlayViewModel extends ViewModel {
 
         mTimer = new Timer(TIMER_TIMEOUT);
         mTimer.addOnTimeoutListener(elapsedTime -> {
-            mOnTimer.setValue(mCurrentDuration++);
-            mGameDataSource.saveGameDataDuration(mCurrentGameData.getId(), mCurrentDuration);
+            if (mCurrentGameData != null) {
+                mOnTimer.setValue(mCurrentDuration++);
+                mGameDataSource.saveGameDataDuration(mCurrentGameData.getId(), mCurrentDuration);
+            }
         });
         resetLiveData();
     }
