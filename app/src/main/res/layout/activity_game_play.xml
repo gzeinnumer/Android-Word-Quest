@@ -112,119 +112,54 @@
                 android:text="TextView"/>
         </LinearLayout>
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/content_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.aar.app.wordsearch.custom.LetterBoard
-                android:id="@+id/letter_board"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
-                android:layout_gravity="center"
-                app:gridLineVisibility="true"
-                app:gridWidth="31dp"
-                app:gridHeight="31dp"
-                app:gridColumnCount="10"
-                app:gridRowCount="10"
-                app:letterSize="10pt"
-                app:letterColor="@android:color/black"
-                app:lineColor="@color/colorAccent"
-                app:snapToGrid="START_END"/>
-
             <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#dfdfdf">
+                android:id="@+id/scrollView2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="4dp"
+                android:background="#dfdfdf"
+                app:layout_constraintBottom_toTopOf="@+id/letter_board"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <!--<com.aar.app.wordsearch.custom.layout.FlowLayout-->
-                    <!--android:id="@+id/flow_layout"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--app:horizontalSpacing="5dp"-->
-                    <!--app:verticalSpacing="5dp"-->
-                    <!--android:visibility="gone">-->
-                <!--</com.aar.app.wordsearch.custom.layout.FlowLayout>-->
-                <!--<com.nex3z.flowlayout.FlowLayout-->
-                    <!--android:id="@+id/flow_layout"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:padding="8dp"-->
-                    <!--app:flChildSpacing="auto"-->
-                    <!--app:flRowSpacing="8dp">-->
-                <!--</com.nex3z.flowlayout.FlowLayout>-->
                 <com.google.android.flexbox.FlexboxLayout
                     android:id="@+id/flexbox_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="3dp"
+                    android:padding="2dp"
                     app:flexWrap="wrap"
-                    app:justifyContent="center">
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Hello"-->
-                        <!--android:background="@color/colorAccent"-->
-                        <!--android:padding="8dp"/>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Hello World"-->
-                        <!--android:background="@color/colorAccent"-->
-                        <!--android:padding="8dp"/>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Hello Aris"-->
-                        <!--android:background="@color/colorAccent"-->
-                        <!--android:padding="8dp"/>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Hello"-->
-                        <!--android:background="@color/colorAccent"-->
-                        <!--android:padding="8dp"/>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Hello"-->
-                        <!--android:background="@color/colorAccent"-->
-                        <!--android:padding="8dp"/>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Hello"-->
-                        <!--android:background="@color/colorAccent"-->
-                        <!--android:padding="8dp"/>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Hello"-->
-                        <!--android:background="@color/colorAccent"-->
-                        <!--android:padding="8dp"/>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Hello"-->
-                        <!--android:background="@color/colorAccent"-->
-                        <!--android:padding="8dp"/>-->
-
-                </com.google.android.flexbox.FlexboxLayout>
+                    app:justifyContent="center"/>
 
             </ScrollView>
 
-        </LinearLayout>
+            <com.aar.app.wordsearch.custom.LetterBoard
+                android:id="@+id/letter_board"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp"
+                android:visibility="visible"
+                app:gridColumnCount="10"
+                app:gridHeight="31dp"
+                app:gridLineVisibility="true"
+                app:gridRowCount="10"
+                app:gridWidth="31dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:letterColor="@android:color/black"
+                app:letterSize="10pt"
+                app:lineColor="@color/colorAccent"
+                app:snapToGrid="START_END"/>
+
+        </android.support.constraint.ConstraintLayout>
 
     </FrameLayout>
 

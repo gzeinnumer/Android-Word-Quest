@@ -118,7 +118,6 @@ public class GameDataSource {
             values.clear();
             values.put(DbContract.UsedWord.COL_GAME_ROUND_ID, gid);
             values.put(DbContract.UsedWord.COL_STRING, usedWord.getString());
-            values.put(DbContract.UsedWord.COL_SUB_STRING, usedWord.getSubString());
             if (usedWord.getAnswerLine() != null) {
                 values.put(DbContract.UsedWord.COL_ANSWER_LINE_DATA, usedWord.getAnswerLine().toString());
                 values.put(DbContract.UsedWord.COL_LINE_COLOR, usedWord.getAnswerLine().color);
@@ -236,7 +235,6 @@ public class GameDataSource {
                 UsedWord usedWord = new UsedWord();
                 usedWord.setId(id);
                 usedWord.setString(str);
-                usedWord.setSubString(subStr);
                 usedWord.setAnswered(lineData != null);
                 usedWord.setAnswerLine(answerLine);
 

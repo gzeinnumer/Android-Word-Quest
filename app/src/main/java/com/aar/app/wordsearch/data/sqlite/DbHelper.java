@@ -27,8 +27,7 @@ public class DbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + DbContract.WordBank.TABLE_NAME + " (" +
                     DbContract.WordBank._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     DbContract.WordBank.COL_GAME_THEME_ID + " INTEGER," +
-                    DbContract.WordBank.COL_STRING + " TEXT," +
-                    DbContract.WordBank.COL_SUB_STRING + " TEXT)";
+                    DbContract.WordBank.COL_STRING + " TEXT)";
 
     private static final String SQL_CREATE_TABLE_USED_WORD =
             "CREATE TABLE " + DbContract.UsedWord.TABLE_NAME + " (" +
@@ -87,7 +86,6 @@ public class DbHelper extends SQLiteOpenHelper {
             vals.clear();
             vals.put(DbContract.WordBank.COL_GAME_THEME_ID, word.getGameThemeId());
             vals.put(DbContract.WordBank.COL_STRING, word.getString());
-            vals.put(DbContract.WordBank.COL_SUB_STRING, word.getSubString());
 
             long wid = db.insert(DbContract.WordBank.TABLE_NAME, "null", vals);
             word.setId((int) wid);

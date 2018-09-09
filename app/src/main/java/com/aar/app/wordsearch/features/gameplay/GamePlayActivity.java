@@ -164,12 +164,10 @@ public class GamePlayActivity extends FullscreenActivity {
                 }
 
                 TextView str = item.findViewById(R.id.textStr);
-                TextView subStr = item.findViewById(R.id.textSubStr);
 
                 item.setBackgroundColor(uw.getAnswerLine().color);
                 str.setTextColor(Color.WHITE);
                 str.setPaintFlags(str.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                subStr.setTextColor(Color.WHITE);
 
                 Animator anim = AnimatorInflater.loadAnimator(this, R.animator.zoom_in_out);
                 anim.setTarget(item);
@@ -241,7 +239,20 @@ public class GamePlayActivity extends FullscreenActivity {
         } else {
             mLoading.setVisibility(View.GONE);
             mLoadingText.setVisibility(View.GONE);
-            mContentLayout.setVisibility(View.VISIBLE);
+            if (mContentLayout.getVisibility() == View.GONE) {
+                mContentLayout.setVisibility(View.VISIBLE);
+                mContentLayout.setScaleY(.5f);
+                mContentLayout.setAlpha(0f);
+
+                mContentLayout.animate()
+                        .scaleY(1f)
+                        .setDuration(300)
+                        .start();
+                mContentLayout.animate()
+                        .alpha(1f)
+                        .setDuration(600)
+                        .start();
+            }
         }
     }
 
@@ -292,7 +303,6 @@ public class GamePlayActivity extends FullscreenActivity {
     private View createUsedWordTextView(UsedWord uw) {
         View v = getLayoutInflater().inflate(R.layout.item_word, mFlexLayout, false);
         TextView str = v.findViewById(R.id.textStr);
-        TextView subStr = v.findViewById(R.id.textSubStr);
         if (uw.isAnswered()) {
             if (getPreferences().grayscale()) {
                 uw.getAnswerLine().color = mGrayColor;
@@ -301,14 +311,11 @@ public class GamePlayActivity extends FullscreenActivity {
             str.setText(uw.getString());
             str.setTextColor(Color.WHITE);
             str.setPaintFlags(str.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            subStr.setText("(" + uw.getSubString() + ")");
-            subStr.setTextColor(Color.WHITE);
 
             mLetterBoard.addStreakLine(STREAK_LINE_MAPPER.map(uw.getAnswerLine()));
         }
         else {
             str.setText(uw.getString());
-            subStr.setText("(" + uw.getSubString() + ")");
         }
 
         v.setTag(uw);

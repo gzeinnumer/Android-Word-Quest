@@ -1,65 +1,65 @@
 <WordBank theme="Country">
-    <item str="ARGENTINA" subStr="-"/>
-    <item str="ARMENIA" subStr="-"/>
-    <item str="ARUBA" subStr="-"/>
-    <item str="AUSTRALIA" subStr="-"/>
-    <item str="AUSTRIA" subStr="-"/>
-    <item str="AZERBAIJAN" subStr="-"/>
-    <item str="BARBADOS" subStr="-"/>
-    <item str="BELARUS" subStr="-"/>
-    <item str="BELGIUM" subStr="-"/>
-    <item str="DENMARK" subStr="-"/>
-    <item str="DJIBOUTI" subStr="-"/>
-    <item str="DOMINICA" subStr="-"/>
-    <item str="ESTONIA" subStr="-"/>
-    <item str="ETHIOPIA" subStr="-"/>
-    <item str="ENGLAND" subStr="-"/>
-    <item str="FIJI" subStr="-"/>
-    <item str="FINLAND" subStr="-"/>
-    <item str="FRANCE" subStr="-"/>
-    <item str="GERMANY" subStr="-"/>
-    <item str="GHANA" subStr="-"/>
-    <item str="GREECE" subStr="-"/>
-    <item str="GRENADA" subStr="-"/>
-    <item str="ICELAND" subStr="-"/>
-    <item str="INDIA" subStr="-"/>
-    <item str="INDONESIA" subStr="-"/>
-    <item str="IRAN" subStr="-"/>
-    <item str="IRAQ" subStr="-"/>
-    <item str="IRELAND" subStr="-"/>
-    <item str="ISRAEL" subStr="-"/>
-    <item str="ITALY" subStr="-"/>
-    <item str="KAZAKHSTAN" subStr="-"/>
-    <item str="KENYA" subStr="-"/>
-    <item str="KIRIBATI" subStr="-"/>
-    <item str="KOREA" subStr="-"/>
-    <item str="LAOS" subStr="-"/>
-    <item str="LATVIA" subStr="-"/>
-    <item str="LEBANON" subStr="-"/>
-    <item str="LESOTHO" subStr="-"/>
-    <item str="LIBERIA" subStr="-"/>
-    <item str="LIBYA" subStr="-"/>
-    <item str="MEXICO" subStr="-"/>
-    <item str="MOLDOVA" subStr="-"/>
-    <item str="MONACO" subStr="-"/>
-    <item str="MONGOLIA" subStr="-"/>
-    <item str="MOROCCO" subStr="-"/>
-    <item str="MYANMAR" subStr="-"/>
-    <item str="NEPAL" subStr="-"/>
-    <item str="NETHERLANDS" subStr="-"/>
-    <item str="NIGER" subStr="-"/>
-    <item str="NIGERIA" subStr="-"/>
-    <item str="PAKISTAN" subStr="-"/>
-    <item str="PALAU" subStr="-"/>
-    <item str="PALESTINE" subStr="-"/>
-    <item str="PARAGUAY" subStr="-"/>
-    <item str="PERU" subStr="-"/>
-    <item str="POLAND" subStr="-"/>
-    <item str="PORTUGAL" subStr="-"/>
-    <item str="QATAR" subStr="-"/>
-    <item str="UGANDA" subStr="-"/>
-    <item str="UKRAINE" subStr="-"/>
-    <item str="URUGUAY" subStr="-"/>
-    <item str="UZBEKISTAN" subStr="-"/>
-    <item str="YEMEN" subStr="-"/>
+    <item str="ARGENTINA"/>
+    <item str="ARMENIA"/>
+    <item str="ARUBA"/>
+    <item str="AUSTRALIA"/>
+    <item str="AUSTRIA"/>
+    <item str="AZERBAIJAN"/>
+    <item str="BARBADOS"/>
+    <item str="BELARUS"/>
+    <item str="BELGIUM"/>
+    <item str="DENMARK"/>
+    <item str="DJIBOUTI"/>
+    <item str="DOMINICA"/>
+    <item str="ESTONIA"/>
+    <item str="ETHIOPIA"/>
+    <item str="ENGLAND"/>
+    <item str="FIJI"/>
+    <item str="FINLAND"/>
+    <item str="FRANCE"/>
+    <item str="GERMANY"/>
+    <item str="GHANA"/>
+    <item str="GREECE"/>
+    <item str="GRENADA"/>
+    <item str="ICELAND"/>
+    <item str="INDIA"/>
+    <item str="INDONESIA"/>
+    <item str="IRAN"/>
+    <item str="IRAQ"/>
+    <item str="IRELAND"/>
+    <item str="ISRAEL"/>
+    <item str="ITALY"/>
+    <item str="KAZAKHSTAN"/>
+    <item str="KENYA"/>
+    <item str="KIRIBATI"/>
+    <item str="KOREA"/>
+    <item str="LAOS"/>
+    <item str="LATVIA"/>
+    <item str="LEBANON"/>
+    <item str="LESOTHO"/>
+    <item str="LIBERIA"/>
+    <item str="LIBYA"/>
+    <item str="MEXICO"/>
+    <item str="MOLDOVA"/>
+    <item str="MONACO"/>
+    <item str="MONGOLIA"/>
+    <item str="MOROCCO"/>
+    <item str="MYANMAR"/>
+    <item str="NEPAL"/>
+    <item str="NETHERLANDS"/>
+    <item str="NIGER"/>
+    <item str="NIGERIA"/>
+    <item str="PAKISTAN"/>
+    <item str="PALAU"/>
+    <item str="PALESTINE"/>
+    <item str="PARAGUAY"/>
+    <item str="PERU"/>
+    <item str="POLAND"/>
+    <item str="PORTUGAL"/>
+    <item str="QATAR"/>
+    <item str="UGANDA"/>
+    <item str="UKRAINE"/>
+    <item str="URUGUAY"/>
+    <item str="UZBEKISTAN"/>
+    <item str="YEMEN"/>
 </WordBank>

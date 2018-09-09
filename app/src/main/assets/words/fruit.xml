@@ -1,42 +1,42 @@
 <WordBank theme="Fruit">
-    <item str="APPLE" subStr="wow"/>
-    <item str="APRICOT" subStr="yeah!"/>
-    <item str="AVOCADO" subStr="healthy"/>
-    <item str="BANANA" subStr="choco"/>
-    <item str="BILBERRY" subStr="sweet"/>
-    <item str="CURRANT" subStr="refreshing"/>
-    <item str="CHERRY" subStr="view"/>
-    <item str="COCONUT" subStr="treez"/>
-    <item str="CUCUMBER" subStr="fresh"/>
-    <item str="DAMSON" subStr="cool"/>
-    <item str="DURIAN" subStr="smell"/>
-    <item str="FEIJOA" subStr="wow"/>
-    <item str="FIG" subStr="yosh"/>
-    <item str="KIWI" subStr="kiwix"/>
-    <item str="GRAPE" subStr="wine"/>
-    <item str="RAISIN" subStr="carbo"/>
-    <item str="GUAVA" subStr="red"/>
-    <item str="JACKFRUIT" subStr="sweetness"/>
-    <item str="JUJUBE" subStr="whoa"/>
-    <item str="LEMON" subStr="fresh"/>
-    <item str="LIME" subStr="fresh"/>
-    <item str="LOQUAT" subStr="loq whao"/>
-    <item str="LYCHEE" subStr="yuhuu"/>
-    <item str="MANGO" subStr="sweet"/>
-    <item str="MELON" subStr="water"/>
-    <item str="MULBERRY" subStr="great"/>
-    <item str="NANCE" subStr="sweet fruit"/>
-    <item str="OLIVE" subStr="good"/>
-    <item str="ORANGE" subStr="fresh"/>
-    <item str="PAPAYA" subStr="sweet"/>
-    <item str="PEACH" subStr="fresh fruit"/>
-    <item str="PEAR" subStr="sensation"/>
-    <item str="PLANTAIN" subStr="yoho"/>
-    <item str="PLUM" subStr="good"/>
-    <item str="POMELO" subStr="tada"/>
-    <item str="QUINCE" subStr="know"/>
-    <item str="RAMBUTAN" subStr="cool"/>
-    <item str="SALAK" subStr="what"/>
-    <item str="TAMARIND" subStr="uuuh"/>
-    <item str="TOMATO" subStr="souce"/>
+    <item str="APPLE"/>
+    <item str="APRICOT"/>
+    <item str="AVOCADO"/>
+    <item str="BANANA"/>
+    <item str="BILBERRY"/>
+    <item str="CURRANT"/>
+    <item str="CHERRY"/>
+    <item str="COCONUT"/>
+    <item str="CUCUMBER"/>
+    <item str="DAMSON"/>
+    <item str="DURIAN"/>
+    <item str="FEIJOA"/>
+    <item str="FIG"/>
+    <item str="KIWI"/>
+    <item str="GRAPE"/>
+    <item str="RAISIN"/>
+    <item str="GUAVA"/>
+    <item str="JACKFRUIT"/>
+    <item str="JUJUBE"/>
+    <item str="LEMON"/>
+    <item str="LIME"/>
+    <item str="LOQUAT"/>
+    <item str="LYCHEE"/>
+    <item str="MANGO"/>
+    <item str="MELON"/>
+    <item str="MULBERRY"/>
+    <item str="NANCE"/>
+    <item str="OLIVE"/>
+    <item str="ORANGE"/>
+    <item str="PAPAYA"/>
+    <item str="PEACH"/>
+    <item str="PEAR"/>
+    <item str="PLANTAIN"/>
+    <item str="PLUM"/>
+    <item str="POMELO"/>
+    <item str="QUINCE"/>
+    <item str="RAMBUTAN"/>
+    <item str="SALAK"/>
+    <item str="TAMARIND"/>
+    <item str="TOMATO"/>
 </WordBank>

@@ -1,31 +1,31 @@
 <WordBank theme="Vegetable">
-    <item str="ARUGULA" subStr="-"/>
-    <item str="ASPARAGUS" subStr="-"/>
-    <item str="AZUKI" subStr="-"/>
-    <item str="LENTILS" subStr="-"/>
-    <item str="PEAS" subStr="-"/>
-    <item str="BROCCOLI" subStr="-"/>
-    <item str="CABBAGE" subStr="-"/>
-    <item str="CARROTS" subStr="-"/>
-    <item str="CELERY" subStr="-"/>
-    <item str="CHARD" subStr="-"/>
-    <item str="FENNEL" subStr="-"/>
-    <item str="ANISE" subStr="-"/>
-    <item str="BASIL" subStr="-"/>
-    <item str="CARAWAY" subStr="-"/>
-    <item str="LAVENDER" subStr="-"/>
-    <item str="OREGANO" subStr="-"/>
-    <item str="GARLIC" subStr="-"/>
-    <item str="ONION" subStr="-"/>
-    <item str="PERPPERS" subStr="-"/>
-    <item str="PAPRIKA" subStr="-"/>
-    <item str="TABASCO" subStr="-"/>
-    <item str="GINGER" subStr="-"/>
-    <item str="TURNIP" subStr="-"/>
-    <item str="RADISH" subStr="-"/>
-    <item str="WASABI" subStr="-"/>
-    <item str="SPINACH" subStr="-"/>
-    <item str="POTATO" subStr="-"/>
-    <item str="YAM" subStr="-"/>
-    <item str="ZUCCHINI" subStr="-"/>
+    <item str="ARUGULA"/>
+    <item str="ASPARAGUS"/>
+    <item str="AZUKI"/>
+    <item str="LENTILS"/>
+    <item str="PEAS"/>
+    <item str="BROCCOLI"/>
+    <item str="CABBAGE"/>
+    <item str="CARROTS"/>
+    <item str="CELERY"/>
+    <item str="CHARD"/>
+    <item str="FENNEL"/>
+    <item str="ANISE"/>
+    <item str="BASIL"/>
+    <item str="CARAWAY"/>
+    <item str="LAVENDER"/>
+    <item str="OREGANO"/>
+    <item str="GARLIC"/>
+    <item str="ONION"/>
+    <item str="PERPPERS"/>
+    <item str="PAPRIKA"/>
+    <item str="TABASCO"/>
+    <item str="GINGER"/>
+    <item str="TURNIP"/>
+    <item str="RADISH"/>
+    <item str="WASABI"/>
+    <item str="SPINACH"/>
+    <item str="POTATO"/>
+    <item str="YAM"/>
+    <item str="ZUCCHINI"/>
 </WordBank>

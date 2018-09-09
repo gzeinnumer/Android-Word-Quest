@@ -9,7 +9,6 @@ public class Word {
     private int mId;
     private int mGameThemeId;
     private String mString;
-    private String mSubString;
 
     public Word() {
         this(-1, "");
@@ -20,11 +19,10 @@ public class Word {
         mString = string;
     }
 
-    public Word(int id, int gameThemeId, String string, String subString) {
+    public Word(int id, int gameThemeId, String string) {
         mId = id;
         mGameThemeId = gameThemeId;
         mString = string;
-        mSubString = subString;
     }
 
     public int getId() {
@@ -51,11 +49,4 @@ public class Word {
         mGameThemeId = gameThemeId;
     }
 
-    public String getSubString() {
-        return mSubString;
-    }
-
-    public void setSubString(String subString) {
-        mSubString = subString;
-    }
 }

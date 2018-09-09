@@ -19,7 +19,6 @@ abstract class DbContract {
 
         static final String COL_GAME_THEME_ID = "game_theme_id";
         static final String COL_STRING = "string";
-        static final String COL_SUB_STRING = "sub_string";
     }
 
     static class GameRound implements BaseColumns {

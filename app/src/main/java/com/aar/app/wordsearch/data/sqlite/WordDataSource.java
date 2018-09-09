@@ -1,6 +1,5 @@
 package com.aar.app.wordsearch.data.sqlite;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -34,8 +33,7 @@ public class WordDataSource {
         String cols[] = {
                 DbContract.WordBank._ID,
                 DbContract.WordBank.COL_GAME_THEME_ID,
-                DbContract.WordBank.COL_STRING,
-                DbContract.WordBank.COL_SUB_STRING
+                DbContract.WordBank.COL_STRING
         };
 
         Cursor c;
@@ -54,8 +52,7 @@ public class WordDataSource {
                 Word word = new Word(
                         c.getInt(0),
                         c.getInt(1),
-                        c.getString(2),
-                        c.getString(3));
+                        c.getString(2));
                 wordList.add(word);
 
                 c.moveToNext();
