@@ -13,7 +13,6 @@ import com.aar.app.wordsearch.features.gamehistory.GameHistoryViewModel;
 import com.aar.app.wordsearch.features.gameover.GameOverViewModel;
 import com.aar.app.wordsearch.features.gameplay.GamePlayViewModel;
 import com.aar.app.wordsearch.features.gamethemeselector.ThemeSelectorViewModel;
-import com.aar.app.wordsearch.features.mainmenu.MainMenuViewModel;
 
 import javax.inject.Singleton;
 
@@ -53,7 +52,6 @@ public class AppModule {
         return new ViewModelFactory(
                 new GameOverViewModel(gameDataSource),
                 new GamePlayViewModel(gameDataSource, wordDataSource),
-                new MainMenuViewModel(gameThemeDataSource),
                 new GameHistoryViewModel(gameDataSource),
                 new ThemeSelectorViewModel(gameThemeDataSource)
         );
