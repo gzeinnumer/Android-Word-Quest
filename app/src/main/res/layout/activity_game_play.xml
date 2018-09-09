@@ -181,6 +181,7 @@
                 app:gridLineVisibility="true"
                 app:gridRowCount="10"
                 app:gridWidth="31dp"
+                app:lineWidth="1px"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

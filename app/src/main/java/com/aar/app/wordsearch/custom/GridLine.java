@@ -110,17 +110,17 @@ public class GridLine extends GridBehavior {
         int pRight = getPaddingRight();
         int pBottom = getPaddingBottom();
 
-        float y = pTop;
+        float y = pTop + getGridHeight();
         // horizontal lines
-        for (int i = 0; i <= getRowCount(); i++) {
+        for (int i = 1; i < getRowCount(); i++) {
             canvas.drawRect(pLeft, y, viewWidth + mLineWidth - pRight, y + mLineWidth, mPaint);
 
             y += getGridHeight();
         }
 
-        float x = pLeft;
+        float x = pLeft + getGridWidth();
         // vertical lines
-        for (int i = 0; i <= getColCount(); i++) {
+        for (int i = 1; i < getColCount(); i++) {
             canvas.drawRect(x, pTop, x + mLineWidth, viewHeight + mLineWidth - pBottom, mPaint);
 
             x += getGridWidth();
