@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="#0f0ac55c"/>
-            <stroke android:width="1px" android:color="@color/btnSettingsDarker"/>
+            <solid android:color="@color/bgBtnSettingsOverlay"/>
+            <stroke android:width="1px" android:color="@color/bgBtnSettings"/>
             <corners android:radius="50dp"/>
         </shape>
     </item>
@@ -11,7 +11,7 @@
     <item>
         <shape android:shape="rectangle">
             <solid android:color="#1affffff"/>
-            <stroke android:width="1px" android:color="@color/btnSettings"/>
+            <stroke android:width="1px" android:color="@color/bgBtnSettings"/>
             <corners android:radius="50dp"/>
         </shape>
     </item>
