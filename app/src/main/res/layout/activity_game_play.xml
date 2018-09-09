@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:animateLayoutChanges="true"
+    android:background="@android:color/white"
+    android:orientation="vertical"
     tools:context="com.aar.app.wordsearch.features.gameplay.GamePlayActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/text_duration"
@@ -181,14 +182,22 @@
                 app:gridLineVisibility="true"
                 app:gridRowCount="10"
                 app:gridWidth="31dp"
-                app:lineWidth="1px"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:letterColor="@android:color/black"
                 app:letterSize="10pt"
                 app:lineColor="@color/colorAccent"
+                app:lineWidth="1px"
                 app:snapToGrid="START_END"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:background="#bababa"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/scrollView2"/>
 
         </android.support.constraint.ConstraintLayout>
 
