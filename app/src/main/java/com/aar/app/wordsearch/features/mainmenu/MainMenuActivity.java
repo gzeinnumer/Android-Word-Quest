@@ -16,6 +16,7 @@ import com.aar.app.wordsearch.WordSearchApp;
 import com.aar.app.wordsearch.features.FullscreenActivity;
 import com.aar.app.wordsearch.features.gamehistory.GameHistoryActivity;
 import com.aar.app.wordsearch.features.gameplay.GamePlayActivity;
+import com.aar.app.wordsearch.features.gamethemeselector.ThemeSelectorActivity;
 import com.aar.app.wordsearch.model.GameTheme;
 import com.aar.app.wordsearch.features.settings.SettingsActivity;
 
@@ -88,12 +89,17 @@ public class MainMenuActivity extends FullscreenActivity {
 
     @OnClick(R.id.new_game_btn)
     public void onNewGameClick() {
-        int dim = mGameRoundDimValues[ mGridSizeSpinner.getSelectedItemPosition() ];
-        Intent intent = new Intent(MainMenuActivity.this, GamePlayActivity.class);
-        intent.putExtra(GamePlayActivity.EXTRA_GAME_THEME_ID, -1);
-        intent.putExtra(GamePlayActivity.EXTRA_ROW_COUNT, dim);
-        intent.putExtra(GamePlayActivity.EXTRA_COL_COUNT, dim);
-        startActivity(intent);
+
+        Intent intent = new Intent(this, ThemeSelectorActivity.class);
+        startActivityForResult(intent, 100);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+//        int dim = mGameRoundDimValues[ mGridSizeSpinner.getSelectedItemPosition() ];
+//        Intent intent = new Intent(MainMenuActivity.this, GamePlayActivity.class);
+//        intent.putExtra(GamePlayActivity.EXTRA_GAME_THEME_ID, -1);
+//        intent.putExtra(GamePlayActivity.EXTRA_ROW_COUNT, dim);
+//        intent.putExtra(GamePlayActivity.EXTRA_COL_COUNT, dim);
+//        startActivity(intent);
     }
 
     @OnClick(R.id.btnHistory)
@@ -102,4 +108,22 @@ public class MainMenuActivity extends FullscreenActivity {
         startActivity(i);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            startNewGame(
+                    data.getIntExtra(ThemeSelectorActivity.EXTRA_THEME_ID, GameTheme.NONE.getId())
+            );
+        }
+    }
+
+    private void startNewGame(int gameThemeId) {
+        int dim = mGameRoundDimValues[ mGridSizeSpinner.getSelectedItemPosition() ];
+        Intent intent = new Intent(MainMenuActivity.this, GamePlayActivity.class);
+        intent.putExtra(GamePlayActivity.EXTRA_GAME_THEME_ID, gameThemeId);
+        intent.putExtra(GamePlayActivity.EXTRA_ROW_COUNT, dim);
+        intent.putExtra(GamePlayActivity.EXTRA_COL_COUNT, dim);
+        startActivity(intent);
+    }
 }

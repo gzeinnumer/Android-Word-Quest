@@ -1,6 +1,9 @@
 package com.aar.app.wordsearch.model;
 
 public class GameTheme {
+
+    public static final GameTheme NONE = new GameTheme(-1, "");
+
     private int mId;
     private String mName;
 

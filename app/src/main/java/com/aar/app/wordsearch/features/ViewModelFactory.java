@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.aar.app.wordsearch.features.gamehistory.GameHistoryViewModel;
 import com.aar.app.wordsearch.features.gameover.GameOverViewModel;
 import com.aar.app.wordsearch.features.gameplay.GamePlayViewModel;
+import com.aar.app.wordsearch.features.gamethemeselector.ThemeSelectorViewModel;
 import com.aar.app.wordsearch.features.mainmenu.MainMenuViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
@@ -15,15 +16,18 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     private GamePlayViewModel mGamePlayViewModel;
     private MainMenuViewModel mMainMenuViewModel;
     private GameHistoryViewModel mGameHistoryViewModel;
+    private ThemeSelectorViewModel mThemeSelectorViewModel;
 
     public ViewModelFactory(GameOverViewModel gameOverViewModel,
                             GamePlayViewModel gamePlayViewModel,
                             MainMenuViewModel mainMenuViewModel,
-                            GameHistoryViewModel gameHistoryViewModel) {
+                            GameHistoryViewModel gameHistoryViewModel,
+                            ThemeSelectorViewModel themeSelectorViewModel) {
         mGameOverViewModel = gameOverViewModel;
         mGamePlayViewModel = gamePlayViewModel;
         mMainMenuViewModel = mainMenuViewModel;
         mGameHistoryViewModel = gameHistoryViewModel;
+        mThemeSelectorViewModel = themeSelectorViewModel;
     }
 
     @NonNull
@@ -37,6 +41,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) mMainMenuViewModel;
         } else if (modelClass.isAssignableFrom(GameHistoryViewModel.class)) {
             return (T) mGameHistoryViewModel;
+        } else if (modelClass.isAssignableFrom(ThemeSelectorViewModel.class)) {
+            return (T) mThemeSelectorViewModel;
         }
         throw new IllegalArgumentException("Unknown view model");
     }

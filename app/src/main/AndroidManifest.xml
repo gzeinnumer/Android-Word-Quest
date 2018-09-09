@@ -40,6 +40,8 @@
             android:name=".features.gamehistory.GameHistoryActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".features.gamethemeselector.ThemeSelectorActivity">
+        </activity>
     </application>
 
 </manifest>

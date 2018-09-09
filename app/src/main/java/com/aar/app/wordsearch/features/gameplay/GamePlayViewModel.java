@@ -10,6 +10,7 @@ import com.aar.app.wordsearch.commons.Timer;
 import com.aar.app.wordsearch.data.sqlite.GameDataSource;
 import com.aar.app.wordsearch.data.sqlite.WordDataSource;
 import com.aar.app.wordsearch.model.GameData;
+import com.aar.app.wordsearch.model.GameTheme;
 import com.aar.app.wordsearch.model.UsedWord;
 import com.aar.app.wordsearch.model.Word;
 
@@ -140,7 +141,7 @@ public class GamePlayViewModel extends ViewModel {
 
             Observable.create((ObservableOnSubscribe<GameData>) emitter -> {
                 List<Word> wordList;
-                if (gameThemeId <= -1) {
+                if (gameThemeId == GameTheme.NONE.getId()) {
                     wordList = mWordDataSource.getWords();
                 } else {
                     wordList = mWordDataSource.getWords(gameThemeId);
