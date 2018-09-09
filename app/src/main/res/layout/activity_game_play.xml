@@ -6,9 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:animateLayoutChanges="true"
     tools:context="com.aar.app.wordsearch.features.gameplay.GamePlayActivity">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
@@ -19,92 +20,121 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="00:00"
             android:textColor="@android:color/white"
             android:textSize="8pt"
-            android:text="00:00"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/finished_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/finished"
             android:textColor="@android:color/white"
-            android:textSize="10pt"
-            android:text="@string/finished"/>
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+            app:layout_constraintStart_toEndOf="@+id/text_duration"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true">
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/answered_text_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="8pt"
+                android:text="-"
                 android:textColor="@android:color/white"
-                android:text="-"/>
+                android:textSize="8pt"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="8pt"
+                android:text="/"
                 android:textColor="@android:color/white"
-                android:text="/"/>
+                android:textSize="8pt"/>
 
             <TextView
                 android:id="@+id/words_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="8pt"
+                android:text="-"
                 android:textColor="@android:color/white"
-                android:text="-"/>
+                android:textSize="8pt"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/text_sel_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
             android:layout_toRightOf="@id/text_duration"
-            android:visibility="gone"
+            android:background="@color/selTextBgColor"
             android:gravity="center"
-            android:background="@color/selTextBgColor">
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+            app:layout_constraintStart_toEndOf="@+id/text_duration">
 
             <TextView
                 android:id="@+id/text_selection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="SEL TEXT"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textSize="10pt"
-                android:text="SEL TEXT"/>
+                android:textSize="18sp"/>
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:layout_gravity="center">
+            android:orientation="vertical">
+
             <ProgressBar
                 android:id="@+id/loading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"/>
+
             <TextView
                 android:id="@+id/loadingText"
                 android:layout_width="wrap_content"

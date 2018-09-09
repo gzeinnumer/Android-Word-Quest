@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -165,7 +166,7 @@ public class GamePlayActivity extends FullscreenActivity {
 
                 TextView str = item.findViewById(R.id.textStr);
 
-                item.setBackgroundColor(uw.getAnswerLine().color);
+                item.getBackground().setColorFilter(uw.getAnswerLine().color, PorterDuff.Mode.MULTIPLY);
                 str.setTextColor(Color.WHITE);
                 str.setPaintFlags(str.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
@@ -307,7 +308,7 @@ public class GamePlayActivity extends FullscreenActivity {
             if (getPreferences().grayscale()) {
                 uw.getAnswerLine().color = mGrayColor;
             }
-            v.setBackgroundColor(uw.getAnswerLine().color);
+            v.getBackground().setColorFilter(uw.getAnswerLine().color, PorterDuff.Mode.MULTIPLY);
             str.setText(uw.getString());
             str.setTextColor(Color.WHITE);
             str.setPaintFlags(str.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
