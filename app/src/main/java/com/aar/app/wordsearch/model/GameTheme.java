@@ -1,10 +1,18 @@
 package com.aar.app.wordsearch.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+@Entity(tableName = "game_themes")
 public class GameTheme {
 
     public static final GameTheme NONE = new GameTheme(-1, "");
 
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     private int mId;
+    @ColumnInfo(name = "name")
     private String mName;
 
     public GameTheme(int id, String name) {

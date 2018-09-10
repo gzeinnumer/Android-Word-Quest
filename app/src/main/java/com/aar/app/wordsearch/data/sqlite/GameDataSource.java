@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.aar.app.wordsearch.commons.generator.StringGridGenerator;
+import com.aar.app.wordsearch.data.room.UsedWordDataSource;
 import com.aar.app.wordsearch.model.GameData;
 import com.aar.app.wordsearch.model.GameDataInfo;
 import com.aar.app.wordsearch.model.Grid;
@@ -22,22 +23,12 @@ import javax.inject.Inject;
 public class GameDataSource {
 
     private DbHelper mHelper;
+    private UsedWordDataSource mUsedWordDataSource;
 
     @Inject
-    public GameDataSource(DbHelper helper) {
+    public GameDataSource(DbHelper helper, UsedWordDataSource usedWordDataSource) {
         mHelper = helper;
-    }
-
-    public int getMaxIdForGameData() {
-        SQLiteDatabase db = mHelper.getReadableDatabase();
-        String query = "SELECT MAX(_id) AS max_id FROM " + DbContract.GameRound.TABLE_NAME;
-        Cursor c = db.rawQuery(query, null);
-        int seq = 0;
-        if (c.moveToFirst()) {
-            seq = c.getInt(c.getColumnIndex("max_id"));
-        }
-        c.close();
-        return seq;
+        mUsedWordDataSource = usedWordDataSource;
     }
 
     public GameData getGameData(int gid) {
@@ -69,7 +60,7 @@ public class GameDataSource {
             }
 
             gd.setGrid(grid);
-            gd.addUsedWords(getUsedWords(gid));
+            gd.addUsedWords(mUsedWordDataSource.getUsedWords(gid));
         }
         c.close();
 
@@ -114,18 +105,10 @@ public class GameDataSource {
         long gid = db.insert(DbContract.GameRound.TABLE_NAME, "null", values);
         gameRound.setId((int) gid);
 
-        for (UsedWord usedWord : gameRound.getUsedWords()) {
-            values.clear();
-            values.put(DbContract.UsedWord.COL_GAME_ROUND_ID, gid);
-            values.put(DbContract.UsedWord.COL_STRING, usedWord.getString());
-            if (usedWord.getAnswerLine() != null) {
-                values.put(DbContract.UsedWord.COL_ANSWER_LINE_DATA, usedWord.getAnswerLine().toString());
-                values.put(DbContract.UsedWord.COL_LINE_COLOR, usedWord.getAnswerLine().color);
-            }
-
-            long insertedId = db.insert(DbContract.UsedWord.TABLE_NAME, "null", values);
-            usedWord.setId((int) insertedId);
-        }
+        for (UsedWord usedWord : gameRound.getUsedWords())
+            usedWord.setGameDataId((int) gid);
+        mUsedWordDataSource.insertAll(gameRound.getUsedWords());
+        gameRound.setUsedWords(mUsedWordDataSource.getUsedWords((int) gid));
 
         return gid;
     }
@@ -136,15 +119,13 @@ public class GameDataSource {
         String selArgs[] = {String.valueOf(gid)};
 
         db.delete(DbContract.GameRound.TABLE_NAME, sel, selArgs);
-
-        sel = DbContract.UsedWord.COL_GAME_ROUND_ID + "=?";
-        db.delete(DbContract.UsedWord.TABLE_NAME, sel, selArgs);
+        mUsedWordDataSource.removeUsedWords(gid);
     }
 
     public void deleteGameDatas() {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         db.delete(DbContract.GameRound.TABLE_NAME, null, null);
-        db.delete(DbContract.UsedWord.TABLE_NAME, null, null);
+        mUsedWordDataSource.removeAll();
     }
 
     public void saveGameDataDuration(int gid, int newDuration) {
@@ -159,25 +140,13 @@ public class GameDataSource {
     }
 
     public void markWordAsAnswered(UsedWord usedWord) {
-        SQLiteDatabase db = mHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DbContract.UsedWord.COL_ANSWER_LINE_DATA, usedWord.getAnswerLine().toString());
-        values.put(DbContract.UsedWord.COL_LINE_COLOR, usedWord.getAnswerLine().color);
-
-        String where = DbContract.UsedWord._ID + "=?";
-        String whereArgs[] = {String.valueOf(usedWord.getId())};
-
-        db.update(DbContract.UsedWord.TABLE_NAME, values, where, whereArgs);
+        mUsedWordDataSource.updateUsedWord(usedWord);
     }
 
     private String getGameDataInfoQuery(int gid) {
-        String subQ = "(SELECT COUNT(*) FROM " + DbContract.UsedWord.TABLE_NAME + " WHERE " +
-                DbContract.UsedWord.COL_GAME_ROUND_ID + "=" + DbContract.GameRound.TABLE_NAME + "." + DbContract.GameRound._ID + ")";
         String order = " ORDER BY " + DbContract.GameRound._ID + " DESC";
         if (gid > 0) {
-            subQ = "(SELECT COUNT(*) FROM " + DbContract.UsedWord.TABLE_NAME + " WHERE " +
-                    DbContract.UsedWord.COL_GAME_ROUND_ID + "=" + gid + ")";
-            order = " WHERE " + DbContract.UsedWord._ID + "=" + gid;
+            order = " WHERE " + DbContract.GameRound._ID + "=" + gid;
         }
 
         return "SELECT " +
@@ -185,8 +154,7 @@ public class GameDataSource {
                 DbContract.GameRound.COL_NAME + "," +
                 DbContract.GameRound.COL_DURATION + "," +
                 DbContract.GameRound.COL_GRID_ROW_COUNT + "," +
-                DbContract.GameRound.COL_GRID_COL_COUNT + "," +
-                subQ +
+                DbContract.GameRound.COL_GRID_COL_COUNT +
                 " FROM " + DbContract.GameRound.TABLE_NAME + order;
     }
 
@@ -197,54 +165,7 @@ public class GameDataSource {
         gdi.setDuration(c.getInt(2));
         gdi.setGridRowCount(c.getInt(3));
         gdi.setGridColCount(c.getInt(4));
-        gdi.setUsedWordsCount(c.getInt(5));
+        gdi.setUsedWordsCount(mUsedWordDataSource.getUsedWordsCount(gdi.getId()));
         return gdi;
-    }
-
-    private List<UsedWord> getUsedWords(int gid) {
-        SQLiteDatabase db = mHelper.getReadableDatabase();
-
-        String cols[] = {
-                DbContract.UsedWord._ID,
-                DbContract.UsedWord.COL_STRING,
-                DbContract.UsedWord.COL_SUB_STRING,
-                DbContract.UsedWord.COL_ANSWER_LINE_DATA,
-                DbContract.UsedWord.COL_LINE_COLOR
-        };
-        String sel = DbContract.UsedWord.COL_GAME_ROUND_ID + "=?";
-        String selArgs[] = {String.valueOf(gid)};
-
-        Cursor c = db.query(DbContract.UsedWord.TABLE_NAME, cols, sel, selArgs, null, null, null);
-
-        List<UsedWord> usedWordList = new ArrayList<>();
-        if (c.moveToFirst()) {
-            while (!c.isAfterLast()) {
-                int id = c.getInt(0);
-                String str = c.getString(1);
-                String subStr = c.getString(2);
-                String lineData = c.getString(3);
-                int col = c.getInt(4);
-
-                UsedWord.AnswerLine answerLine = null;
-                if (lineData != null) {
-                    answerLine = new UsedWord.AnswerLine();
-                    answerLine.fromString(lineData);
-                    answerLine.color = col;
-                }
-
-                UsedWord usedWord = new UsedWord();
-                usedWord.setId(id);
-                usedWord.setString(str);
-                usedWord.setAnswered(lineData != null);
-                usedWord.setAnswerLine(answerLine);
-
-                usedWordList.add(usedWord);
-
-                c.moveToNext();
-            }
-        }
-        c.close();
-
-        return usedWordList;
     }
 }

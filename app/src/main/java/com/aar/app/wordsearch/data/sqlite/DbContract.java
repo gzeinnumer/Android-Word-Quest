@@ -8,19 +8,6 @@ import android.provider.BaseColumns;
 
 abstract class DbContract {
 
-    static class Theme implements BaseColumns {
-        static final String TABLE_NAME = "themes";
-
-        static final String COL_NAME = "name";
-    }
-
-    static class WordBank implements BaseColumns {
-        static final String TABLE_NAME = "word_bank";
-
-        static final String COL_GAME_THEME_ID = "game_theme_id";
-        static final String COL_STRING = "string";
-    }
-
     static class GameRound implements BaseColumns {
         static final String TABLE_NAME = "game_round";
 
@@ -31,13 +18,4 @@ abstract class DbContract {
         static final String COL_GRID_DATA = "grid_data";
     }
 
-    static class UsedWord implements BaseColumns {
-        static final String TABLE_NAME = "used_words";
-
-        static final String COL_GAME_ROUND_ID = "game_round_id";
-        static final String COL_STRING = "string";
-        static final String COL_SUB_STRING = "sub_string";
-        static final String COL_ANSWER_LINE_DATA = "answer_line_data";
-        static final String COL_LINE_COLOR = "line_color";
-    }
 }

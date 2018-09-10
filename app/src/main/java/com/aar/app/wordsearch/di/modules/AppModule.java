@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.aar.app.wordsearch.data.sqlite.GameThemeDataSource;
+import com.aar.app.wordsearch.data.room.GameThemeDataSource;
+import com.aar.app.wordsearch.data.room.WordDataSource;
 import com.aar.app.wordsearch.features.ViewModelFactory;
 import com.aar.app.wordsearch.data.sqlite.GameDataSource;
-import com.aar.app.wordsearch.data.sqlite.WordDataSource;
 import com.aar.app.wordsearch.features.gamehistory.GameHistoryViewModel;
 import com.aar.app.wordsearch.features.gameover.GameOverViewModel;
 import com.aar.app.wordsearch.features.gameplay.GamePlayViewModel;

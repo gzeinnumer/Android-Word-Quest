@@ -95,8 +95,9 @@ public class GameData {
         return getAnsweredWordsCount() == mUsedWords.size();
     }
 
-    public void addUsedWord(UsedWord usedWord) {
-        mUsedWords.add(usedWord);
+    public void setUsedWords(List<UsedWord> usedWords) {
+        mUsedWords.clear();
+        mUsedWords.addAll(usedWords);
     }
 
     public void addUsedWords(List<UsedWord> usedWords) {

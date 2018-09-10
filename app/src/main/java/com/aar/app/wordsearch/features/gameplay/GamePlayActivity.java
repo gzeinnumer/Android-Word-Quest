@@ -156,9 +156,9 @@ public class GamePlayActivity extends FullscreenActivity {
 
     private void onAnswerResult(GamePlayViewModel.AnswerResult answerResult) {
         if (answerResult.correct) {
-            View item = findUsedWordViewItemByUsedWordId(answerResult.usedWordId);
+            View item = findUsedWordViewItemByUsedWordId(answerResult.usedWord.getId());
             if (item != null) {
-                UsedWord uw = (UsedWord) item.getTag();
+                UsedWord uw = answerResult.usedWord;
 
                 if (getPreferences().grayscale()) {
                     uw.getAnswerLine().color = mGrayColor;
@@ -191,6 +191,8 @@ public class GamePlayActivity extends FullscreenActivity {
             GamePlayViewModel.Generating state = (GamePlayViewModel.Generating) gameState;
             String text = "Generating " + state.rowCount + "x" + state.colCount + " grid";
             showLoading(true, text);
+        } else if (gameState instanceof GamePlayViewModel.Loading) {
+            showLoading(true, "Loading game data");
         } else if (gameState instanceof GamePlayViewModel.Finished) {
             showFinishGame(((GamePlayViewModel.Finished) gameState).mGameData.getId());
         } else if (gameState instanceof GamePlayViewModel.Paused) {
@@ -319,15 +321,15 @@ public class GamePlayActivity extends FullscreenActivity {
             str.setText(uw.getString());
         }
 
-        v.setTag(uw);
+        v.setTag(uw.getId());
         return v;
     }
 
     private View findUsedWordViewItemByUsedWordId(int usedWordId) {
         for (int i = 0; i < mFlexLayout.getChildCount(); i++) {
             View v = mFlexLayout.getChildAt(i);
-            UsedWord uw = (UsedWord) v.getTag();
-            if (uw != null && uw.getId() == usedWordId) {
+            int id = (int) v.getTag();
+            if (id == usedWordId) {
                 return v;
             }
         }

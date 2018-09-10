@@ -54,7 +54,6 @@ public class GameDataCreator {
             Word word = words.get(i);
 
             UsedWord uw = new UsedWord();
-            uw.setId(word.getId());
             uw.setGameThemeId(word.getGameThemeId());
             uw.setString(word.getString());
             uw.setAnswered(false);

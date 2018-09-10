@@ -7,8 +7,8 @@ import android.arch.lifecycle.ViewModel;
 
 import com.aar.app.wordsearch.commons.SingleLiveEvent;
 import com.aar.app.wordsearch.commons.Timer;
+import com.aar.app.wordsearch.data.room.WordDataSource;
 import com.aar.app.wordsearch.data.sqlite.GameDataSource;
-import com.aar.app.wordsearch.data.sqlite.WordDataSource;
 import com.aar.app.wordsearch.model.GameData;
 import com.aar.app.wordsearch.model.GameTheme;
 import com.aar.app.wordsearch.model.UsedWord;
@@ -19,9 +19,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -64,11 +67,11 @@ public class GamePlayViewModel extends ViewModel {
 
     static class AnswerResult {
         public boolean correct;
-        public int usedWordId;
+        public UsedWord usedWord;
         public int totalAnsweredWord;
-        AnswerResult(boolean correct, int usedWordId, int totalAnsweredWord) {
+        AnswerResult(boolean correct, UsedWord usedWord, int totalAnsweredWord) {
             this.correct = correct;
-            this.usedWordId = usedWordId;
+            this.usedWord = usedWord;
             this.totalAnsweredWord = totalAnsweredWord;
         }
     }
@@ -124,14 +127,24 @@ public class GamePlayViewModel extends ViewModel {
         }
     }
 
+    @SuppressLint("CheckResult")
     public void loadGameRound(int gid) {
         if (!(mCurrentState instanceof Generating)) {
             setGameState(new Loading(gid));
-            mCurrentGameData = mGameDataSource.getGameData(gid);
-            mCurrentDuration = mCurrentGameData.getDuration();
-            if (!mCurrentGameData.isFinished())
-                mTimer.start();
-            setGameState(new Playing(mCurrentGameData));
+            Observable
+                    .create((ObservableOnSubscribe<GameData>) e -> {
+                        e.onNext(mGameDataSource.getGameData(gid));
+                        e.onComplete();
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(gameData -> {
+                        mCurrentGameData = gameData;
+                        mCurrentDuration = mCurrentGameData.getDuration();
+                        if (!mCurrentGameData.isFinished())
+                            mTimer.start();
+                        setGameState(new Playing(mCurrentGameData));
+                    });
         }
     }
 
@@ -141,23 +154,25 @@ public class GamePlayViewModel extends ViewModel {
             String gameName = getGameDataName();
             setGameState(new Generating(rowCount, colCount, gameName));
 
-            Observable.create((ObservableOnSubscribe<GameData>) emitter -> {
-                List<Word> wordList;
-                if (gameThemeId == GameTheme.NONE.getId()) {
-                    wordList = mWordDataSource.getWords();
-                } else {
-                    wordList = mWordDataSource.getWords(gameThemeId);
-                }
-                GameData gr = mGameDataCreator.newGameData(wordList, rowCount, colCount, gameName);
-                mGameDataSource.saveGameData(gr);
-                emitter.onNext(gr);
-                emitter.onComplete();
-            }).subscribeOn(Schedulers.computation())
+            Flowable<List<Word>> flowableWords;
+            if (gameThemeId == GameTheme.NONE.getId()) {
+                flowableWords = mWordDataSource.getWords();
+            } else {
+                flowableWords = mWordDataSource.getWords(gameThemeId);
+            }
+
+            flowableWords.toObservable()
+                    .flatMap((Function<List<Word>, Observable<GameData>>) words -> Observable.just(
+                            mGameDataCreator.newGameData(words, rowCount, colCount, gameName)
+                    ))
+                    .doOnNext(mGameDataSource::saveGameData)
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(gameRound -> {
                         mCurrentDuration = 0;
-                        mTimer.start();
                         mCurrentGameData = gameRound;
+                        if (!mCurrentGameData.isFinished())
+                            mTimer.start();
                         setGameState(new Playing(mCurrentGameData));
                     });
         }
@@ -169,11 +184,14 @@ public class GamePlayViewModel extends ViewModel {
         boolean correct = correctWord != null;
         mOnAnswerResult.setValue(new AnswerResult(
                 correct,
-                correctWord != null ? correctWord.getId() : -1,
+                correctWord,
                 mCurrentGameData.getAnsweredWordsCount()
         ));
         if (correct) {
-            mGameDataSource.markWordAsAnswered(correctWord);
+            Completable.create(e -> mGameDataSource.markWordAsAnswered(correctWord))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
             if (mCurrentGameData.isFinished()) {
                 setGameState(new Finished(mCurrentGameData));
             }

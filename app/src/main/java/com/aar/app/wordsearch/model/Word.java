@@ -1,17 +1,26 @@
 package com.aar.app.wordsearch.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 /**
  * Created by abdularis on 08/07/17.
  */
 
+@Entity(tableName = "words")
 public class Word {
 
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     private int mId;
+    @ColumnInfo(name = "game_theme_id")
     private int mGameThemeId;
+    @ColumnInfo(name = "string")
     private String mString;
 
     public Word() {
-        this(-1, "");
+        this(0, "");
     }
 
     public Word(int id, String string) {
