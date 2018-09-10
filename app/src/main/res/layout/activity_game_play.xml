@@ -186,8 +186,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:letterColor="@android:color/black"
-                app:letterSize="10pt"
-                app:lineColor="@color/colorAccent"
+                app:lineColor="@color/gridLine"
                 app:lineWidth="1px"
                 app:snapToGrid="START_END"/>
 

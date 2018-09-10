@@ -9,4 +9,5 @@
     <color name="bgBtnSettingsOverlay">#0aff8f00</color>
 
     <color name="gray">#aa808080</color>
+    <color name="gridLine">#FFCA28</color>
 </resources>
