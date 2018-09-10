@@ -25,7 +25,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="00:00"
+            android:text="@string/init_duration"
             android:textColor="@android:color/white"
             android:textSize="8pt"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -56,8 +56,6 @@
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -68,24 +66,24 @@
                 android:id="@+id/answered_text_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-"
+                android:text="@string/empty_count"
                 android:textColor="@android:color/white"
-                android:textSize="8pt"/>
+                android:textSize="16sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/"
+                android:text="@string/count_divider"
                 android:textColor="@android:color/white"
-                android:textSize="8pt"/>
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/words_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-"
+                android:text="@string/empty_count"
                 android:textColor="@android:color/white"
-                android:textSize="8pt"/>
+                android:textSize="16sp"/>
 
         </LinearLayout>
 
@@ -97,7 +95,6 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_toRightOf="@id/text_duration"
             android:background="@color/selTextBgColor"
             android:gravity="center"
             android:visibility="gone"
@@ -108,10 +105,10 @@
                 android:id="@+id/text_selection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="SEL TEXT"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                tools:text="Selected Chars"/>
 
         </LinearLayout>
 
@@ -120,8 +117,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -140,7 +136,7 @@
                 android:id="@+id/loadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"/>
+                tools:text="Loading Text..."/>
         </LinearLayout>
 
         <android.support.constraint.ConstraintLayout
