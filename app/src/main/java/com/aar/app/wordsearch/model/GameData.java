@@ -14,17 +14,19 @@ public class GameData {
     private int mId;
     private String mName;
     private int mDuration;
+    private GameMode mGameMode;
     private Grid mGrid;
     private List<UsedWord> mUsedWords;
 
     public GameData() {
-        this(0, "", 0, null, new ArrayList<>());
+        this(0, "", 0, GameMode.Normal, null, new ArrayList<>());
     }
 
-    public GameData(int id, String name, int duration, Grid grid, List<UsedWord> usedWords) {
+    public GameData(int id, String name, int duration, GameMode gameMode, Grid grid, List<UsedWord> usedWords) {
         mId = id;
         mName = name;
         mDuration = duration;
+        mGameMode = gameMode;
         mGrid = grid;
         mUsedWords = usedWords;
     }
@@ -51,6 +53,14 @@ public class GameData {
 
     public void setDuration(int duration) {
         mDuration = duration;
+    }
+
+    public GameMode getGameMode() {
+        return mGameMode;
+    }
+
+    public void setGameMode(GameMode gameMode) {
+        mGameMode = gameMode;
     }
 
     public Grid getGrid() {

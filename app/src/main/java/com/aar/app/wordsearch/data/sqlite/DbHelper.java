@@ -25,7 +25,8 @@ public class DbHelper extends SQLiteOpenHelper {
                     DbContract.GameRound.COL_DURATION + " INTEGER," +
                     DbContract.GameRound.COL_GRID_ROW_COUNT + " INTEGER," +
                     DbContract.GameRound.COL_GRID_COL_COUNT + " INTEGER," +
-                    DbContract.GameRound.COL_GRID_DATA + " TEXT)";
+                    DbContract.GameRound.COL_GRID_DATA + " TEXT," +
+                    DbContract.GameRound.COL_GAME_MODE + " INTEGER)";
 
     public DbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

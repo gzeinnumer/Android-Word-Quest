@@ -24,6 +24,10 @@
         <item>12</item>
     </integer-array>
 
+    <string-array name="game_modes">
+        <item>@string/mode_normal</item>
+        <item>@string/mode_hidden</item>
+    </string-array>
 
     <string-array name="snap_to_grid_type_prefs">
         <item>Always Snap</item>

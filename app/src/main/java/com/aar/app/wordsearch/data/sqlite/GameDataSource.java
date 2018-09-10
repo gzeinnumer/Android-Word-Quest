@@ -8,6 +8,7 @@ import com.aar.app.wordsearch.commons.generator.StringGridGenerator;
 import com.aar.app.wordsearch.data.room.UsedWordDataSource;
 import com.aar.app.wordsearch.model.GameData;
 import com.aar.app.wordsearch.model.GameDataInfo;
+import com.aar.app.wordsearch.model.GameMode;
 import com.aar.app.wordsearch.model.Grid;
 import com.aar.app.wordsearch.model.UsedWord;
 
@@ -40,7 +41,8 @@ public class GameDataSource {
                 DbContract.GameRound.COL_DURATION,
                 DbContract.GameRound.COL_GRID_ROW_COUNT,
                 DbContract.GameRound.COL_GRID_COL_COUNT,
-                DbContract.GameRound.COL_GRID_DATA
+                DbContract.GameRound.COL_GRID_DATA,
+                DbContract.GameRound.COL_GAME_MODE
         };
         String sel = DbContract.GameRound._ID + "=?";
         String selArgs[] = {String.valueOf(gid)};
@@ -60,6 +62,7 @@ public class GameDataSource {
             }
 
             gd.setGrid(grid);
+            gd.setGameMode(GameMode.getById(c.getInt(6)));
             gd.addUsedWords(mUsedWordDataSource.getUsedWords(gid));
         }
         c.close();
@@ -101,6 +104,7 @@ public class GameDataSource {
         values.put(DbContract.GameRound.COL_GRID_ROW_COUNT, gameRound.getGrid().getRowCount());
         values.put(DbContract.GameRound.COL_GRID_COL_COUNT, gameRound.getGrid().getColCount());
         values.put(DbContract.GameRound.COL_GRID_DATA, gameRound.getGrid().toString());
+        values.put(DbContract.GameRound.COL_GAME_MODE, gameRound.getGameMode().getId());
 
         long gid = db.insert(DbContract.GameRound.TABLE_NAME, "null", values);
         gameRound.setId((int) gid);

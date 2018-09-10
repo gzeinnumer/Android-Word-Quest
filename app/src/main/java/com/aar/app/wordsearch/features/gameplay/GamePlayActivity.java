@@ -24,6 +24,7 @@ import com.aar.app.wordsearch.custom.LetterBoard;
 import com.aar.app.wordsearch.custom.StreakView;
 import com.aar.app.wordsearch.features.gameover.GameOverActivity;
 import com.aar.app.wordsearch.features.FullscreenActivity;
+import com.aar.app.wordsearch.model.GameMode;
 import com.aar.app.wordsearch.model.UsedWord;
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -32,6 +33,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindColor;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -39,6 +41,7 @@ public class GamePlayActivity extends FullscreenActivity {
 
     public static final String EXTRA_GAME_ROUND_ID =
             "com.aar.app.wordsearch.features.gameplay.GamePlayActivity.ID";
+    public static final String EXTRA_GAME_MODE = "game_mode";
     public static final String EXTRA_GAME_THEME_ID = "game_theme_id";
     public static final String EXTRA_ROW_COUNT =
             "com.aar.app.wordsearch.features.gameplay.GamePlayActivity.ROW";
@@ -70,6 +73,7 @@ public class GamePlayActivity extends FullscreenActivity {
     @BindView(R.id.content_layout) View mContentLayout;
 
     @BindColor(R.color.gray) int mGrayColor;
+    @BindString(R.string.hidden_mask) String mHiddenMaskString;
 
     private ArrayLetterGridDataAdapter mLetterAdapter;
 
@@ -119,10 +123,11 @@ public class GamePlayActivity extends FullscreenActivity {
                 int gid = extras.getInt(EXTRA_GAME_ROUND_ID);
                 mViewModel.loadGameRound(gid);
             } else {
+                GameMode gameMode = (GameMode) extras.get(EXTRA_GAME_MODE);
                 int gameThemeId = extras.getInt(EXTRA_GAME_THEME_ID);
                 int rowCount = extras.getInt(EXTRA_ROW_COUNT);
                 int colCount = extras.getInt(EXTRA_COL_COUNT);
-                mViewModel.generateNewGameRound(rowCount, colCount, gameThemeId);
+                mViewModel.generateNewGameRound(rowCount, colCount, gameThemeId, gameMode);
             }
         }
 
@@ -167,6 +172,7 @@ public class GamePlayActivity extends FullscreenActivity {
                 TextView str = item.findViewById(R.id.textStr);
 
                 item.getBackground().setColorFilter(uw.getAnswerLine().color, PorterDuff.Mode.MULTIPLY);
+                str.setText(uw.getString());
                 str.setTextColor(Color.WHITE);
                 str.setPaintFlags(str.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
@@ -209,7 +215,7 @@ public class GamePlayActivity extends FullscreenActivity {
 
         showLetterGrid(gameData.getGrid().getArray());
         showDuration(gameData.getDuration());
-        showUsedWords(gameData.getUsedWords());
+        showUsedWords(gameData.getUsedWords(), gameData);
         showWordsCount(gameData.getUsedWords().size());
         showAnsweredWordsCount(gameData.getAnsweredWordsCount());
         doneLoadingContent();
@@ -273,10 +279,10 @@ public class GamePlayActivity extends FullscreenActivity {
         mTextDuration.setText(DurationFormatter.fromInteger(duration));
     }
 
-    private void showUsedWords(List<UsedWord> usedWords) {
+    private void showUsedWords(List<UsedWord> usedWords, GameData gameData) {
         mFlexLayout.removeAllViews();
         for (UsedWord uw : usedWords) {
-            mFlexLayout.addView( createUsedWordTextView(uw) );
+            mFlexLayout.addView( createUsedWordTextView(uw, gameData) );
         }
     }
 
@@ -303,7 +309,7 @@ public class GamePlayActivity extends FullscreenActivity {
     }
 
     //
-    private View createUsedWordTextView(UsedWord uw) {
+    private View createUsedWordTextView(UsedWord uw, GameData gameData) {
         View v = getLayoutInflater().inflate(R.layout.item_word, mFlexLayout, false);
         TextView str = v.findViewById(R.id.textStr);
         if (uw.isAnswered()) {
@@ -318,11 +324,22 @@ public class GamePlayActivity extends FullscreenActivity {
             mLetterBoard.addStreakLine(STREAK_LINE_MAPPER.map(uw.getAnswerLine()));
         }
         else {
-            str.setText(uw.getString());
+            if (gameData.getGameMode() == GameMode.Hidden) {
+                str.setText(getHiddenMask(uw.getString()));
+            } else {
+                str.setText(uw.getString());
+            }
         }
 
         v.setTag(uw.getId());
         return v;
+    }
+
+    private String getHiddenMask(String string) {
+        StringBuilder sb = new StringBuilder(string.length());
+        for (int i = 0; i < string.length(); i++)
+            sb.append(mHiddenMaskString);
+        return sb.toString();
     }
 
     private View findUsedWordViewItemByUsedWordId(int usedWordId) {

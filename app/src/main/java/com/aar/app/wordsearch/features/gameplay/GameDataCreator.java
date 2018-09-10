@@ -4,6 +4,7 @@ package com.aar.app.wordsearch.features.gameplay;
 import com.aar.app.wordsearch.commons.Util;
 import com.aar.app.wordsearch.commons.generator.StringListGridGenerator;
 import com.aar.app.wordsearch.model.GameData;
+import com.aar.app.wordsearch.model.GameMode;
 import com.aar.app.wordsearch.model.Grid;
 import com.aar.app.wordsearch.model.UsedWord;
 import com.aar.app.wordsearch.model.Word;
@@ -23,8 +24,10 @@ public class GameDataCreator {
 
     public GameData newGameData(final List<Word> words,
                                 final int rowCount, final int colCount,
-                                final String name) {
+                                final String name,
+                                final GameMode gameMode) {
         final GameData gameData = new GameData();
+        gameData.setGameMode(gameMode);
 
         Util.randomizeList(words);
 

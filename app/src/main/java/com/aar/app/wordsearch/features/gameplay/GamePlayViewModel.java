@@ -10,6 +10,7 @@ import com.aar.app.wordsearch.commons.Timer;
 import com.aar.app.wordsearch.data.room.WordDataSource;
 import com.aar.app.wordsearch.data.sqlite.GameDataSource;
 import com.aar.app.wordsearch.model.GameData;
+import com.aar.app.wordsearch.model.GameMode;
 import com.aar.app.wordsearch.model.GameTheme;
 import com.aar.app.wordsearch.model.UsedWord;
 import com.aar.app.wordsearch.model.Word;
@@ -149,7 +150,7 @@ public class GamePlayViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public void generateNewGameRound(int rowCount, int colCount, int gameThemeId) {
+    public void generateNewGameRound(int rowCount, int colCount, int gameThemeId, GameMode gameMode) {
         if (!(mCurrentState instanceof Generating)) {
             String gameName = getGameDataName();
             setGameState(new Generating(rowCount, colCount, gameName));
@@ -163,7 +164,7 @@ public class GamePlayViewModel extends ViewModel {
 
             flowableWords.toObservable()
                     .flatMap((Function<List<Word>, Observable<GameData>>) words -> Observable.just(
-                            mGameDataCreator.newGameData(words, rowCount, colCount, gameName)
+                            mGameDataCreator.newGameData(words, rowCount, colCount, gameName, gameMode)
                     ))
                     .doOnNext(mGameDataSource::saveGameData)
                     .subscribeOn(Schedulers.io())

@@ -10,6 +10,7 @@ import com.aar.app.wordsearch.features.FullscreenActivity;
 import com.aar.app.wordsearch.features.gamehistory.GameHistoryActivity;
 import com.aar.app.wordsearch.features.gameplay.GamePlayActivity;
 import com.aar.app.wordsearch.features.gamethemeselector.ThemeSelectorActivity;
+import com.aar.app.wordsearch.model.GameMode;
 import com.aar.app.wordsearch.model.GameTheme;
 import com.aar.app.wordsearch.features.settings.SettingsActivity;
 
@@ -21,6 +22,7 @@ import butterknife.OnClick;
 public class MainMenuActivity extends FullscreenActivity {
 
     @BindView(R.id.spinnerGridSize) Spinner mGridSizeSpinner;
+    @BindView(R.id.spinnerGameMode) Spinner mGameModeSpinner;
 
     @BindArray(R.array.game_round_dimension_values)
     int[] mGameRoundDimValues;
@@ -74,9 +76,22 @@ public class MainMenuActivity extends FullscreenActivity {
     private void startNewGame(int gameThemeId) {
         int dim = mGameRoundDimValues[ mGridSizeSpinner.getSelectedItemPosition() ];
         Intent intent = new Intent(MainMenuActivity.this, GamePlayActivity.class);
+        intent.putExtra(GamePlayActivity.EXTRA_GAME_MODE, getGameModeFromSpinner());
         intent.putExtra(GamePlayActivity.EXTRA_GAME_THEME_ID, gameThemeId);
         intent.putExtra(GamePlayActivity.EXTRA_ROW_COUNT, dim);
         intent.putExtra(GamePlayActivity.EXTRA_COL_COUNT, dim);
         startActivity(intent);
+    }
+
+    private GameMode getGameModeFromSpinner() {
+        if (mGameModeSpinner.getSelectedItem() != null) {
+            String selected = (String) mGameModeSpinner.getSelectedItem();
+            if (selected.equals(getString(R.string.mode_hidden))) {
+                return GameMode.Hidden;
+            } else {
+                return GameMode.Normal;
+            }
+        }
+        return GameMode.Normal;
     }
 }

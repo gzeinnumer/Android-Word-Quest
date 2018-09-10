@@ -46,4 +46,7 @@
     <string name="lbl_all_themes">All Themes</string>
     <string name="title_theme_selector">Select word theme</string>
 
+    <string name="mode_normal">Normal</string>
+    <string name="mode_hidden">Hidden</string>
+    <string name="hidden_mask">\?</string>
 </resources>
