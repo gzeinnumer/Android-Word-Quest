@@ -2,8 +2,6 @@ package com.aar.app.wordsearch.features.mainmenu;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.aar.app.wordsearch.R;
 import com.aar.app.wordsearch.features.FullscreenActivity;
@@ -13,6 +11,7 @@ import com.aar.app.wordsearch.features.gamethemeselector.ThemeSelectorActivity;
 import com.aar.app.wordsearch.model.GameMode;
 import com.aar.app.wordsearch.model.GameTheme;
 import com.aar.app.wordsearch.features.settings.SettingsActivity;
+import com.github.abdularis.horizontalselector.HorizontalSelector;
 
 import butterknife.BindArray;
 import butterknife.BindView;
@@ -21,8 +20,8 @@ import butterknife.OnClick;
 
 public class MainMenuActivity extends FullscreenActivity {
 
-    @BindView(R.id.spinnerGridSize) Spinner mGridSizeSpinner;
-    @BindView(R.id.spinnerGameMode) Spinner mGameModeSpinner;
+    @BindView(R.id.selectorGridSize) HorizontalSelector mGridSizeSelector;
+    @BindView(R.id.selectorGameMode) HorizontalSelector mGameModeSelector;
 
     @BindArray(R.array.game_round_dimension_values)
     int[] mGameRoundDimValues;
@@ -33,15 +32,6 @@ public class MainMenuActivity extends FullscreenActivity {
         setContentView(R.layout.activity_main_menu);
 
         ButterKnife.bind(this);
-        initSpinnersData();
-    }
-
-    private void initSpinnersData() {
-        mGridSizeSpinner.setAdapter(new ArrayAdapter<>(
-                this,
-                R.layout.item_spinner,
-                getResources().getStringArray(R.array.game_round_dimensions)
-        ));
     }
 
     @OnClick(R.id.settings_button)
@@ -74,7 +64,7 @@ public class MainMenuActivity extends FullscreenActivity {
     }
 
     private void startNewGame(int gameThemeId) {
-        int dim = mGameRoundDimValues[ mGridSizeSpinner.getSelectedItemPosition() ];
+        int dim = mGameRoundDimValues[ mGridSizeSelector.getCurrentIndex() ];
         Intent intent = new Intent(MainMenuActivity.this, GamePlayActivity.class);
         intent.putExtra(GamePlayActivity.EXTRA_GAME_MODE, getGameModeFromSpinner());
         intent.putExtra(GamePlayActivity.EXTRA_GAME_THEME_ID, gameThemeId);
@@ -84,8 +74,8 @@ public class MainMenuActivity extends FullscreenActivity {
     }
 
     private GameMode getGameModeFromSpinner() {
-        if (mGameModeSpinner.getSelectedItem() != null) {
-            String selected = (String) mGameModeSpinner.getSelectedItem();
+        if (mGameModeSelector.getCurrentValue() != null) {
+            String selected = mGameModeSelector.getCurrentValue();
             if (selected.equals(getString(R.string.mode_hidden))) {
                 return GameMode.Hidden;
             } else {

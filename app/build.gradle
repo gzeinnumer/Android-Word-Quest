@@ -39,6 +39,7 @@ dependencies {
     implementation 'com.google.android:flexbox:1.0.0'
     implementation 'android.arch.persistence.room:rxjava2:1.1.1'
     implementation 'android.arch.persistence.room:runtime:1.1.1'
+    implementation project(':horizontalselector')
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
     testImplementation 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
