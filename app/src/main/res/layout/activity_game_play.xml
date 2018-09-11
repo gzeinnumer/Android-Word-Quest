@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,110 +9,7 @@
     android:orientation="vertical"
     tools:context="com.aar.app.wordsearch.features.gameplay.GamePlayActivity">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/text_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/init_duration"
-            android:textColor="@android:color/white"
-            android:textSize="8pt"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <TextView
-            android:id="@+id/finished_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/finished"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-            app:layout_constraintStart_toEndOf="@+id/text_duration"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/answered_text_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/empty_count"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/count_divider"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/words_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/empty_count"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/text_sel_layout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:background="@color/selTextBgColor"
-            android:gravity="center"
-            android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-            app:layout_constraintStart_toEndOf="@+id/text_duration">
-
-            <TextView
-                android:id="@+id/text_selection"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                tools:text="Selected Chars"/>
-
-        </LinearLayout>
-
-    </android.support.constraint.ConstraintLayout>
-
+    <include layout="@layout/partial_game_header"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -139,87 +35,9 @@
                 tools:text="Loading Text..."/>
         </LinearLayout>
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/content_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <include layout="@layout/partial_game_content"/>
 
-            <ScrollView
-                android:id="@+id/scrollView2"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginBottom="4dp"
-                android:background="#dfdfdf"
-                app:layout_constraintBottom_toTopOf="@+id/letter_board"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.flexbox.FlexboxLayout
-                    android:id="@+id/flexbox_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    app:flexWrap="wrap"
-                    app:justifyContent="center"/>
-
-            </ScrollView>
-
-            <com.aar.app.wordsearch.custom.LetterBoard
-                android:id="@+id/letter_board"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="4dp"
-                android:visibility="visible"
-                app:gridColumnCount="10"
-                app:gridHeight="31dp"
-                app:gridLineVisibility="true"
-                app:gridRowCount="10"
-                app:gridWidth="31dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:letterColor="@android:color/black"
-                app:lineColor="@color/gridLine"
-                app:lineWidth="1px"
-                app:snapToGrid="START_END"/>
-
-            <TextView
-                android:id="@+id/textPopup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="6dp"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="6dp"
-                android:textAllCaps="false"
-                android:textColor="@color/colorAccent"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@id/letter_board"
-                app:layout_constraintLeft_toLeftOf="@id/letter_board"
-                app:layout_constraintRight_toRightOf="@id/letter_board"
-                app:layout_constraintTop_toTopOf="@id/letter_board"
-                app:layout_constraintVertical_bias="0.20"
-                tools:text="Popup">
-
-            </TextView>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1px"
-                android:background="#bababa"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/scrollView2"/>
-
-        </android.support.constraint.ConstraintLayout>
-
-        <include
-            layout="@layout/partial_game_complete"
+        <include layout="@layout/partial_game_complete"
             android:visibility="gone"/>
 
     </FrameLayout>
