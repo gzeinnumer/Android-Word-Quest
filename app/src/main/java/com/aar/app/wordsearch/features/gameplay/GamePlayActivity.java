@@ -1,7 +1,5 @@
 package com.aar.app.wordsearch.features.gameplay;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
@@ -198,9 +196,7 @@ public class GamePlayActivity extends FullscreenActivity {
                 str.setTextColor(Color.WHITE);
                 str.setPaintFlags(str.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-                Animator anim = AnimatorInflater.loadAnimator(this, R.animator.zoom_in_out);
-                anim.setTarget(item);
-                anim.start();
+                item.startAnimation(AnimationUtils.loadAnimation(this, R.anim.zoom_in_out));
 
                 mTextPopup.setVisibility(View.VISIBLE);
                 mTextPopup.setText(uw.getString());
