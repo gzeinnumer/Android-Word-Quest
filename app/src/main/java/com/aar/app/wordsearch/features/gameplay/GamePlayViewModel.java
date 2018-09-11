@@ -194,6 +194,7 @@ public class GamePlayViewModel extends ViewModel {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe();
             if (mCurrentGameData.isFinished()) {
+                mTimer.stop();
                 setGameState(new Finished(mCurrentGameData));
             }
         }
