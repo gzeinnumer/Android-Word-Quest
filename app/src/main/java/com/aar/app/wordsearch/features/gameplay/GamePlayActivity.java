@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.aar.app.wordsearch.R;
@@ -56,6 +59,7 @@ public class GamePlayActivity extends FullscreenActivity {
     @Inject ViewModelFactory mViewModelFactory;
     private GamePlayViewModel mViewModel;
 
+    @BindView(R.id.textPopup) TextView mTextPopup;
     @BindView(R.id.text_duration) TextView mTextDuration;
     @BindView(R.id.letter_board) LetterBoard mLetterBoard;
     @BindView(R.id.flexbox_layout) FlexboxLayout mFlexLayout;
@@ -76,6 +80,7 @@ public class GamePlayActivity extends FullscreenActivity {
     @BindString(R.string.hidden_mask) String mHiddenMaskString;
 
     private ArrayLetterGridDataAdapter mLetterAdapter;
+    private Animation mPopupTextAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +144,22 @@ public class GamePlayActivity extends FullscreenActivity {
 
         mLetterBoard.getStreakView().setSnapToGrid(getPreferences().getSnapToGrid());
         mFinishedText.setVisibility(View.GONE);
+        mPopupTextAnimation = AnimationUtils.loadAnimation(this, R.anim.popup_text);
+        mPopupTextAnimation.setDuration(1000);
+        mPopupTextAnimation.setInterpolator(new DecelerateInterpolator());
+        mPopupTextAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+
+            @Override
+            public void onAnimationStart(Animation animation) { }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mTextPopup.setVisibility(View.GONE);
+                mTextPopup.setText("");
+            }
+        });
     }
 
     @Override
@@ -179,6 +200,10 @@ public class GamePlayActivity extends FullscreenActivity {
                 Animator anim = AnimatorInflater.loadAnimator(this, R.animator.zoom_in_out);
                 anim.setTarget(item);
                 anim.start();
+
+                mTextPopup.setVisibility(View.VISIBLE);
+                mTextPopup.setText(uw.getString());
+                mTextPopup.startAnimation(mPopupTextAnimation);
             }
 
             showAnsweredWordsCount(answerResult.totalAnsweredWord);

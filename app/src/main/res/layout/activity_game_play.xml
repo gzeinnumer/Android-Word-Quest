@@ -186,6 +186,28 @@
                 app:lineWidth="1px"
                 app:snapToGrid="START_END"/>
 
+            <TextView
+                android:id="@+id/textPopup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="6dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="6dp"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/letter_board"
+                app:layout_constraintLeft_toLeftOf="@id/letter_board"
+                app:layout_constraintRight_toRightOf="@id/letter_board"
+                app:layout_constraintTop_toTopOf="@id/letter_board"
+                app:layout_constraintVertical_bias="0.20"
+                tools:text="Popup">
+
+            </TextView>
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="1px"
