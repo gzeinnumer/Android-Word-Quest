@@ -2,6 +2,8 @@ package com.aar.app.wordsearch.features.mainmenu;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AnimationUtils;
 
 import com.aar.app.wordsearch.R;
 import com.aar.app.wordsearch.features.FullscreenActivity;
@@ -22,6 +24,7 @@ public class MainMenuActivity extends FullscreenActivity {
 
     @BindView(R.id.selectorGridSize) HorizontalSelector mGridSizeSelector;
     @BindView(R.id.selectorGameMode) HorizontalSelector mGameModeSelector;
+    @BindView(R.id.imageEnjoy) View mEnjoy;
 
     @BindArray(R.array.game_round_dimension_values)
     int[] mGameRoundDimValues;
@@ -32,6 +35,8 @@ public class MainMenuActivity extends FullscreenActivity {
         setContentView(R.layout.activity_main_menu);
 
         ButterKnife.bind(this);
+
+        mEnjoy.startAnimation(AnimationUtils.loadAnimation(this, R.anim.tag_enjoy));
     }
 
     @OnClick(R.id.settings_button)
