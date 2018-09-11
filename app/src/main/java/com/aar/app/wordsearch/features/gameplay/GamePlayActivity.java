@@ -336,10 +336,9 @@ public class GamePlayActivity extends FullscreenActivity {
         });
         anim.setInterpolator(new DecelerateInterpolator());
         anim.setDuration(500);
-        new Handler().postDelayed(() -> {
-            mLayoutComplete.setVisibility(View.VISIBLE);
-            mLayoutComplete.startAnimation(anim);
-        }, 500);
+        anim.setStartOffset(1000);
+        mLayoutComplete.setVisibility(View.VISIBLE);
+        mLayoutComplete.startAnimation(anim);
     }
 
     private void setGameAsAlreadyFinished() {
