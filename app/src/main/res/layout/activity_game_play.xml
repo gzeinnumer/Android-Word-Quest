@@ -218,6 +218,10 @@
 
         </android.support.constraint.ConstraintLayout>
 
+        <include
+            layout="@layout/partial_game_complete"
+            android:visibility="gone"/>
+
     </FrameLayout>
 
 </LinearLayout>

@@ -59,6 +59,7 @@ public class GamePlayActivity extends FullscreenActivity {
     @Inject ViewModelFactory mViewModelFactory;
     private GamePlayViewModel mViewModel;
 
+    @BindView(R.id.layoutComplete) View mLayoutComplete;
     @BindView(R.id.textPopup) TextView mTextPopup;
     @BindView(R.id.text_duration) TextView mTextDuration;
     @BindView(R.id.letter_board) LetterBoard mLetterBoard;
@@ -320,11 +321,28 @@ public class GamePlayActivity extends FullscreenActivity {
     }
 
     private void showFinishGame(int gameId) {
+        final Animation anim = AnimationUtils.loadAnimation(this, R.anim.game_complete);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                new Handler().postDelayed(() -> {
+                    Intent intent = new Intent(GamePlayActivity.this, GameOverActivity.class);
+                    intent.putExtra(GameOverActivity.EXTRA_GAME_ROUND_ID, gameId);
+                    startActivity(intent);
+                    finish();
+                }, 800);
+            }
+        });
+        anim.setInterpolator(new DecelerateInterpolator());
+        anim.setDuration(500);
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(GamePlayActivity.this, GameOverActivity.class);
-            intent.putExtra(GameOverActivity.EXTRA_GAME_ROUND_ID, gameId);
-            startActivity(intent);
-            finish();
+            mLayoutComplete.setVisibility(View.VISIBLE);
+            mLayoutComplete.startAnimation(anim);
         }, 500);
     }
 
