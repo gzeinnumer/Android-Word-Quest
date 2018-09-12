@@ -40,14 +40,11 @@ import butterknife.ButterKnife;
 
 public class GamePlayActivity extends FullscreenActivity {
 
-    public static final String EXTRA_GAME_ROUND_ID =
-            "com.aar.app.wordsearch.features.gameplay.GamePlayActivity.ID";
+    public static final String EXTRA_GAME_DATA_ID = "game_data_id";
     public static final String EXTRA_GAME_MODE = "game_mode";
     public static final String EXTRA_GAME_THEME_ID = "game_theme_id";
-    public static final String EXTRA_ROW_COUNT =
-            "com.aar.app.wordsearch.features.gameplay.GamePlayActivity.ROW";
-    public static final String EXTRA_COL_COUNT =
-            "com.aar.app.wordsearch.features.gameplay.GamePlayActivity.COL";
+    public static final String EXTRA_ROW_COUNT = "row_count";
+    public static final String EXTRA_COL_COUNT = "col_count";
 
     private static final StreakLineMapper STREAK_LINE_MAPPER = new StreakLineMapper();
 
@@ -123,8 +120,8 @@ public class GamePlayActivity extends FullscreenActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.containsKey(EXTRA_GAME_ROUND_ID)) {
-                int gid = extras.getInt(EXTRA_GAME_ROUND_ID);
+            if (extras.containsKey(EXTRA_GAME_DATA_ID)) {
+                int gid = extras.getInt(EXTRA_GAME_DATA_ID);
                 mViewModel.loadGameRound(gid);
             } else {
                 GameMode gameMode = (GameMode) extras.get(EXTRA_GAME_MODE);

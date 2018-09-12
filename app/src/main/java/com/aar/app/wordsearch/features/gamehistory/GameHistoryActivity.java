@@ -80,7 +80,7 @@ public class GameHistoryActivity extends FullscreenActivity {
             @Override
             public void onClick(GameDataInfo gameDataInfo) {
                 Intent intent = new Intent(GameHistoryActivity.this, GamePlayActivity.class);
-                intent.putExtra(GamePlayActivity.EXTRA_GAME_ROUND_ID, gameDataInfo.getId());
+                intent.putExtra(GamePlayActivity.EXTRA_GAME_DATA_ID, gameDataInfo.getId());
                 startActivity(intent);
             }
 
