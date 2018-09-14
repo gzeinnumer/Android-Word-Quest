@@ -5,13 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg">
+    android:background="@drawable/bg"
+    android:animateLayoutChanges="true">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,23 +23,24 @@
         android:id="@+id/imageEnjoy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:background="@drawable/bg_enjoy_tag"
         android:paddingBottom="4dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="4dp"
         android:text="ENJOY!"
-        android:textColor="@android:color/white"
+        android:textColor="#534b04"
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"/>
+        app:layout_constraintEnd_toEndOf="@+id/imageView"/>
 
     <com.github.abdularis.horizontalselector.HorizontalSelector
         android:id="@+id/selectorGridSize"
-        android:layout_width="220dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -52,7 +54,7 @@
 
     <com.github.abdularis.horizontalselector.HorizontalSelector
         android:id="@+id/selectorGameMode"
-        android:layout_width="220dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -64,22 +66,39 @@
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:values="@array/game_modes"/>
 
+
+    <com.github.abdularis.horizontalselector.HorizontalSelector
+        android:id="@+id/selectorDifficulty"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectorGameMode"
+        app:values="@array/game_difficulty"/>
+
     <Button
         android:id="@+id/new_game_btn"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
+        android:layout_width="220dp"
+        android:layout_height="45dp"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/bg_btn_new_game"
         android:text="@string/new_game"
         android:textColor="@android:color/white"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectorGameMode"/>
+        app:layout_constraintTop_toBottomOf="@+id/selectorDifficulty"/>
 
     <Button
         android:id="@+id/btnHistory"
@@ -89,7 +108,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/bg_btn_history"
         android:text="@string/lbl_history"
         android:textColor="@color/colorPrimary"
@@ -106,7 +125,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/bg_btn_settings"
         android:text="@string/lbl_settings"
         android:textColor="@color/bgBtnSettings"
@@ -123,7 +142,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Game mode"
+        android:text="Game Mode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectorGridSize"/>
@@ -136,10 +155,63 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="@string/lbl_grid_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"/>
 
+    <!--<View-->
+        <!--android:id="@+id/view2"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginLeft="16dp"-->
+        <!--android:layout_marginRight="8dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:background="#3d000000"-->
+        <!--app:layout_constraintBottom_toBottomOf="@+id/textView2"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/textView2"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/selectorGridSize"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/textView2"/>-->
+
+    <!--<View-->
+        <!--android:id="@+id/view"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginLeft="8dp"-->
+        <!--android:layout_marginRight="16dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:background="#3d000000"-->
+        <!--app:layout_constraintBottom_toBottomOf="@+id/textView2"-->
+        <!--app:layout_constraintEnd_toEndOf="@+id/selectorGridSize"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/textView2"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/textView2"/>-->
+
+    <!--<View-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginLeft="16dp"-->
+        <!--android:layout_marginRight="8dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:background="#3d000000"-->
+        <!--app:layout_constraintBottom_toBottomOf="@+id/textView"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/textView"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/selectorGridSize"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/textView"/>-->
+
+    <!--<View-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginLeft="8dp"-->
+        <!--android:layout_marginRight="16dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:background="#3d000000"-->
+        <!--app:layout_constraintBottom_toBottomOf="@+id/textView"-->
+        <!--app:layout_constraintEnd_toEndOf="@+id/selectorGridSize"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/textView"-->
+        <!--app:layout_constraintTop_toTopOf="@+id/textView"/>-->
 </android.support.constraint.ConstraintLayout>

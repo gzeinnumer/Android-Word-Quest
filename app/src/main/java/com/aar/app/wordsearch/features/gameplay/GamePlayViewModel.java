@@ -10,6 +10,7 @@ import com.aar.app.wordsearch.commons.Timer;
 import com.aar.app.wordsearch.data.room.WordDataSource;
 import com.aar.app.wordsearch.data.sqlite.GameDataSource;
 import com.aar.app.wordsearch.model.GameData;
+import com.aar.app.wordsearch.model.Difficulty;
 import com.aar.app.wordsearch.model.GameMode;
 import com.aar.app.wordsearch.model.GameTheme;
 import com.aar.app.wordsearch.model.UsedWord;
@@ -51,9 +52,11 @@ public class GamePlayViewModel extends ViewModel {
         }
     }
     static class Finished extends GameState {
+        boolean win;
         GameData mGameData;
-        private Finished(GameData gameData) {
+        private Finished(GameData gameData, boolean win) {
             this.mGameData = gameData;
+            this.win = win;
         }
     }
     static class Paused extends GameState {
@@ -86,6 +89,7 @@ public class GamePlayViewModel extends ViewModel {
 
     private GameState mCurrentState = null;
     private MutableLiveData<Integer> mOnTimer;
+    private MutableLiveData<Integer> mOnCountDown;
     private MutableLiveData<GameState> mOnGameState;
     private SingleLiveEvent<AnswerResult> mOnAnswerResult;
 
@@ -95,17 +99,31 @@ public class GamePlayViewModel extends ViewModel {
         mGameDataCreator = new GameDataCreator();
 
         mTimer = new Timer(TIMER_TIMEOUT);
-        mTimer.addOnTimeoutListener(elapsedTime -> {
-            if (mCurrentGameData != null) {
-                mOnTimer.setValue(mCurrentDuration++);
-                mGameDataSource.saveGameDataDuration(mCurrentGameData.getId(), mCurrentDuration);
-            }
-        });
+        mTimer.addOnTimeoutListener(this::onTimerTimeout);
         resetLiveData();
+    }
+
+    private void onTimerTimeout(long elapsedTime) {
+        if (mCurrentGameData != null) {
+            mCurrentGameData.setDuration(++mCurrentDuration);
+            if (mCurrentGameData.getGameMode() == GameMode.CountDown) {
+                mOnCountDown.setValue(mCurrentGameData.getRemainingDuration());
+                if (mCurrentGameData.getRemainingDuration() <= 0) {
+                    boolean win = mCurrentGameData.getAnsweredWordsCount() ==
+                            mCurrentGameData.getUsedWords().size();
+                    mTimer.stop();
+                    setGameState(new Finished(mCurrentGameData, win));
+                }
+            }
+
+            mOnTimer.setValue(mCurrentDuration);
+            mGameDataSource.saveGameDataDuration(mCurrentGameData.getId(), mCurrentDuration);
+        }
     }
 
     private void resetLiveData() {
         mOnTimer = new MutableLiveData<>();
+        mOnCountDown = new MutableLiveData<>();
         mOnGameState = new MutableLiveData<>();
         mOnAnswerResult = new SingleLiveEvent<>();
     }
@@ -117,8 +135,12 @@ public class GamePlayViewModel extends ViewModel {
     }
 
     public void pauseGame() {
-        mTimer.stop();
-        setGameState(new Paused());
+        if (mCurrentState instanceof Playing) {
+            if (!mCurrentGameData.isFinished() && !mCurrentGameData.isGameOver()) {
+                mTimer.stop();
+                setGameState(new Paused());
+            }
+        }
     }
 
     public void resumeGame() {
@@ -142,7 +164,7 @@ public class GamePlayViewModel extends ViewModel {
                     .subscribe(gameData -> {
                         mCurrentGameData = gameData;
                         mCurrentDuration = mCurrentGameData.getDuration();
-                        if (!mCurrentGameData.isFinished())
+                        if (!mCurrentGameData.isFinished() && !mCurrentGameData.isGameOver())
                             mTimer.start();
                         setGameState(new Playing(mCurrentGameData));
                     });
@@ -150,7 +172,8 @@ public class GamePlayViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public void generateNewGameRound(int rowCount, int colCount, int gameThemeId, GameMode gameMode) {
+    public void generateNewGameRound(int rowCount, int colCount, int gameThemeId,
+                                     GameMode gameMode, Difficulty difficulty) {
         if (!(mCurrentState instanceof Generating)) {
             String gameName = getGameDataName();
             setGameState(new Generating(rowCount, colCount, gameName));
@@ -163,16 +186,20 @@ public class GamePlayViewModel extends ViewModel {
             }
 
             flowableWords.toObservable()
-                    .flatMap((Function<List<Word>, Observable<GameData>>) words -> Observable.just(
-                            mGameDataCreator.newGameData(words, rowCount, colCount, gameName, gameMode)
-                    ))
+                    .flatMap((Function<List<Word>, Observable<GameData>>) words -> {
+                        GameData gameData = mGameDataCreator.newGameData(words, rowCount, colCount, gameName, gameMode);
+                        if (gameMode == GameMode.CountDown) {
+                            gameData.setMaxDuration(getMaxCountDownDuration(gameData.getUsedWords().size(), difficulty));
+                        }
+                        return Observable.just(gameData);
+                    })
                     .doOnNext(mGameDataSource::saveGameData)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(gameRound -> {
                         mCurrentDuration = 0;
                         mCurrentGameData = gameRound;
-                        if (!mCurrentGameData.isFinished())
+                        if (!mCurrentGameData.isFinished() && !mCurrentGameData.isGameOver())
                             mTimer.start();
                         setGameState(new Playing(mCurrentGameData));
                     });
@@ -180,6 +207,8 @@ public class GamePlayViewModel extends ViewModel {
     }
 
     public void answerWord(String answerStr, UsedWord.AnswerLine answerLine, boolean reverseMatching) {
+        if (!(mCurrentState instanceof Playing)) return;
+
         UsedWord correctWord = mCurrentGameData.markWordAsAnswered(answerStr, answerLine, reverseMatching);
 
         boolean correct = correctWord != null;
@@ -195,13 +224,17 @@ public class GamePlayViewModel extends ViewModel {
                     .subscribe();
             if (mCurrentGameData.isFinished()) {
                 mTimer.stop();
-                setGameState(new Finished(mCurrentGameData));
+                setGameState(new Finished(mCurrentGameData, true));
             }
         }
     }
 
     public LiveData<Integer> getOnTimer() {
         return mOnTimer;
+    }
+
+    public LiveData<Integer> getOnCountDown() {
+        return mOnCountDown;
     }
 
     public LiveData<GameState> getOnGameState() {
@@ -221,5 +254,15 @@ public class GamePlayViewModel extends ViewModel {
         String date = new SimpleDateFormat("yyyy-M-d H:m:s", Locale.getDefault())
                 .format(new Date(System.currentTimeMillis()));
         return "Puzzle - " + date;
+    }
+
+    private int getMaxCountDownDuration(int usedWordsCount, Difficulty difficulty) {
+        if (difficulty == Difficulty.Easy) {
+            return usedWordsCount * 19; // 19s per word
+        } else if (difficulty == Difficulty.Medium) {
+            return usedWordsCount * 10; // 10s per word
+        } else {
+            return usedWordsCount * 5; // 5s per word
+        }
     }
 }

@@ -17,6 +17,7 @@ abstract class DbContract {
         static final String COL_GRID_COL_COUNT = "grid_col_count";
         static final String COL_GRID_DATA = "grid_data";
         static final String COL_GAME_MODE = "game_mode";
+        static final String COL_MAX_DURATION = "max_duration";
     }
 
 }

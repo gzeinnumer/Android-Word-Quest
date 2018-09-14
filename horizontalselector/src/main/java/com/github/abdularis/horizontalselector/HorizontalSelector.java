@@ -23,6 +23,11 @@ public class HorizontalSelector extends FrameLayout {
 
     private ArrayList<String> mValues;
     private int mCurrentIndex;
+    private OnSelectedItemChanged mListener;
+
+    public interface OnSelectedItemChanged {
+        void onSelectedItemChanged(String newItem);
+    }
 
     public HorizontalSelector(Context context) {
         super(context);
@@ -45,6 +50,14 @@ public class HorizontalSelector extends FrameLayout {
         return null;
     }
 
+    public OnSelectedItemChanged getOnSelectedItemChangedListener() {
+        return mListener;
+    }
+
+    public void setOnSelectedItemChangedListener(OnSelectedItemChanged listener) {
+        mListener = listener;
+    }
+
     private void nextValue() {
         int lastIndex = mCurrentIndex;
         mCurrentIndex = Math.min(mCurrentIndex + 1, mValues.size() - 1);
@@ -52,6 +65,9 @@ public class HorizontalSelector extends FrameLayout {
             mMiddleText.setInAnimation(mNextInAnim);
             mMiddleText.setOutAnimation(mNextOutAnim);
             updateMiddleText();
+            if (mListener != null) {
+                mListener.onSelectedItemChanged(getCurrentValue());
+            }
         }
     }
 
@@ -62,6 +78,9 @@ public class HorizontalSelector extends FrameLayout {
             mMiddleText.setInAnimation(mPreviousInAnim);
             mMiddleText.setOutAnimation(mPreviousOutAnim);
             updateMiddleText();
+            if (mListener != null) {
+                mListener.onSelectedItemChanged(getCurrentValue());
+            }
         }
     }
 

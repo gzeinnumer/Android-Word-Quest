@@ -40,7 +40,7 @@
     <string name="title_game_history">Game History</string>
     <string name="empty_game_data">No game data saved</string>
     <string name="lbl_clear_all">Clear All</string>
-    <string name="lbl_grid_size">Grid size</string>
+    <string name="lbl_grid_size">Grid Size</string>
     <string name="lbl_history">History</string>
     <string name="lbl_settings">Settings</string>
     <string name="lbl_all_themes">All Themes</string>
@@ -50,4 +50,9 @@
     <string name="mode_hidden">Hidden</string>
     <string name="hidden_mask">\?</string>
     <string name="lbl_complete">Complete!</string>
+    <string name="mode_count_down">Count Down</string>
+    <string name="diff_easy">Easy</string>
+    <string name="diff_medium">Medium</string>
+    <string name="diff_hard">Hard</string>
+    <string name="lbl_game_over">Game Over!</string>
 </resources>

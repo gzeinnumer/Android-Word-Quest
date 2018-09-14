@@ -3,7 +3,8 @@ package com.aar.app.wordsearch.model;
 public enum GameMode {
 
     Normal(1),
-    Hidden(2);
+    Hidden(2),
+    CountDown(3);
 
     private int mId;
     GameMode(int id) {

@@ -27,6 +27,13 @@
     <string-array name="game_modes">
         <item>@string/mode_normal</item>
         <item>@string/mode_hidden</item>
+        <item>@string/mode_count_down</item>
+    </string-array>
+
+    <string-array name="game_difficulty">
+        <item>@string/diff_easy</item>
+        <item>@string/diff_medium</item>
+        <item>@string/diff_hard</item>
     </string-array>
 
     <string-array name="snap_to_grid_type_prefs">

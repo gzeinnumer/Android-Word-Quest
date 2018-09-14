@@ -15,6 +15,7 @@ public class GameData {
     private String mName;
     private int mDuration;
     private GameMode mGameMode;
+    private int mMaxDuration;
     private Grid mGrid;
     private List<UsedWord> mUsedWords;
 
@@ -29,6 +30,7 @@ public class GameData {
         mGameMode = gameMode;
         mGrid = grid;
         mUsedWords = usedWords;
+        mMaxDuration = 0;
     }
 
     public int getId() {
@@ -71,6 +73,14 @@ public class GameData {
         mGrid = grid;
     }
 
+    public int getMaxDuration() {
+        return mMaxDuration;
+    }
+
+    public void setMaxDuration(int maxDuration) {
+        mMaxDuration = maxDuration;
+    }
+
     public List<UsedWord> getUsedWords() {
         return mUsedWords;
     }
@@ -103,6 +113,14 @@ public class GameData {
 
     public boolean isFinished() {
         return getAnsweredWordsCount() == mUsedWords.size();
+    }
+
+    public boolean isGameOver() {
+        return mGameMode == GameMode.CountDown && mDuration >= mMaxDuration;
+    }
+
+    public int getRemainingDuration() {
+        return Math.max(0, mMaxDuration - mDuration);
     }
 
     public void setUsedWords(List<UsedWord> usedWords) {

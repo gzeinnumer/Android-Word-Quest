@@ -10,6 +10,7 @@ import com.aar.app.wordsearch.features.FullscreenActivity;
 import com.aar.app.wordsearch.features.gamehistory.GameHistoryActivity;
 import com.aar.app.wordsearch.features.gameplay.GamePlayActivity;
 import com.aar.app.wordsearch.features.gamethemeselector.ThemeSelectorActivity;
+import com.aar.app.wordsearch.model.Difficulty;
 import com.aar.app.wordsearch.model.GameMode;
 import com.aar.app.wordsearch.model.GameTheme;
 import com.aar.app.wordsearch.features.settings.SettingsActivity;
@@ -22,12 +23,12 @@ import butterknife.OnClick;
 
 public class MainMenuActivity extends FullscreenActivity {
 
+    @BindView(R.id.selectorDifficulty) HorizontalSelector mDifficultySelector;
     @BindView(R.id.selectorGridSize) HorizontalSelector mGridSizeSelector;
     @BindView(R.id.selectorGameMode) HorizontalSelector mGameModeSelector;
     @BindView(R.id.imageEnjoy) View mEnjoy;
 
-    @BindArray(R.array.game_round_dimension_values)
-    int[] mGameRoundDimValues;
+    @BindArray(R.array.game_round_dimension_values) int[] mGameRoundDimValues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,14 @@ public class MainMenuActivity extends FullscreenActivity {
         ButterKnife.bind(this);
 
         mEnjoy.startAnimation(AnimationUtils.loadAnimation(this, R.anim.tag_enjoy));
+
+        mGameModeSelector.setOnSelectedItemChangedListener(newItem -> {
+            if (newItem.equals(getString(R.string.mode_count_down))) {
+                mDifficultySelector.setVisibility(View.VISIBLE);
+            } else {
+                mDifficultySelector.setVisibility(View.GONE);
+            }
+        });
     }
 
     @OnClick(R.id.settings_button)
@@ -71,6 +80,7 @@ public class MainMenuActivity extends FullscreenActivity {
     private void startNewGame(int gameThemeId) {
         int dim = mGameRoundDimValues[ mGridSizeSelector.getCurrentIndex() ];
         Intent intent = new Intent(MainMenuActivity.this, GamePlayActivity.class);
+        intent.putExtra(GamePlayActivity.EXTRA_GAME_DIFFICULTY, getDifficultyFromSpinner());
         intent.putExtra(GamePlayActivity.EXTRA_GAME_MODE, getGameModeFromSpinner());
         intent.putExtra(GamePlayActivity.EXTRA_GAME_THEME_ID, gameThemeId);
         intent.putExtra(GamePlayActivity.EXTRA_ROW_COUNT, dim);
@@ -83,10 +93,26 @@ public class MainMenuActivity extends FullscreenActivity {
             String selected = mGameModeSelector.getCurrentValue();
             if (selected.equals(getString(R.string.mode_hidden))) {
                 return GameMode.Hidden;
+            } else if (selected.equals(getString(R.string.mode_count_down))) {
+                return GameMode.CountDown;
             } else {
                 return GameMode.Normal;
             }
         }
         return GameMode.Normal;
+    }
+
+    private Difficulty getDifficultyFromSpinner() {
+        if (mDifficultySelector.getCurrentValue() != null) {
+            String selected = mDifficultySelector.getCurrentValue();
+            if (selected.equals(getString(R.string.diff_easy))) {
+                return Difficulty.Easy;
+            } else if (selected.equals(getString(R.string.diff_medium))) {
+                return Difficulty.Medium;
+            } else {
+                return Difficulty.Hard;
+            }
+        }
+        return Difficulty.Easy;
     }
 }

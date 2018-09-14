@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.aar.app.wordsearch.R;
@@ -25,6 +26,7 @@ import com.aar.app.wordsearch.custom.LetterBoard;
 import com.aar.app.wordsearch.custom.StreakView;
 import com.aar.app.wordsearch.features.gameover.GameOverActivity;
 import com.aar.app.wordsearch.features.FullscreenActivity;
+import com.aar.app.wordsearch.model.Difficulty;
 import com.aar.app.wordsearch.model.GameMode;
 import com.aar.app.wordsearch.model.UsedWord;
 import com.google.android.flexbox.FlexboxLayout;
@@ -40,6 +42,7 @@ import butterknife.ButterKnife;
 
 public class GamePlayActivity extends FullscreenActivity {
 
+    public static final String EXTRA_GAME_DIFFICULTY = "game_max_duration";
     public static final String EXTRA_GAME_DATA_ID = "game_data_id";
     public static final String EXTRA_GAME_MODE = "game_mode";
     public static final String EXTRA_GAME_THEME_ID = "game_theme_id";
@@ -54,7 +57,9 @@ public class GamePlayActivity extends FullscreenActivity {
     @Inject ViewModelFactory mViewModelFactory;
     private GamePlayViewModel mViewModel;
 
+    @BindView(R.id.progressDuration) ProgressBar mDurationProgress;
     @BindView(R.id.layoutComplete) View mLayoutComplete;
+    @BindView(R.id.textComplete) TextView mTextComplete;
     @BindView(R.id.textPopup) TextView mTextPopup;
     @BindView(R.id.text_duration) TextView mTextDuration;
     @BindView(R.id.letter_board) LetterBoard mLetterBoard;
@@ -115,6 +120,7 @@ public class GamePlayActivity extends FullscreenActivity {
 
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(GamePlayViewModel.class);
         mViewModel.getOnTimer().observe(this, this::showDuration);
+        mViewModel.getOnCountDown().observe(this, this::showCountDown);
         mViewModel.getOnGameState().observe(this, this::onGameStateChanged);
         mViewModel.getOnAnswerResult().observe(this, this::onAnswerResult);
 
@@ -125,10 +131,11 @@ public class GamePlayActivity extends FullscreenActivity {
                 mViewModel.loadGameRound(gid);
             } else {
                 GameMode gameMode = (GameMode) extras.get(EXTRA_GAME_MODE);
+                Difficulty difficulty = (Difficulty) extras.get(EXTRA_GAME_DIFFICULTY);
                 int gameThemeId = extras.getInt(EXTRA_GAME_THEME_ID);
                 int rowCount = extras.getInt(EXTRA_ROW_COUNT);
                 int colCount = extras.getInt(EXTRA_COL_COUNT);
-                mViewModel.generateNewGameRound(rowCount, colCount, gameThemeId, gameMode);
+                mViewModel.generateNewGameRound(rowCount, colCount, gameThemeId, gameMode, difficulty);
             }
         }
 
@@ -219,7 +226,7 @@ public class GamePlayActivity extends FullscreenActivity {
         } else if (gameState instanceof GamePlayViewModel.Loading) {
             showLoading(true, "Loading game data");
         } else if (gameState instanceof GamePlayViewModel.Finished) {
-            showFinishGame(((GamePlayViewModel.Finished) gameState).mGameData.getId());
+            showFinishGame((GamePlayViewModel.Finished) gameState);
         } else if (gameState instanceof GamePlayViewModel.Paused) {
 
         } else if (gameState instanceof GamePlayViewModel.Playing) {
@@ -229,7 +236,14 @@ public class GamePlayActivity extends FullscreenActivity {
 
     private void onGameRoundLoaded(GameData gameData) {
         if (gameData.isFinished()) {
-            setGameAsAlreadyFinished();
+            mLetterBoard.getStreakView().setInteractive(false);
+            mFinishedText.setVisibility(View.VISIBLE);
+            mLayoutComplete.setVisibility(View.VISIBLE);
+            mTextComplete.setText(R.string.lbl_complete);
+        } else if (gameData.isGameOver()) {
+            mLetterBoard.getStreakView().setInteractive(false);
+            mLayoutComplete.setVisibility(View.VISIBLE);
+            mTextComplete.setText(R.string.lbl_game_over);
         }
 
         showLetterGrid(gameData.getGrid().getArray());
@@ -238,6 +252,14 @@ public class GamePlayActivity extends FullscreenActivity {
         showWordsCount(gameData.getUsedWords().size());
         showAnsweredWordsCount(gameData.getAnsweredWordsCount());
         doneLoadingContent();
+
+        if (gameData.getGameMode() == GameMode.CountDown) {
+            mDurationProgress.setVisibility(View.VISIBLE);
+            mDurationProgress.setMax(gameData.getMaxDuration());
+            mDurationProgress.setProgress(gameData.getRemainingDuration());
+        } else {
+            mDurationProgress.setVisibility(View.GONE);
+        }
     }
 
     private void tryScale() {
@@ -298,6 +320,10 @@ public class GamePlayActivity extends FullscreenActivity {
         mTextDuration.setText(DurationFormatter.fromInteger(duration));
     }
 
+    private void showCountDown(int countDown) {
+        mDurationProgress.setProgress(countDown);
+    }
+
     private void showUsedWords(List<UsedWord> usedWords, GameData gameData) {
         mFlexLayout.removeAllViews();
         for (UsedWord uw : usedWords) {
@@ -313,34 +339,38 @@ public class GamePlayActivity extends FullscreenActivity {
         mWordsCount.setText(String.valueOf(count));
     }
 
-    private void showFinishGame(int gameId) {
-        final Animation anim = AnimationUtils.loadAnimation(this, R.anim.game_complete);
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
+    private void showFinishGame(GamePlayViewModel.Finished state) {
+        mLetterBoard.getStreakView().setInteractive(false);
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                new Handler().postDelayed(() -> {
-                    Intent intent = new Intent(GamePlayActivity.this, GameOverActivity.class);
-                    intent.putExtra(GameOverActivity.EXTRA_GAME_ROUND_ID, gameId);
-                    startActivity(intent);
-                    finish();
-                }, 800);
-            }
-        });
+        final Animation anim = AnimationUtils.loadAnimation(this, R.anim.game_complete);
         anim.setInterpolator(new DecelerateInterpolator());
         anim.setDuration(500);
         anim.setStartOffset(1000);
+
+        if (state.win) {
+            anim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {}
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    new Handler().postDelayed(() -> {
+                        Intent intent = new Intent(GamePlayActivity.this, GameOverActivity.class);
+                        intent.putExtra(GameOverActivity.EXTRA_GAME_ROUND_ID, state.mGameData.getId());
+                        startActivity(intent);
+                        finish();
+                    }, 800);
+                }
+            });
+            mTextComplete.setText(R.string.lbl_complete);
+        } else {
+            mTextComplete.setText(R.string.lbl_game_over);
+        }
+
         mLayoutComplete.setVisibility(View.VISIBLE);
         mLayoutComplete.startAnimation(anim);
-    }
-
-    private void setGameAsAlreadyFinished() {
-        mLetterBoard.getStreakView().setInteractive(false);
-        mFinishedText.setVisibility(View.VISIBLE);
     }
 
     //
