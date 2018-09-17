@@ -19,6 +19,9 @@ public interface UsedWordDataSource {
     @Query("SELECT COUNT(*) FROM used_words WHERE game_data_id=:gameDataId")
     int getUsedWordsCount(int gameDataId);
 
+    @Query("UPDATE used_words set answer_line=null WHERE game_data_id=:gameDataId")
+    void resetUsedWords(int gameDataId);
+
     @Update
     void updateUsedWord(UsedWord usedWord);
 

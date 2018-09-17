@@ -10,6 +10,7 @@ import com.aar.app.wordsearch.R;
 import com.aar.app.wordsearch.features.ViewModelFactory;
 import com.aar.app.wordsearch.WordSearchApp;
 import com.aar.app.wordsearch.commons.DurationFormatter;
+import com.aar.app.wordsearch.features.gameplay.GamePlayActivity;
 import com.aar.app.wordsearch.model.GameDataInfo;
 import com.aar.app.wordsearch.features.FullscreenActivity;
 
@@ -42,6 +43,12 @@ public class GameOverActivity extends FullscreenActivity {
 
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(GameOverViewModel.class);
         mViewModel.getOnGameDataInfoLoaded().observe(this, this::showGameStat);
+        mViewModel.getOnGameDataReset().observe(this, gameDataId -> {
+            Intent i = new Intent(GameOverActivity.this, GamePlayActivity.class);
+            i.putExtra(GamePlayActivity.EXTRA_GAME_DATA_ID, gameDataId);
+            startActivity(i);
+            finish();
+        });
 
         if (getIntent().getExtras() != null) {
             mGameId = getIntent().getExtras().getInt(EXTRA_GAME_ROUND_ID);
@@ -52,6 +59,11 @@ public class GameOverActivity extends FullscreenActivity {
     @OnClick(R.id.main_menu_btn)
     public void onMainMenuClick() {
         onBackPressed();
+    }
+
+    @OnClick(R.id.btnReplay)
+    public void onReplayClick() {
+        mViewModel.resetCurrentGameData();
     }
 
     @Override

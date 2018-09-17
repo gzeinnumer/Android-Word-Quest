@@ -5,14 +5,13 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.aar.app.wordsearch.commons.SingleLiveEvent;
+import com.aar.app.wordsearch.data.room.UsedWordDataSource;
 import com.aar.app.wordsearch.data.sqlite.GameDataSource;
 import com.aar.app.wordsearch.model.GameDataInfo;
 
 import io.reactivex.Completable;
-import io.reactivex.CompletableEmitter;
-import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -20,17 +19,22 @@ import io.reactivex.schedulers.Schedulers;
 public class GameOverViewModel extends ViewModel {
 
     private GameDataSource mGameDataSource;
+    private UsedWordDataSource mUsedWordDataSource;
+    private GameDataInfo mGameDataInfo;
     private MutableLiveData<GameDataInfo> mOnGameDataInfoLoaded = new MutableLiveData<>();
+    private SingleLiveEvent<Integer> mOnGameDataReset = new SingleLiveEvent<>();
 
-    public GameOverViewModel(GameDataSource gameDataSource) {
+    public GameOverViewModel(GameDataSource gameDataSource, UsedWordDataSource usedWordDataSource) {
         mGameDataSource = gameDataSource;
+        mUsedWordDataSource = usedWordDataSource;
     }
 
     @SuppressLint("CheckResult")
     public void loadData(int gid) {
         Observable
                 .create((ObservableOnSubscribe<GameDataInfo>) e -> {
-                    e.onNext(mGameDataSource.getGameDataInfo(gid));
+                    mGameDataInfo = mGameDataSource.getGameDataInfo(gid);
+                    e.onNext(mGameDataInfo);
                     e.onComplete();
                 })
                 .subscribeOn(Schedulers.io())
@@ -47,6 +51,25 @@ public class GameOverViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+    }
+
+    @SuppressLint("CheckResult")
+    public void resetCurrentGameData() {
+        if (mGameDataInfo != null) {
+            Completable
+                    .create(e -> {
+                        mUsedWordDataSource.resetUsedWords(mGameDataInfo.getId());
+                        mGameDataSource.saveGameDataDuration(mGameDataInfo.getId(), 0);
+                        e.onComplete();
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> mOnGameDataReset.setValue(mGameDataInfo.getId()));
+        }
+    }
+
+    public LiveData<Integer> getOnGameDataReset() {
+        return mOnGameDataReset;
     }
 
     public LiveData<GameDataInfo> getOnGameDataInfoLoaded() {

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.aar.app.wordsearch.data.room.GameThemeDataSource;
+import com.aar.app.wordsearch.data.room.UsedWordDataSource;
 import com.aar.app.wordsearch.data.room.WordDataSource;
 import com.aar.app.wordsearch.features.ViewModelFactory;
 import com.aar.app.wordsearch.data.sqlite.GameDataSource;
@@ -48,9 +49,10 @@ public class AppModule {
     @Singleton
     ViewModelFactory provideViewModelFactory(GameDataSource gameDataSource,
                                              WordDataSource wordDataSource,
+                                             UsedWordDataSource usedWordDataSource,
                                              GameThemeDataSource gameThemeDataSource) {
         return new ViewModelFactory(
-                new GameOverViewModel(gameDataSource),
+                new GameOverViewModel(gameDataSource, usedWordDataSource),
                 new GamePlayViewModel(gameDataSource, wordDataSource),
                 new GameHistoryViewModel(gameDataSource),
                 new ThemeSelectorViewModel(gameThemeDataSource)
