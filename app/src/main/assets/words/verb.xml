@@ -45,8 +45,6 @@
     <item str="BANG"/>
     <item str="BANISH"/>
     <item str="BASH"/>
-    <item str="BEAR"/>
-    <item str="BEAR"/>
     <item str="BEAT"/>
     <item str="BEAUTIFY"/>
     <item str="BECOME"/>
@@ -62,7 +60,6 @@
     <item str="BESEECH"/>
     <item str="BET"/>
     <item str="BETRAY"/>
-    <item str="BID"/>
     <item str="BID"/>
     <item str="BIND"/>
     <item str="BITE"/>
@@ -164,12 +161,10 @@
     <item str="CONTEND"/>
     <item str="CONTEST"/>
     <item str="CONTINUE"/>
-    <item str="CONTRACT"/>
     <item str="CONTRADICT"/>
     <item str="CONTRAST"/>
     <item str="CONTRIBUTE"/>
     <item str="CONTRIVE"/>
-    <item str="CONTROL"/>
     <item str="CONVENE"/>
     <item str="CONVERGE"/>
     <item str="CONVERSE"/>
@@ -316,7 +311,6 @@
     <item str="FILL"/>
     <item str="FIND"/>
     <item str="FINISH"/>
-    <item str="FISH"/>
     <item str="FIT"/>
     <item str="FIX"/>
     <item str="FIZZ"/>
@@ -500,7 +494,6 @@
     <item str="LET"/>
     <item str="LICK"/>
     <item str="LIE"/>
-    <item str="LIE"/>
     <item str="LIFT"/>
     <item str="LIGHT"/>
     <item str="LIKE"/>
@@ -509,7 +502,6 @@
     <item str="LIVE"/>
     <item str="LOOK"/>
     <item str="LOSE"/>
-    <item str="LOVE"/>
     <item str="MAGNIFY"/>
     <item str="MAINTAIN"/>
     <item str="MAKE"/>
@@ -596,7 +588,6 @@
     <item str="PERISH"/>
     <item str="PERMIT"/>
     <item str="PERSUADE"/>
-    <item str="PHONE"/>
     <item str="PLACE"/>
     <item str="PLAN"/>
     <item str="PLAY"/>
@@ -720,7 +711,6 @@
     <item str="SALUTE"/>
     <item str="SALVAGE"/>
     <item str="SALVE"/>
-    <item str="SAMPLE"/>
     <item str="SANCTIFY"/>
     <item str="SANCTION"/>
     <item str="SAP"/>

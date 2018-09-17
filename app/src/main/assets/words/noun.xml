@@ -24,7 +24,6 @@
     <item str="UNDERSTANDING"/>
     <item str="THEORY"/>
     <item str="LAW"/>
-    <item str="BIRD"/>
     <item str="LITERATURE"/>
     <item str="PROBLEM"/>
     <item str="SOFTWARE"/>
@@ -334,7 +333,6 @@
     <item str="MEASUREMENT"/>
     <item str="MODE"/>
     <item str="MUD"/>
-    <item str="ORANGE"/>
     <item str="POETRY"/>
     <item str="POLICE"/>
     <item str="POSSIBILITY"/>
@@ -422,7 +420,6 @@
     <item str="MENU"/>
     <item str="PENALTY"/>
     <item str="PIANO"/>
-    <item str="POTATO"/>
     <item str="PROFESSION"/>
     <item str="PROFESSOR"/>
     <item str="QUANTITY"/>
@@ -437,7 +434,6 @@
     <item str="AFFAIR"/>
     <item str="AMBITION"/>
     <item str="ANALYST"/>
-    <item str="APPLE"/>
     <item str="ASSIGNMENT"/>
     <item str="ASSISTANT"/>
     <item str="BATHROOM"/>
