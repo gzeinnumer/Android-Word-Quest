@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.aar.app.wordsearch.R;
@@ -25,6 +27,8 @@ public class ThemeSelectorActivity extends FullscreenActivity {
 
     public static final String EXTRA_THEME_ID = "game_theme_id";
 
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
     @BindView(R.id.rvThemes)
     RecyclerView mRvThemes;
 
@@ -53,13 +57,24 @@ public class ThemeSelectorActivity extends FullscreenActivity {
         mRvThemes.setAdapter(adapter);
 
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(ThemeSelectorViewModel.class);
-        mViewModel.getOnGameThemeLoaded().observe(this, adapter::setItems);
-        mViewModel.loadThemes();
+        mViewModel.getOnGameThemeLoaded().observe(this, gameThemes -> {
+            adapter.setItems(gameThemes);
+            mRvThemes.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.GONE);
+        });
+
+        loadData();
     }
 
     @OnClick(R.id.btnAllTheme)
     public void onAllThemeClick() {
         onItemClick(GameTheme.NONE);
+    }
+
+    private void loadData() {
+        mRvThemes.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+        mViewModel.loadThemes();
     }
 
     private void onItemClick(GameTheme theme) {
