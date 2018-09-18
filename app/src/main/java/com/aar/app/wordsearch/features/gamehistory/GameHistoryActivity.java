@@ -65,13 +65,11 @@ public class GameHistoryActivity extends FullscreenActivity {
 
     private void onGameDataInfoLoaded(List<GameDataInfo> gameDataInfos) {
         if (gameDataInfos.isEmpty()) {
-            mRecyclerView.setVisibility(View.GONE);
             mTextEmpty.setVisibility(View.VISIBLE);
         } else {
-            mRecyclerView.setVisibility(View.VISIBLE);
             mTextEmpty.setVisibility(View.GONE);
-            mAdapter.setItems(gameDataInfos);
         }
+        mAdapter.setItems(gameDataInfos);
     }
 
     private void initRecyclerView() {
