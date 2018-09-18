@@ -18,9 +18,15 @@ public class UsedWord extends Word {
     @TypeConverters({AnswerLineConverter.class})
     @ColumnInfo(name = "answer_line")
     private AnswerLine mAnswerLine;
+    @ColumnInfo(name = "duration")
+    private int mDuration;
+    @ColumnInfo(name = "max_duration")
+    private int mMaxDuration;
 
     public UsedWord() {
         mAnswerLine = null;
+        mDuration = 0;
+        mMaxDuration = 0;
     }
 
     public int getGameDataId() {
@@ -43,8 +49,28 @@ public class UsedWord extends Word {
         return mAnswerLine != null;
     }
 
-    public void setAnswered(boolean answered) {
-        // Do nothing
+    public int getDuration() {
+        return mDuration;
+    }
+
+    public void setDuration(int duration) {
+        mDuration = duration;
+    }
+
+    public int getMaxDuration() {
+        return mMaxDuration;
+    }
+
+    public void setMaxDuration(int maxDuration) {
+        mMaxDuration = maxDuration;
+    }
+
+    public boolean isTimeout() {
+        return mDuration >= mMaxDuration;
+    }
+
+    public int getRemainingDuration() {
+        return Math.max(0, mMaxDuration - mDuration);
     }
 
     public static final class AnswerLine {

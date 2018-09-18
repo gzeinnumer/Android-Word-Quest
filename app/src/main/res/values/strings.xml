@@ -48,9 +48,10 @@
 
     <string name="mode_normal">Normal</string>
     <string name="mode_hidden">Hidden</string>
+    <string name="mode_count_down">Count Down</string>
+    <string name="mode_marathon">Marathon</string>
     <string name="hidden_mask">\?</string>
     <string name="lbl_complete">Complete!</string>
-    <string name="mode_count_down">Count Down</string>
     <string name="diff_easy">Easy</string>
     <string name="diff_medium">Medium</string>
     <string name="diff_hard">Hard</string>

@@ -40,7 +40,8 @@ public class MainMenuActivity extends FullscreenActivity {
         mEnjoy.startAnimation(AnimationUtils.loadAnimation(this, R.anim.tag_enjoy));
 
         mGameModeSelector.setOnSelectedItemChangedListener(newItem -> {
-            if (newItem.equals(getString(R.string.mode_count_down))) {
+            if (newItem.equals(getString(R.string.mode_count_down)) ||
+                    newItem.equals(getString(R.string.mode_marathon))) {
                 mDifficultySelector.setVisibility(View.VISIBLE);
             } else {
                 mDifficultySelector.setVisibility(View.GONE);
@@ -95,6 +96,8 @@ public class MainMenuActivity extends FullscreenActivity {
                 return GameMode.Hidden;
             } else if (selected.equals(getString(R.string.mode_count_down))) {
                 return GameMode.CountDown;
+            } else if (selected.equals(getString(R.string.mode_marathon))) {
+                return GameMode.Marathon;
             } else {
                 return GameMode.Normal;
             }

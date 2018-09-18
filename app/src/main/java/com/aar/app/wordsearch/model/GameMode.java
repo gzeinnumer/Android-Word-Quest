@@ -4,7 +4,8 @@ public enum GameMode {
 
     Normal(1),
     Hidden(2),
-    CountDown(3);
+    CountDown(3),
+    Marathon(4);
 
     private int mId;
     GameMode(int id) {

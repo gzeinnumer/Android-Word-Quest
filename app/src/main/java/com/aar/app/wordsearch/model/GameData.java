@@ -85,24 +85,6 @@ public class GameData {
         return mUsedWords;
     }
 
-    public UsedWord markWordAsAnswered(String word, UsedWord.AnswerLine answerLine, boolean enableReverse) {
-        String answerStrRev = Util.getReverseString(word);
-        for (UsedWord usedWord : mUsedWords) {
-
-            if (usedWord.isAnswered()) continue;
-
-            String currUsedWord = usedWord.getString();
-            if (currUsedWord.equalsIgnoreCase(word) ||
-                    (currUsedWord.equalsIgnoreCase( answerStrRev ) && enableReverse)) {
-
-                usedWord.setAnswered(true);
-                usedWord.setAnswerLine(answerLine);
-                return usedWord;
-            }
-        }
-        return null;
-    }
-
     public int getAnsweredWordsCount() {
         int count = 0;
         for (UsedWord uw : mUsedWords) {
@@ -116,7 +98,14 @@ public class GameData {
     }
 
     public boolean isGameOver() {
-        return mGameMode == GameMode.CountDown && mDuration >= mMaxDuration;
+        if (mGameMode == GameMode.CountDown) {
+            return mDuration >= mMaxDuration;
+        } else if (mGameMode == GameMode.Marathon) {
+            for (UsedWord usedWord : mUsedWords) {
+                if (usedWord.isTimeout()) return true;
+            }
+        }
+        return false;
     }
 
     public int getRemainingDuration() {

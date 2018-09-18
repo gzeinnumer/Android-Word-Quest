@@ -28,6 +28,7 @@
         <item>@string/mode_normal</item>
         <item>@string/mode_hidden</item>
         <item>@string/mode_count_down</item>
+        <item>@string/mode_marathon</item>
     </string-array>
 
     <string-array name="game_difficulty">

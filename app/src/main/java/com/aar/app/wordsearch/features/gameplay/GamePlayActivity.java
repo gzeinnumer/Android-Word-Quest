@@ -1,5 +1,6 @@
 package com.aar.app.wordsearch.features.gameplay;
 
+import android.animation.ObjectAnimator;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,10 +10,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import com.aar.app.wordsearch.R;
@@ -50,6 +53,7 @@ public class GamePlayActivity extends FullscreenActivity {
     public static final String EXTRA_COL_COUNT = "col_count";
 
     private static final StreakLineMapper STREAK_LINE_MAPPER = new StreakLineMapper();
+    private static final int PROGRESS_SCALE = 100;
 
     @Inject
     SoundPlayer mSoundPlayer;
@@ -57,6 +61,9 @@ public class GamePlayActivity extends FullscreenActivity {
     @Inject ViewModelFactory mViewModelFactory;
     private GamePlayViewModel mViewModel;
 
+    @BindView(R.id.layoutCurrentWord) ViewGroup mCurrentWordLayout;
+    @BindView(R.id.textCurrentWord) TextSwitcher mTvCurrentWord;
+    @BindView(R.id.progressWordDuration) ProgressBar mDurationWordProgress;
     @BindView(R.id.progressDuration) ProgressBar mDurationProgress;
     @BindView(R.id.layoutComplete) View mLayoutComplete;
     @BindView(R.id.textComplete) TextView mTextComplete;
@@ -91,6 +98,8 @@ public class GamePlayActivity extends FullscreenActivity {
         ButterKnife.bind(this);
         ((WordSearchApp) getApplication()).getAppComponent().inject(this);
 
+        mTvCurrentWord.setInAnimation(this, android.R.anim.slide_in_left);
+        mTvCurrentWord.setOutAnimation(this, android.R.anim.slide_out_right);
         mLetterBoard.getStreakView().setEnableOverrideStreakLineColor(getPreferences().grayscale());
         mLetterBoard.getStreakView().setOverrideStreakLineColor(mGrayColor);
         mLetterBoard.setOnLetterSelectionListener(new LetterBoard.OnLetterSelectionListener() {
@@ -123,6 +132,15 @@ public class GamePlayActivity extends FullscreenActivity {
         mViewModel.getOnCountDown().observe(this, this::showCountDown);
         mViewModel.getOnGameState().observe(this, this::onGameStateChanged);
         mViewModel.getOnAnswerResult().observe(this, this::onAnswerResult);
+        mViewModel.getOnCurrentWordChanged().observe(this, usedWord -> {
+            mTvCurrentWord.setText(usedWord.getString());
+            mDurationWordProgress.setMax(usedWord.getMaxDuration() * 100);
+//            mDurationWordProgress.setProgress(usedWord.getRemainingDuration() * 100);
+            animateProgress(mDurationWordProgress, usedWord.getRemainingDuration() * 100);
+        });
+        mViewModel.getOnCurrentWordCountDown().observe(this, integer -> {
+            animateProgress(mDurationWordProgress, integer * 100);
+        });
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -181,6 +199,12 @@ public class GamePlayActivity extends FullscreenActivity {
     protected void onDestroy() {
         super.onDestroy();
         mViewModel.stopGame();
+    }
+
+    private void animateProgress(ProgressBar progressBar, int progress) {
+        ObjectAnimator anim = ObjectAnimator.ofInt(progressBar, "progress", progress);
+        anim.setDuration(250);
+        anim.start();
     }
 
     private void onAnswerResult(GamePlayViewModel.AnswerResult answerResult) {
@@ -255,10 +279,17 @@ public class GamePlayActivity extends FullscreenActivity {
 
         if (gameData.getGameMode() == GameMode.CountDown) {
             mDurationProgress.setVisibility(View.VISIBLE);
-            mDurationProgress.setMax(gameData.getMaxDuration());
-            mDurationProgress.setProgress(gameData.getRemainingDuration());
+            mDurationProgress.setMax(gameData.getMaxDuration() * PROGRESS_SCALE);
+            mDurationProgress.setProgress(gameData.getRemainingDuration() * PROGRESS_SCALE);
+
+            mCurrentWordLayout.setVisibility(View.GONE);
+        } else if (gameData.getGameMode() == GameMode.Marathon) {
+            mDurationProgress.setVisibility(View.GONE);
+
+            mCurrentWordLayout.setVisibility(View.VISIBLE);
         } else {
             mDurationProgress.setVisibility(View.GONE);
+            mCurrentWordLayout.setVisibility(View.GONE);
         }
     }
 
@@ -321,7 +352,7 @@ public class GamePlayActivity extends FullscreenActivity {
     }
 
     private void showCountDown(int countDown) {
-        mDurationProgress.setProgress(countDown);
+        animateProgress(mDurationProgress, countDown * PROGRESS_SCALE);
     }
 
     private void showUsedWords(List<UsedWord> usedWords, GameData gameData) {

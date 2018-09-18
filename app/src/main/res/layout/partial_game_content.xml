@@ -10,24 +10,68 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        app:layout_constraintBottom_toTopOf="@+id/letter_board"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#dfdfdf"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="4dp"
-        android:background="#dfdfdf">
+        app:layout_constraintBottom_toTopOf="@id/layoutCurrentWord">
 
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/flexbox_layout"
-            app:flexWrap="wrap"
-            app:justifyContent="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="2dp"/>
+            android:padding="2dp"
+            app:flexWrap="wrap"
+            app:justifyContent="center"/>
 
     </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/layoutCurrentWord"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/letter_board"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ProgressBar
+            android:id="@+id/progressWordDuration"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminate="false"
+            android:indeterminateOnly="false"
+            android:progress="0"
+            android:progressDrawable="@drawable/bg_progress_2"/>
+
+        <TextSwitcher
+            android:id="@+id/textCurrentWord"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:text="Text"
+                android:textColor="#683102"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:text="Text 2"
+                android:textColor="#683102"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+        </TextSwitcher>
+    </FrameLayout>
 
     <com.aar.app.wordsearch.custom.LetterBoard
         android:id="@+id/letter_board"

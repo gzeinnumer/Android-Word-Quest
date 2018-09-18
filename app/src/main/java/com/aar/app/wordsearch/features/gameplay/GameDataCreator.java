@@ -59,7 +59,6 @@ public class GameDataCreator {
             UsedWord uw = new UsedWord();
             uw.setGameThemeId(word.getGameThemeId());
             uw.setString(word.getString());
-            uw.setAnswered(false);
 
             usedWords.add(uw);
         }

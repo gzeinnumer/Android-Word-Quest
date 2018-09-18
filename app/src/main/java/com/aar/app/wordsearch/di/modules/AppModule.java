@@ -53,7 +53,7 @@ public class AppModule {
                                              GameThemeDataSource gameThemeDataSource) {
         return new ViewModelFactory(
                 new GameOverViewModel(gameDataSource, usedWordDataSource),
-                new GamePlayViewModel(gameDataSource, wordDataSource),
+                new GamePlayViewModel(gameDataSource, wordDataSource, usedWordDataSource),
                 new GameHistoryViewModel(gameDataSource),
                 new ThemeSelectorViewModel(gameThemeDataSource)
         );
