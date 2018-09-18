@@ -60,7 +60,7 @@ public class Timer {
         mStarted = true;
         mStartTime = SystemClock.uptimeMillis();
         mTimer = new java.util.Timer();
-        mTimer.schedule(task, mInterval, mInterval);
+        mTimer.scheduleAtFixedRate(task, mInterval, mInterval);
         callStartedListener();
     }
 
