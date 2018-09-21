@@ -7,8 +7,10 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aar.app.wordsearch.R;
 import com.aar.app.wordsearch.WordSearchApp;
@@ -22,19 +24,24 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableCompletableObserver;
 
 public class ThemeSelectorActivity extends FullscreenActivity {
 
     public static final String EXTRA_THEME_ID = "game_theme_id";
 
-    @BindView(R.id.progressBar)
-    ProgressBar mProgressBar;
-    @BindView(R.id.rvThemes)
-    RecyclerView mRvThemes;
+    @BindView(R.id.loadingLayout) ViewGroup mLoadingLayout;
+    @BindView(R.id.progressBar) ProgressBar mProgressBar;
+    @BindView(R.id.rvThemes) RecyclerView mRvThemes;
+    @BindView(R.id.textRev) TextView mTextRev;
 
     @Inject
     ViewModelFactory mViewModelFactory;
     ThemeSelectorViewModel mViewModel;
+
+    private Disposable mUpdateDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +53,13 @@ public class ThemeSelectorActivity extends FullscreenActivity {
 
         MultiTypeAdapter adapter = new MultiTypeAdapter();
         adapter.addDelegate(
-                GameTheme.class,
+                GameThemeItem.class,
                 R.layout.item_theme_list,
-                (model, holder) -> holder.<TextView>find(R.id.textTheme).setText(model.getName()),
-                (model, view) -> onItemClick(model)
+                (model, holder) -> {
+                    holder.<TextView>find(R.id.textTheme).setText(model.getName());
+                    holder.<TextView>find(R.id.textCount).setText(model.getWordsCount() + " words");
+                },
+                (model, view) -> onItemClick(model.getId())
         );
 
         mRvThemes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -62,13 +72,51 @@ public class ThemeSelectorActivity extends FullscreenActivity {
             mRvThemes.setVisibility(View.VISIBLE);
             mProgressBar.setVisibility(View.GONE);
         });
+        updateRevisionNumber();
 
         loadData();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mUpdateDisposable != null) {
+            mUpdateDisposable.dispose();
+        }
+    }
+
     @OnClick(R.id.btnAllTheme)
     public void onAllThemeClick() {
-        onItemClick(GameTheme.NONE);
+        onItemClick(GameTheme.NONE.getId());
+    }
+
+    @OnClick(R.id.btnUpdate)
+    public void onUpdateClick() {
+        mLoadingLayout.setVisibility(View.VISIBLE);
+        mRvThemes.setEnabled(false);
+        mUpdateDisposable = mViewModel.updateData()
+                .subscribe(responseType -> {
+                            updateRevisionNumber();
+                            mLoadingLayout.setVisibility(View.GONE);
+                            String message;
+                            if (responseType == ThemeSelectorViewModel.ResponseType.NoUpdate) {
+                                message = "You're already up to date";
+                            } else {
+                                message = "Successfully updated";
+                            }
+                            Toast.makeText(
+                                    ThemeSelectorActivity.this,
+                                    message,
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }, throwable -> {
+                            Toast.makeText(
+                                    ThemeSelectorActivity.this,
+                                    "Error: Please check your internet connection",
+                                    Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                );
     }
 
     private void loadData() {
@@ -77,12 +125,14 @@ public class ThemeSelectorActivity extends FullscreenActivity {
         mViewModel.loadThemes();
     }
 
-    private void onItemClick(GameTheme theme) {
+    private void onItemClick(int themeId) {
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_THEME_ID, theme.getId());
+        intent.putExtra(EXTRA_THEME_ID, themeId);
         setResult(RESULT_OK, intent);
         finish();
     }
 
-
+    private void updateRevisionNumber() {
+        mTextRev.setText(String.valueOf(mViewModel.getLastDataRevision()));
+    }
 }

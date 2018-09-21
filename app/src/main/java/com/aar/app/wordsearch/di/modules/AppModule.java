@@ -35,6 +35,12 @@ public class AppModule {
 
     @Provides
     @Singleton
+    Application provideApp() {
+        return mApp;
+    }
+
+    @Provides
+    @Singleton
     Context provideContext() {
         return mApp;
     }
@@ -47,7 +53,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    ViewModelFactory provideViewModelFactory(GameDataSource gameDataSource,
+    ViewModelFactory provideViewModelFactory(Application app,
+                                             GameDataSource gameDataSource,
                                              WordDataSource wordDataSource,
                                              UsedWordDataSource usedWordDataSource,
                                              GameThemeDataSource gameThemeDataSource) {
@@ -55,7 +62,7 @@ public class AppModule {
                 new GameOverViewModel(gameDataSource, usedWordDataSource),
                 new GamePlayViewModel(gameDataSource, wordDataSource, usedWordDataSource),
                 new GameHistoryViewModel(gameDataSource),
-                new ThemeSelectorViewModel(gameThemeDataSource)
+                new ThemeSelectorViewModel(app, gameThemeDataSource, wordDataSource)
         );
     }
 }

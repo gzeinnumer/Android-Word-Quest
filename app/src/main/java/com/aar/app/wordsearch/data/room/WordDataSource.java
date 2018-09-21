@@ -24,4 +24,7 @@ public interface WordDataSource {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(List<Word> words);
 
+    @Query("DELETE FROM words")
+    void deleteAll();
+
 }
