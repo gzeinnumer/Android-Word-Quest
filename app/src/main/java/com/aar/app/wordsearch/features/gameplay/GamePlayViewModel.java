@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.Completable;
-import io.reactivex.CompletableEmitter;
-import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
@@ -169,7 +167,19 @@ public class GamePlayViewModel extends ViewModel {
                 flowableWords = mWordDataSource.getWords(gameThemeId);
             }
 
+            int maxCharCount = Math.min(rowCount, colCount);
             flowableWords.toObservable()
+                    .flatMap((Function<List<Word>, Observable<List<Word>>>) words -> {
+                        return Flowable.fromIterable(words)
+                                .distinct(Word::getString)
+                                .filter(word -> word.getString().length() <= maxCharCount)
+                                .map(word -> {
+                                    word.setString(word.getString().toUpperCase());
+                                    return word;
+                                })
+                                .toList()
+                                .toObservable();
+                    })
                     .flatMap((Function<List<Word>, Observable<GameData>>) words -> {
                         GameData gameData = mGameDataCreator.newGameData(words, rowCount, colCount, gameName, gameMode);
                         if (gameMode == GameMode.CountDown) {
