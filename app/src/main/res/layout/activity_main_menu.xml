@@ -31,7 +31,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="4dp"
-        android:text="ENJOY!"
+        android:text="PUZZLE"
         android:textColor="#534b04"
         android:textSize="12sp"
         android:textStyle="bold"
