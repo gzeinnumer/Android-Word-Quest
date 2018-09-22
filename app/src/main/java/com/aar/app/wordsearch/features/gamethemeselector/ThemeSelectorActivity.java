@@ -112,6 +112,7 @@ public class ThemeSelectorActivity extends FullscreenActivity {
                                     Toast.LENGTH_LONG)
                                     .show();
                         }, throwable -> {
+                            mLoadingLayout.setVisibility(View.GONE);
                             Toast.makeText(
                                     ThemeSelectorActivity.this,
                                     R.string.err_no_connect,
