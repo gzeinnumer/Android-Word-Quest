@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Word Search Classic</string>
-    <string name="new_game_loading_text">Generating game data…</string>
     <string name="summary_about">Word search game is a puzzle game, where the player try to find words in a grid of letters in horizontal, vertical and diagonal direction.</string>
     <string name="finished">Finished!</string>
 
@@ -63,8 +62,13 @@
     <string name="lbl_game_mode">Game Mode</string>
     <string name="lbl_update_words">Update words</string>
     <string name="lbl_data_rev">data revision:</string>
-    <string name="lbl_updating_words">Downloading words data...</string>
+    <string name="lbl_updating_words">Downloading words data…</string>
     <string name="text_generating">Generating :row x :col grid</string>
     <string name="lbl_load_game_data">Loading game data</string>
     <string name="text_words">:count words</string>
+    <string name="disable_colors">Disable colors</string>
+    <string name="always_snap">Always Snap</string>
+    <string name="start_end_snap">Start and End</string>
+    <string name="pref_title_game_play">Game Play</string>
+    <string name="pref_title_general">General</string>
 </resources>

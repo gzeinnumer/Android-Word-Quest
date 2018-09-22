@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="General">
+        android:title="@string/pref_title_general">
 
         <CheckBoxPreference
             android:title="@string/enable_sound"
@@ -20,7 +20,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Game Play">
+        android:title="@string/pref_title_game_play">
 
         <CheckBoxPreference
             android:title="@string/auto_scale_grid"
@@ -38,7 +38,7 @@
 
         <CheckBoxPreference
             android:title="@string/grayscale"
-            android:summary="Disable colors"
+            android:summary="@string/disable_colors"
             android:icon="@drawable/ic_grayscale"
             android:key="@string/pref_grayscale"
             android:defaultValue="false"/>
