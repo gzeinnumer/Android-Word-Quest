@@ -31,7 +31,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="4dp"
-        android:text="PUZZLE"
+        android:text="@string/tag_header"
         android:textColor="#534b04"
         android:textSize="12sp"
         android:textStyle="bold"
@@ -142,7 +142,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Game Mode"
+        android:text="@string/lbl_game_mode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectorGridSize"/>

@@ -57,7 +57,10 @@ public class ThemeSelectorActivity extends FullscreenActivity {
                 R.layout.item_theme_list,
                 (model, holder) -> {
                     holder.<TextView>find(R.id.textTheme).setText(model.getName());
-                    holder.<TextView>find(R.id.textCount).setText(model.getWordsCount() + " words");
+                    holder.<TextView>find(R.id.textCount).setText(
+                            getString(R.string.text_words)
+                                    .replaceAll(":count", String.valueOf(model.getWordsCount()))
+                    );
                 },
                 (model, view) -> onItemClick(model.getId())
         );
@@ -99,9 +102,9 @@ public class ThemeSelectorActivity extends FullscreenActivity {
                             mLoadingLayout.setVisibility(View.GONE);
                             String message;
                             if (responseType == ThemeSelectorViewModel.ResponseType.NoUpdate) {
-                                message = "You're already up to date";
+                                message = getString(R.string.up_to_date);
                             } else {
-                                message = "Successfully updated";
+                                message = getString(R.string.update_success);
                             }
                             Toast.makeText(
                                     ThemeSelectorActivity.this,
@@ -111,7 +114,7 @@ public class ThemeSelectorActivity extends FullscreenActivity {
                         }, throwable -> {
                             Toast.makeText(
                                     ThemeSelectorActivity.this,
-                                    "Error: Please check your internet connection",
+                                    R.string.err_no_connect,
                                     Toast.LENGTH_LONG)
                                     .show();
                         }

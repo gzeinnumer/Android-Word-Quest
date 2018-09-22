@@ -135,11 +135,10 @@ public class GamePlayActivity extends FullscreenActivity {
         mViewModel.getOnCurrentWordChanged().observe(this, usedWord -> {
             mTvCurrentWord.setText(usedWord.getString());
             mDurationWordProgress.setMax(usedWord.getMaxDuration() * 100);
-//            mDurationWordProgress.setProgress(usedWord.getRemainingDuration() * 100);
             animateProgress(mDurationWordProgress, usedWord.getRemainingDuration() * 100);
         });
-        mViewModel.getOnCurrentWordCountDown().observe(this, integer -> {
-            animateProgress(mDurationWordProgress, integer * 100);
+        mViewModel.getOnCurrentWordCountDown().observe(this, duration -> {
+            animateProgress(mDurationWordProgress, duration * 100);
         });
 
         Bundle extras = getIntent().getExtras();
@@ -245,14 +244,15 @@ public class GamePlayActivity extends FullscreenActivity {
         showLoading(false, null);
         if (gameState instanceof GamePlayViewModel.Generating) {
             GamePlayViewModel.Generating state = (GamePlayViewModel.Generating) gameState;
-            String text = "Generating " + state.rowCount + "x" + state.colCount + " grid";
+            String text = getString(R.string.text_generating);
+            text = text.replaceAll(":row", String.valueOf(state.rowCount));
+            text = text.replaceAll(":col", String.valueOf(state.colCount));
+
             showLoading(true, text);
         } else if (gameState instanceof GamePlayViewModel.Loading) {
-            showLoading(true, "Loading game data");
+            showLoading(true, getString(R.string.lbl_load_game_data));
         } else if (gameState instanceof GamePlayViewModel.Finished) {
             showFinishGame((GamePlayViewModel.Finished) gameState);
-        } else if (gameState instanceof GamePlayViewModel.Paused) {
-
         } else if (gameState instanceof GamePlayViewModel.Playing) {
             onGameRoundLoaded(((GamePlayViewModel.Playing) gameState).mGameData);
         }

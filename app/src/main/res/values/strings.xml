@@ -56,4 +56,15 @@
     <string name="diff_medium">Medium</string>
     <string name="diff_hard">Hard</string>
     <string name="lbl_game_over">Game Over!</string>
+    <string name="up_to_date">You\'re already up to date</string>
+    <string name="update_success">Successfully updated</string>
+    <string name="err_no_connect">Error: Please check your internet connection</string>
+    <string name="tag_header">PUZZLE</string>
+    <string name="lbl_game_mode">Game Mode</string>
+    <string name="lbl_update_words">Update words</string>
+    <string name="lbl_data_rev">data revision:</string>
+    <string name="lbl_updating_words">Downloading words data...</string>
+    <string name="text_generating">Generating :row x :col grid</string>
+    <string name="lbl_load_game_data">Loading game data</string>
+    <string name="text_words">:count words</string>
 </resources>
