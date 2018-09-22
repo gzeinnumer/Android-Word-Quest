@@ -93,7 +93,6 @@ public class ThemeSelectorActivity extends FullscreenActivity {
     @OnClick(R.id.btnUpdate)
     public void onUpdateClick() {
         mLoadingLayout.setVisibility(View.VISIBLE);
-        mRvThemes.setEnabled(false);
         mUpdateDisposable = mViewModel.updateData()
                 .subscribe(responseType -> {
                             updateRevisionNumber();
@@ -133,6 +132,9 @@ public class ThemeSelectorActivity extends FullscreenActivity {
     }
 
     private void updateRevisionNumber() {
-        mTextRev.setText(String.valueOf(mViewModel.getLastDataRevision()));
+        String rev = "-";
+        if (mViewModel.getLastDataRevision() > 0)
+            rev = String.valueOf(mViewModel.getLastDataRevision());
+        mTextRev.setText(rev);
     }
 }
