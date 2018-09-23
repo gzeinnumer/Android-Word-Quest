@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ public class ThemeSelectorActivity extends FullscreenActivity {
     @BindView(R.id.progressBar) ProgressBar mProgressBar;
     @BindView(R.id.rvThemes) RecyclerView mRvThemes;
     @BindView(R.id.textRev) TextView mTextRev;
+    @BindView(R.id.btnUpdate) Button mBtnUpdate;
 
     @Inject
     ViewModelFactory mViewModelFactory;
@@ -96,10 +98,12 @@ public class ThemeSelectorActivity extends FullscreenActivity {
     @OnClick(R.id.btnUpdate)
     public void onUpdateClick() {
         mLoadingLayout.setVisibility(View.VISIBLE);
+        mBtnUpdate.setEnabled(false);
         mUpdateDisposable = mViewModel.updateData()
                 .subscribe(responseType -> {
                             updateRevisionNumber();
                             mLoadingLayout.setVisibility(View.GONE);
+                            mBtnUpdate.setEnabled(true);
                             String message;
                             if (responseType == ThemeSelectorViewModel.ResponseType.NoUpdate) {
                                 message = getString(R.string.up_to_date);
@@ -113,6 +117,7 @@ public class ThemeSelectorActivity extends FullscreenActivity {
                                     .show();
                         }, throwable -> {
                             mLoadingLayout.setVisibility(View.GONE);
+                            mBtnUpdate.setEnabled(true);
                             Toast.makeText(
                                     ThemeSelectorActivity.this,
                                     R.string.err_no_connect,
