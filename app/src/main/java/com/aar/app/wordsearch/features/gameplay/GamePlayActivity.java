@@ -235,8 +235,7 @@ public class GamePlayActivity extends FullscreenActivity {
         }
         else {
             mLetterBoard.popStreakLine();
-
-            mSoundPlayer.play(SoundPlayer.Sound.Wrong);
+//            mSoundPlayer.play(SoundPlayer.Sound.Wrong);
         }
     }
 
