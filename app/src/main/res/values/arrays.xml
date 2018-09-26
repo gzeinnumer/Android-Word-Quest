@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <string-array name="game_round_dimensions">
+    <string-array
+        name="game_round_dimensions"
+        tools:ignore="MissingTranslation">
         <item>4 x 4</item>
         <item>5 x 5</item>
         <item>6 x 6</item>
@@ -41,7 +43,9 @@
         <item>@string/always_snap</item>
         <item>@string/start_end_snap</item>
     </string-array>
-    <string-array name="snap_to_grid_type_prefs_val">
+    <string-array
+        name="snap_to_grid_type_prefs_val"
+        tools:ignore="MissingTranslation">
         <item>ALWAYS_SNAP</item>
         <item>START_END</item>
     </string-array>

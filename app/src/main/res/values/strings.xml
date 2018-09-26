@@ -1,15 +1,15 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Word Search Classic</string>
     <string name="summary_about">Word search game is a puzzle game, where the player try to find words in a grid of letters in horizontal, vertical and diagonal direction.</string>
     <string name="finished">Finished!</string>
 
     <!-- prefs -->
-    <string name="pref_showGridLine">showGridLine</string>
-    <string name="pref_snapToGrid">snapToGrid</string>
-    <string name="pref_enableSound">enableSound</string>
-    <string name="pref_deleteAfterFinish">deleteAfterFinish</string>
-    <string name="pref_enableFullscreen">enableFullscreen</string>
-    <string name="pref_autoScaleGrid">autoScaleGrid</string>
+    <string tools:ignore="MissingTranslation" name="pref_showGridLine">showGridLine</string>
+    <string tools:ignore="MissingTranslation" name="pref_snapToGrid">snapToGrid</string>
+    <string tools:ignore="MissingTranslation" name="pref_enableSound">enableSound</string>
+    <string tools:ignore="MissingTranslation" name="pref_deleteAfterFinish">deleteAfterFinish</string>
+    <string tools:ignore="MissingTranslation" name="pref_enableFullscreen">enableFullscreen</string>
+    <string tools:ignore="MissingTranslation" name="pref_autoScaleGrid">autoScaleGrid</string>
     <string name="snap_to_grid_def_val">ALWAYS_SNAP</string>
     <string name="show_grid_line">Show Grid Line</string>
     <string name="snap_to_grid">Snap To Grid</string>
