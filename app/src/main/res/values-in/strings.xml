@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Word Search Classic</string>
+    <string name="app_name">Word Search Puzzle</string>
     <string name="summary_about">Word search merupakan game puzzle, dimana pemain mencoba untuk mencari kata didalam kotak-kotak huruf secara horizontal, vertikal ataupun diagonal.</string>
     <string name="finished">Selesai!</string>
 

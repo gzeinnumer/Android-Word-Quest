@@ -73,7 +73,7 @@
         </TextSwitcher>
     </FrameLayout>
 
-    <com.aar.app.wordsearch.custom.LetterBoard
+    <com.aar.app.wsp.custom.LetterBoard
         android:id="@+id/letter_board"
         app:gridColumnCount="10"
         app:gridHeight="31dp"
