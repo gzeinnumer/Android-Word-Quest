@@ -1,0 +1,24 @@
+<WordBank theme="Fishes">
+    <item str="BASS"/>
+    <item str="CARP"/>
+    <item str="COD"/>
+    <item str="CRAB"/>
+    <item str="CRAWDAD"/>
+    <item str="CRAYFISH"/>
+    <item str="EEL"/>
+    <item str="HALIBUT"/>
+    <item str="HERRING"/>
+    <item str="LOBSTER"/>
+    <item str="OYSTER"/>
+    <item str="PERCH"/>
+    <item str="PIKE"/>
+    <item str="SALMON"/>
+    <item str="SARDINE"/>
+    <item str="SHARK"/>
+    <item str="SHRIMP"/>
+    <item str="STURGEON"/>
+    <item str="TADPOLE"/>
+    <item str="TROUT"/>
+    <item str="TUNA"/>
+    <item str="SWORDFISH"/>
+</WordBank>

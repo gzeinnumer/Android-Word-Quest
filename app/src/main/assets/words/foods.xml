@@ -1,0 +1,21 @@
+<WordBank theme="Foods"> 
+    <item str="BAGEL"/>
+    <item str="BREAD"/>
+    <item str="CEREAL"/>
+    <item str="CHEESE"/>
+    <item str="CROISSANT"/>
+    <item str="EGG"/>
+    <item str="FISH"/>
+    <item str="KETCHUP"/>
+    <item str="MAYONNAISE"/>
+    <item str="NOODLES"/>
+    <item str="PANCAKES"/>
+    <item str="PASTA"/>
+    <item str="PEANUTS"/>
+    <item str="RICE"/>
+    <item str="ROLL"/>
+    <item str="SALAD"/>
+    <item str="SANDWICH"/>
+    <item str="SHRIMP"/>
+    <item str="TOAST"/>
+</WordBank>

@@ -1,0 +1,24 @@
+<WordBank theme="Insects"> 
+    <item str="ANT"/>
+    <item str="BEE"/>
+    <item str="BEETLE"/>
+    <item str="BUTTERFLY"/>
+    <item str="CATERPILLAR"/>
+    <item str="CENTIPEDE"/>
+    <item str="COCKROACH"/>
+    <item str="CRICKET"/>
+    <item str="DRAGONFLY"/>
+    <item str="FLEA"/>
+    <item str="FLY"/>
+    <item str="GRASSHOPPER"/>
+    <item str="GRUB"/>
+    <item str="LADYBUG"/>
+    <item str="MAGGOT"/>
+    <item str="MOSQUITO"/>
+    <item str="MOTH"/>
+    <item str="SNAIL"/>
+    <item str="SPIDER"/>
+    <item str="TERMITE"/>
+    <item str="TICK"/>
+    <item str="WASP"/>
+</WordBank>
