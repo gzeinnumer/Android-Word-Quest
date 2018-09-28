@@ -19,8 +19,12 @@ import com.aar.app.wsp.model.Word;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -89,6 +93,20 @@ public class ThemeSelectorViewModel extends AndroidViewModel {
                         return Observable.just(ResponseType.Updated);
                     return Observable.just(ResponseType.NoUpdate);
                 });
+    }
+
+    public Single<Boolean> checkWordAvailability(int themeId, int rowCount, int colCount) {
+        int maxChar = Math.max(rowCount, colCount);
+        Single<Integer> singleSource;
+        if (themeId == GameTheme.NONE.getId())
+            singleSource = mWordDataSource.getWordsCount(maxChar);
+        else
+            singleSource = mWordDataSource.getWordsCount(themeId, maxChar);
+
+        return singleSource
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap((Function<Integer, Single<Boolean>>) count -> Single.just(count > 0));
     }
 
     public LiveData<List<GameThemeItem>> getOnGameThemeLoaded() {

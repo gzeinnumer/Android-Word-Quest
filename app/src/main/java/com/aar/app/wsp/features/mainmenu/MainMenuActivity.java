@@ -67,7 +67,10 @@ public class MainMenuActivity extends FullscreenActivity {
 
     @OnClick(R.id.new_game_btn)
     public void onNewGameClick() {
+        int dim = getGridSizeDimension();
         Intent intent = new Intent(this, ThemeSelectorActivity.class);
+        intent.putExtra(ThemeSelectorActivity.EXTRA_ROW_COUNT, dim);
+        intent.putExtra(ThemeSelectorActivity.EXTRA_COL_COUNT, dim);
         startActivityForResult(intent, 100);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
@@ -89,7 +92,7 @@ public class MainMenuActivity extends FullscreenActivity {
     }
 
     private void startNewGame(int gameThemeId) {
-        int dim = mGameRoundDimValues[ mGridSizeSelector.getCurrentIndex() ];
+        int dim = getGridSizeDimension();
         Intent intent = new Intent(MainMenuActivity.this, GamePlayActivity.class);
         intent.putExtra(GamePlayActivity.EXTRA_GAME_DIFFICULTY, getDifficultyFromSpinner());
         intent.putExtra(GamePlayActivity.EXTRA_GAME_MODE, getGameModeFromSpinner());
@@ -127,5 +130,9 @@ public class MainMenuActivity extends FullscreenActivity {
             }
         }
         return Difficulty.Easy;
+    }
+
+    private int getGridSizeDimension() {
+        return mGameRoundDimValues[ mGridSizeSelector.getCurrentIndex() ];
     }
 }

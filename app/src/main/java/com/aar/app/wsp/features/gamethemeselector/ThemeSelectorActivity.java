@@ -1,5 +1,6 @@
 package com.aar.app.wsp.features.gamethemeselector;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ import io.reactivex.disposables.Disposable;
 public class ThemeSelectorActivity extends FullscreenActivity {
 
     public static final String EXTRA_THEME_ID = "game_theme_id";
+    public static final String EXTRA_ROW_COUNT = "row_count";
+    public static final String EXTRA_COL_COUNT = "col_count";
 
     @BindView(R.id.loadingLayout) ViewGroup mLoadingLayout;
     @BindView(R.id.progressBar) ProgressBar mProgressBar;
@@ -131,11 +134,26 @@ public class ThemeSelectorActivity extends FullscreenActivity {
         mViewModel.loadThemes();
     }
 
+    @SuppressLint("CheckResult")
     private void onItemClick(int themeId) {
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_THEME_ID, themeId);
-        setResult(RESULT_OK, intent);
-        finish();
+        mViewModel
+                .checkWordAvailability(
+                        themeId,
+                        getGridRowCount(),
+                        getGridColCount())
+                .subscribe(available -> {
+                    if (available) {
+                        Intent intent = new Intent();
+                        intent.putExtra(EXTRA_THEME_ID, themeId);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else {
+                        Toast.makeText(
+                                ThemeSelectorActivity.this,
+                                "No words data to use, please select another theme or change grid size",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     private void updateRevisionNumber() {
@@ -143,5 +161,21 @@ public class ThemeSelectorActivity extends FullscreenActivity {
         if (mViewModel.getLastDataRevision() > 0)
             rev = String.valueOf(mViewModel.getLastDataRevision());
         mTextRev.setText(rev);
+    }
+
+    private int getGridRowCount() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            return extras.getInt(EXTRA_ROW_COUNT);
+        }
+        return 0;
+    }
+
+    private int getGridColCount() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            return extras.getInt(EXTRA_COL_COUNT);
+        }
+        return 0;
     }
 }

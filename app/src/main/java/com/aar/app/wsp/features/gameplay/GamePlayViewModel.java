@@ -160,19 +160,18 @@ public class GamePlayViewModel extends ViewModel {
             String gameName = getGameDataName();
             setGameState(new Generating(rowCount, colCount, gameName));
 
+            int maxChar = Math.max(rowCount, colCount);
             Flowable<List<Word>> flowableWords;
             if (gameThemeId == GameTheme.NONE.getId()) {
-                flowableWords = mWordDataSource.getWords();
+                flowableWords = mWordDataSource.getWords(maxChar);
             } else {
-                flowableWords = mWordDataSource.getWords(gameThemeId);
+                flowableWords = mWordDataSource.getWords(gameThemeId, maxChar);
             }
 
-            int maxCharCount = Math.min(rowCount, colCount);
             flowableWords.toObservable()
                     .flatMap((Function<List<Word>, Observable<List<Word>>>) words -> {
                         return Flowable.fromIterable(words)
                                 .distinct(Word::getString)
-                                .filter(word -> word.getString().length() <= maxCharCount)
                                 .map(word -> {
                                     word.setString(word.getString().toUpperCase());
                                     return word;

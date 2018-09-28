@@ -31,11 +31,9 @@ public class GameDataCreator {
 
         Util.randomizeList(words);
 
+        int maxIndex = Math.min(256, words.size() - 1);
         Grid grid = new Grid(rowCount, colCount);
-        int maxCharCount = Math.min(rowCount, colCount);
-        List<Word> usedWords =
-                new StringListGridGenerator()
-                        .setGrid(filterWordList(words, 100, maxCharCount), grid.getArray());
+        List<Word> usedWords = new StringListGridGenerator().setGrid(words.subList(0, maxIndex), grid.getArray());
 
         gameData.addUsedWords(buildUsedWordFromWord(usedWords));
         gameData.setGrid(grid);
@@ -67,18 +65,4 @@ public class GameDataCreator {
         return usedWords;
     }
 
-    private List<Word> filterWordList(List<Word> words, int count, int maxCharCount) {
-        count = Math.min(count, words.size());
-
-        List<Word> wordList = new ArrayList<>();
-        for (int i = 0; i < words.size(); i++) {
-            if (wordList.size() >= count) break;
-
-            if (words.get(i).getString().length() <= maxCharCount) {
-                wordList.add(words.get(i));
-            }
-        }
-
-        return wordList;
-    }
 }
