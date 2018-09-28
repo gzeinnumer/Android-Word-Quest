@@ -56,7 +56,7 @@ public class Preferences {
     }
 
     public boolean enableFullscreen() {
-        return mPreferences.getBoolean(KEY_ENABLE_FULLSCREEN, false);
+        return mPreferences.getBoolean(KEY_ENABLE_FULLSCREEN, true);
     }
 
     public boolean deleteAfterFinish() {

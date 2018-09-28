@@ -15,7 +15,7 @@
             android:title="@string/enable_fullscreen"
             android:icon="@drawable/ic_fullscreen"
             android:key="@string/pref_enableFullscreen"
-            android:defaultValue="false"/>
+            android:defaultValue="true"/>
 
     </PreferenceCategory>
 
