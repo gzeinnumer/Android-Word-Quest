@@ -74,4 +74,5 @@
     <string name="start_end_snap">Start and End</string>
     <string name="pref_title_game_play">Game Play</string>
     <string name="pref_title_general">General</string>
+    <string name="privacy_policy">Privacy Policy</string>
 </resources>

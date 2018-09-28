@@ -69,13 +69,18 @@
     <PreferenceCategory
         android:title="@string/about">
 
-        <Preference
-            android:selectable="false"
-            android:summary="@string/summary_about"/>
+        <Preference android:title="@string/privacy_policy">
+            <intent android:action="android.intent.action.VIEW"
+                    android:data="https://abdularis.com/app/wsp/privacy_policy.html"/>
+        </Preference>
 
         <Preference
             android:title="@string/version"
             android:summary="@string/version_num"/>
+
+        <Preference
+            android:selectable="false"
+            android:summary="@string/summary_about"/>
 
         <Preference
             android:selectable="false"
