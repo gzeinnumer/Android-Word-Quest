@@ -1,6 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Word Search Puzzle</string>
-    <string name="summary_about">Word search game is a puzzle game, where the player try to find words in a grid of letters in horizontal, vertical and diagonal direction.</string>
+    <string name="summary_about">Word search game is a puzzle game, where the player try to find words in a grid of letters in horizontal, vertical and diagonal direction.
+        \nSounds:
+        \ncorrect (https://freesound.org/s/131660/) &amp; wrong (https://freesound.org/s/131657/) sound effects by Bertrof, winning (https://freesound.org/s/258142/) sound effect by Tuudurt\n
+    </string>
     <string name="finished">Finished!</string>
 
     <!-- prefs -->

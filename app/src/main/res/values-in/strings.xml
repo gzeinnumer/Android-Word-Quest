@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Word Search Puzzle</string>
-    <string name="summary_about">Word search merupakan game puzzle, dimana pemain mencoba untuk mencari kata didalam kotak-kotak huruf secara horizontal, vertikal ataupun diagonal.</string>
+    <string name="summary_about">Word search merupakan game puzzle, dimana pemain mencoba untuk mencari kata didalam kotak-kotak huruf secara horizontal, vertikal ataupun diagonal.
+        \nSounds:
+        \ncorrect (https://freesound.org/s/131660/) &amp; wrong (https://freesound.org/s/131657/) sound effects by Bertrof, winning (https://freesound.org/s/258142/) sound effect by Tuudurt\n
+    </string>
     <string name="finished">Selesai!</string>
 
     <!-- prefs -->
