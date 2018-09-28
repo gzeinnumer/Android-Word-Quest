@@ -235,7 +235,7 @@ public class GamePlayActivity extends FullscreenActivity {
         }
         else {
             mLetterBoard.popStreakLine();
-//            mSoundPlayer.play(SoundPlayer.Sound.Wrong);
+            mSoundPlayer.play(SoundPlayer.Sound.Wrong);
         }
     }
 
@@ -395,6 +395,7 @@ public class GamePlayActivity extends FullscreenActivity {
                 }
             });
             mTextComplete.setText(R.string.lbl_complete);
+            new Handler().postDelayed(() -> mSoundPlayer.play(SoundPlayer.Sound.Winning), 600);
         } else {
             mTextComplete.setText(R.string.lbl_game_over);
         }

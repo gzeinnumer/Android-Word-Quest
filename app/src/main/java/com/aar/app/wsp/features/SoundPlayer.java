@@ -17,13 +17,14 @@ import javax.inject.Inject;
 public class SoundPlayer {
 
     public enum Sound {
-        Correct, Wrong
+        Correct, Wrong, Winning
     }
 
     private Preferences mPreferences;
 
     private SoundPool mSoundPool;
     private SparseIntArray mSoundPoolMap;
+    private int mBackgroundMusic;
 
     @Inject
     public SoundPlayer(Context context, Preferences preferences) {
@@ -47,6 +48,10 @@ public class SoundPlayer {
                 mSoundPool.load(context, R.raw.correct, 1));
         mSoundPoolMap.put(Sound.Wrong.ordinal(),
                 mSoundPool.load(context, R.raw.wrong, 1));
+        mSoundPoolMap.put(Sound.Winning.ordinal(),
+                mSoundPool.load(context, R.raw.winning, 1));
+
+        mBackgroundMusic = mSoundPool.load(context, R.raw.music, 1);
     }
 
 }
