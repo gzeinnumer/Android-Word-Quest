@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:animateLayoutChanges="true"
     android:background="@android:color/white"
     android:orientation="vertical"
     tools:context="com.aar.app.wsp.features.gameplay.GamePlayActivity">
 
-    <include layout="@layout/partial_game_header"/>
+    <include
+        android:id="@+id/layout1"
+        layout="@layout/partial_game_header"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout1">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -37,9 +43,10 @@
 
         <include layout="@layout/partial_game_content"/>
 
-        <include layout="@layout/partial_game_complete"
+        <include
+            layout="@layout/partial_game_complete"
             android:visibility="gone"/>
 
     </FrameLayout>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

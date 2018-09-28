@@ -161,57 +161,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"/>
 
-    <!--<View-->
-        <!--android:id="@+id/view2"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginLeft="16dp"-->
-        <!--android:layout_marginRight="8dp"-->
-        <!--android:layout_marginStart="16dp"-->
-        <!--android:background="#3d000000"-->
-        <!--app:layout_constraintBottom_toBottomOf="@+id/textView2"-->
-        <!--app:layout_constraintEnd_toStartOf="@+id/textView2"-->
-        <!--app:layout_constraintStart_toStartOf="@+id/selectorGridSize"-->
-        <!--app:layout_constraintTop_toTopOf="@+id/textView2"/>-->
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/admob_ads_unit1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-    <!--<View-->
-        <!--android:id="@+id/view"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:layout_marginEnd="16dp"-->
-        <!--android:layout_marginLeft="8dp"-->
-        <!--android:layout_marginRight="16dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:background="#3d000000"-->
-        <!--app:layout_constraintBottom_toBottomOf="@+id/textView2"-->
-        <!--app:layout_constraintEnd_toEndOf="@+id/selectorGridSize"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/textView2"-->
-        <!--app:layout_constraintTop_toTopOf="@+id/textView2"/>-->
-
-    <!--<View-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginLeft="16dp"-->
-        <!--android:layout_marginRight="8dp"-->
-        <!--android:layout_marginStart="16dp"-->
-        <!--android:background="#3d000000"-->
-        <!--app:layout_constraintBottom_toBottomOf="@+id/textView"-->
-        <!--app:layout_constraintEnd_toStartOf="@+id/textView"-->
-        <!--app:layout_constraintStart_toStartOf="@+id/selectorGridSize"-->
-        <!--app:layout_constraintTop_toTopOf="@+id/textView"/>-->
-
-    <!--<View-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:layout_marginEnd="16dp"-->
-        <!--android:layout_marginLeft="8dp"-->
-        <!--android:layout_marginRight="16dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:background="#3d000000"-->
-        <!--app:layout_constraintBottom_toBottomOf="@+id/textView"-->
-        <!--app:layout_constraintEnd_toEndOf="@+id/selectorGridSize"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/textView"-->
-        <!--app:layout_constraintTop_toTopOf="@+id/textView"/>-->
 </android.support.constraint.ConstraintLayout>

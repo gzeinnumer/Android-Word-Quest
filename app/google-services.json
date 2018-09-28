@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "668752209022",
+    "firebase_url": "https://word-search-backend.firebaseio.com",
+    "project_id": "word-search-backend",
+    "storage_bucket": "word-search-backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:668752209022:android:80eca29ed24c8f18",
+        "android_client_info": {
+          "package_name": "com.aar.app.wsp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "668752209022-muomsm8ncnrpl3knpiki8ni0tuecfigb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSPlN3Vnly1y9_-h5Xii2Y5gvTv9QISWw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -44,6 +44,10 @@
         </activity>
         <activity android:name="com.aar.app.wsp.features.gamethemeselector.ThemeSelectorActivity">
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id"/>
     </application>
 
 </manifest>

@@ -15,6 +15,9 @@ import com.aar.app.wsp.model.GameMode;
 import com.aar.app.wsp.model.GameTheme;
 import com.aar.app.wsp.features.settings.SettingsActivity;
 import com.github.abdularis.horizontalselector.HorizontalSelector;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import butterknife.BindArray;
 import butterknife.BindView;
@@ -27,6 +30,7 @@ public class MainMenuActivity extends FullscreenActivity {
     @BindView(R.id.selectorGridSize) HorizontalSelector mGridSizeSelector;
     @BindView(R.id.selectorGameMode) HorizontalSelector mGameModeSelector;
     @BindView(R.id.imageEnjoy) View mEnjoy;
+    @BindView(R.id.adView) AdView mAdView;
 
     @BindArray(R.array.game_round_dimension_values) int[] mGameRoundDimValues;
 
@@ -46,6 +50,12 @@ public class MainMenuActivity extends FullscreenActivity {
             } else {
                 mDifficultySelector.setVisibility(View.GONE);
             }
+        });
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            
         });
     }
 
