@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.aar.app.wsp.R;
@@ -11,7 +12,7 @@ import com.aar.app.wsp.features.ViewModelFactory;
 import com.aar.app.wsp.WordSearchApp;
 import com.aar.app.wsp.commons.DurationFormatter;
 import com.aar.app.wsp.features.gameplay.GamePlayActivity;
-import com.aar.app.wsp.model.GameDataInfo;
+import com.aar.app.wsp.model.GameData;
 import com.aar.app.wsp.features.FullscreenActivity;
 
 import javax.inject.Inject;
@@ -27,10 +28,9 @@ public class GameOverActivity extends FullscreenActivity {
     @Inject
     ViewModelFactory mViewModelFactory;
 
-    @BindView(R.id.game_stat_text)
-    TextView mGameStatText;
+    @BindView(R.id.textCongrat) TextView mTextCongrat;
+    @BindView(R.id.game_stat_text) TextView mTextGameStat;
 
-    private int mGameId;
     private GameOverViewModel mViewModel;
 
     @Override
@@ -42,7 +42,7 @@ public class GameOverActivity extends FullscreenActivity {
         ((WordSearchApp) getApplication()).getAppComponent().inject(this);
 
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(GameOverViewModel.class);
-        mViewModel.getOnGameDataInfoLoaded().observe(this, this::showGameStat);
+        mViewModel.getOnGameDataLoaded().observe(this, this::showGameStat);
         mViewModel.getOnGameDataReset().observe(this, gameDataId -> {
             Intent i = new Intent(GameOverActivity.this, GamePlayActivity.class);
             i.putExtra(GamePlayActivity.EXTRA_GAME_DATA_ID, gameDataId);
@@ -51,8 +51,8 @@ public class GameOverActivity extends FullscreenActivity {
         });
 
         if (getIntent().getExtras() != null) {
-            mGameId = getIntent().getExtras().getInt(EXTRA_GAME_ROUND_ID);
-            mViewModel.loadData(mGameId);
+            int gid = getIntent().getExtras().getInt(EXTRA_GAME_ROUND_ID);
+            mViewModel.loadData(gid);
         }
     }
 
@@ -74,20 +74,27 @@ public class GameOverActivity extends FullscreenActivity {
 
     private void goToMainMenu() {
         if (getPreferences().deleteAfterFinish()) {
-            mViewModel.deleteGameRound(mGameId);
+            mViewModel.deleteGameRound();
         }
         NavUtils.navigateUpTo(this, new Intent());
         finish();
     }
 
-    public void showGameStat(GameDataInfo info) {
-        String strGridSize = info.getGridRowCount() + " x " + info.getGridColCount();
+    public void showGameStat(GameData gd) {
+        if (gd.isGameOver()) {
+            mTextCongrat.setText(R.string.lbl_game_over);
+            mTextGameStat.setVisibility(View.GONE);
+        } else {
+            String strGridSize = gd.getGrid().getRowCount() + " x " + gd.getGrid().getColCount();
 
-        String str = getString(R.string.finish_text);
-        str = str.replaceAll(":gridSize", strGridSize);
-        str = str.replaceAll(":uwCount", String.valueOf(info.getUsedWordsCount()));
-        str = str.replaceAll(":duration", DurationFormatter.fromInteger(info.getDuration()));
+            String str = getString(R.string.finish_text);
+            str = str.replaceAll(":gridSize", strGridSize);
+            str = str.replaceAll(":uwCount", String.valueOf(gd.getUsedWords().size()));
+            str = str.replaceAll(":duration", DurationFormatter.fromInteger(gd.getDuration()));
 
-        mGameStatText.setText(str);
+            mTextCongrat.setText(R.string.congratulations);
+            mTextGameStat.setVisibility(View.VISIBLE);
+            mTextGameStat.setText(str);
+        }
     }
 }

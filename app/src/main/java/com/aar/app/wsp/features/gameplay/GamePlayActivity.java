@@ -389,24 +389,24 @@ public class GamePlayActivity extends FullscreenActivity {
         anim.setInterpolator(new DecelerateInterpolator());
         anim.setDuration(500);
         anim.setStartOffset(1000);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                new Handler().postDelayed(() -> {
+                    Intent intent = new Intent(GamePlayActivity.this, GameOverActivity.class);
+                    intent.putExtra(GameOverActivity.EXTRA_GAME_ROUND_ID, state.mGameData.getId());
+                    startActivity(intent);
+                    finish();
+                }, 800);
+            }
+        });
 
         if (state.win) {
-            anim.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {}
-                @Override
-                public void onAnimationRepeat(Animation animation) {}
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    new Handler().postDelayed(() -> {
-                        Intent intent = new Intent(GamePlayActivity.this, GameOverActivity.class);
-                        intent.putExtra(GameOverActivity.EXTRA_GAME_ROUND_ID, state.mGameData.getId());
-                        startActivity(intent);
-                        finish();
-                    }, 800);
-                }
-            });
             mTextComplete.setText(R.string.lbl_complete);
             new Handler().postDelayed(() -> mSoundPlayer.play(SoundPlayer.Sound.Winning), 600);
         } else {

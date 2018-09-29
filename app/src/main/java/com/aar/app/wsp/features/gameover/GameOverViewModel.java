@@ -8,7 +8,7 @@ import android.arch.lifecycle.ViewModel;
 import com.aar.app.wsp.commons.SingleLiveEvent;
 import com.aar.app.wsp.data.room.UsedWordDataSource;
 import com.aar.app.wsp.data.sqlite.GameDataSource;
-import com.aar.app.wsp.model.GameDataInfo;
+import com.aar.app.wsp.model.GameData;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -20,8 +20,8 @@ public class GameOverViewModel extends ViewModel {
 
     private GameDataSource mGameDataSource;
     private UsedWordDataSource mUsedWordDataSource;
-    private GameDataInfo mGameDataInfo;
-    private MutableLiveData<GameDataInfo> mOnGameDataInfoLoaded = new MutableLiveData<>();
+    private GameData mGameData;
+    private MutableLiveData<GameData> mOnGameDataLoaded = new MutableLiveData<>();
     private SingleLiveEvent<Integer> mOnGameDataReset = new SingleLiveEvent<>();
 
     public GameOverViewModel(GameDataSource gameDataSource, UsedWordDataSource usedWordDataSource) {
@@ -32,20 +32,21 @@ public class GameOverViewModel extends ViewModel {
     @SuppressLint("CheckResult")
     public void loadData(int gid) {
         Observable
-                .create((ObservableOnSubscribe<GameDataInfo>) e -> {
-                    mGameDataInfo = mGameDataSource.getGameDataInfo(gid);
-                    e.onNext(mGameDataInfo);
+                .create((ObservableOnSubscribe<GameData>) e -> {
+                    mGameData = mGameDataSource.getGameData(gid);
+                    e.onNext(mGameData);
                     e.onComplete();
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mOnGameDataInfoLoaded::setValue);
+                .subscribe(mOnGameDataLoaded::setValue);
     }
 
-    public void deleteGameRound(int gid) {
+    public void deleteGameRound() {
+        if (mGameData == null) return;
         Completable
                 .create(e -> {
-                    mGameDataSource.deleteGameData(gid);
+                    mGameDataSource.deleteGameData(mGameData.getId());
                     e.onComplete();
                 })
                 .subscribeOn(Schedulers.io())
@@ -55,16 +56,16 @@ public class GameOverViewModel extends ViewModel {
 
     @SuppressLint("CheckResult")
     public void resetCurrentGameData() {
-        if (mGameDataInfo != null) {
+        if (mGameData != null) {
             Completable
                     .create(e -> {
-                        mUsedWordDataSource.resetUsedWords(mGameDataInfo.getId());
-                        mGameDataSource.saveGameDataDuration(mGameDataInfo.getId(), 0);
+                        mUsedWordDataSource.resetUsedWords(mGameData.getId());
+                        mGameDataSource.saveGameDataDuration(mGameData.getId(), 0);
                         e.onComplete();
                     })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> mOnGameDataReset.setValue(mGameDataInfo.getId()));
+                    .subscribe(() -> mOnGameDataReset.setValue(mGameData.getId()));
         }
     }
 
@@ -72,7 +73,7 @@ public class GameOverViewModel extends ViewModel {
         return mOnGameDataReset;
     }
 
-    public LiveData<GameDataInfo> getOnGameDataInfoLoaded() {
-        return mOnGameDataInfoLoaded;
+    public LiveData<GameData> getOnGameDataLoaded() {
+        return mOnGameDataLoaded;
     }
 }
