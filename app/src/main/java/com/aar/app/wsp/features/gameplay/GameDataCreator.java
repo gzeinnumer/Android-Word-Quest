@@ -31,7 +31,7 @@ public class GameDataCreator {
 
         Util.randomizeList(words);
 
-        int maxIndex = Math.min(256, words.size() - 1);
+        int maxIndex = Math.min(256, words.size());
         Grid grid = new Grid(rowCount, colCount);
         List<Word> usedWords = new StringListGridGenerator().setGrid(words.subList(0, maxIndex), grid.getArray());
 
