@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Word Search Puzzle</string>
-    <string name="summary_about">Word search merupakan game puzzle, dimana pemain mencoba untuk mencari kata didalam kotak-kotak huruf secara horizontal, vertikal ataupun diagonal.
+    <string name="summary_about">
+        Permainan teka-teki kata dengan level dinamis.
         \nSounds:
         \ncorrect (https://freesound.org/s/131660/) &amp; wrong (https://freesound.org/s/131657/) sound effects by Bertrof, winning (https://freesound.org/s/258142/) sound effect by Tuudurt\n
     </string>
@@ -26,7 +27,7 @@
     <string name="new_game">Mainkan</string>
     <string name="auto_scale_grid_summary">Secara otomatis mengubah ukuran grid sesuai ukuran layar</string>
     <string name="pref_reverseMatching">reverseMatching</string>
-    <string name="reverse_matching">Pencocokan Terbalik</string>
+    <string name="reverse_matching">Pencarian Terbalik</string>
     <string name="pref_grayscale">grayscale</string>
     <string name="grayscale">Hitam Putih</string>
     <string name="game_data_desc">Grid :gridSize, :wordCount Kata</string>
@@ -67,6 +68,7 @@
     <string name="always_snap">Selalu</string>
     <string name="start_end_snap">Awal dan Akhir</string>
     <string name="pref_title_game_play">Permainan</string>
-    <string name="pref_title_general">Umum</string>
     <string name="privacy_policy">Kebijakan Privasi</string>
+    <string name="summ_reverse_match">Izinkan pencarian/seleksi kata secara terbalik</string>
+    <string name="summ_del_finish">Hapus data permainan setelah selesai</string>
 </resources>
