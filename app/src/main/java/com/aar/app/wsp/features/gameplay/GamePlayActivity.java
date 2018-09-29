@@ -411,6 +411,7 @@ public class GamePlayActivity extends FullscreenActivity {
             new Handler().postDelayed(() -> mSoundPlayer.play(SoundPlayer.Sound.Winning), 600);
         } else {
             mTextComplete.setText(R.string.lbl_game_over);
+            new Handler().postDelayed(() -> mSoundPlayer.play(SoundPlayer.Sound.Lose), 600);
         }
 
         mLayoutComplete.setVisibility(View.VISIBLE);

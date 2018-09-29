@@ -2,8 +2,8 @@
     <string name="app_name">Word Search Puzzle</string>
     <string name="summary_about">
         Permainan teka-teki kata dengan level dinamis.
-        \nSounds:
-        \ncorrect (https://freesound.org/s/131660/) &amp; wrong (https://freesound.org/s/131657/) sound effects by Bertrof, winning (https://freesound.org/s/258142/) sound effect by Tuudurt\n
+        \n\nSound effects:
+        \ncorrect (https://freesound.org/s/131660/) &amp; wrong (https://freesound.org/s/131657/) by Bertrof, winning (https://freesound.org/s/258142/) by Tuudurt, lose (https://freesound.org/s/270329/) by LittleRobotSoundFactory\n
     </string>
     <string name="finished">Selesai!</string>
 

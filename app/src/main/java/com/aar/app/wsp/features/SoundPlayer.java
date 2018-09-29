@@ -17,7 +17,7 @@ import javax.inject.Inject;
 public class SoundPlayer {
 
     public enum Sound {
-        Correct, Wrong, Winning
+        Correct, Wrong, Winning, Lose
     }
 
     private Preferences mPreferences;
@@ -49,6 +49,8 @@ public class SoundPlayer {
                 mSoundPool.load(context, R.raw.wrong, 1));
         mSoundPoolMap.put(Sound.Winning.ordinal(),
                 mSoundPool.load(context, R.raw.winning, 1));
+        mSoundPoolMap.put(Sound.Lose.ordinal(),
+                mSoundPool.load(context, R.raw.lose, 1));
     }
 
 }
