@@ -11,6 +11,7 @@ import com.aar.app.wsp.commons.Util;
 import com.aar.app.wsp.data.room.UsedWordDataSource;
 import com.aar.app.wsp.data.room.WordDataSource;
 import com.aar.app.wsp.data.sqlite.GameDataSource;
+import com.aar.app.wsp.features.settings.Preferences;
 import com.aar.app.wsp.model.GameData;
 import com.aar.app.wsp.model.Difficulty;
 import com.aar.app.wsp.model.GameMode;
@@ -85,6 +86,7 @@ public class GamePlayViewModel extends ViewModel {
     private GameDataSource mGameDataSource;
     private WordDataSource mWordDataSource;
     private UsedWordDataSource mUsedWordDataSource;
+    private Preferences mPreferences;
     private GameDataCreator mGameDataCreator;
     private GameData mCurrentGameData;
     private Timer mTimer;
@@ -101,11 +103,13 @@ public class GamePlayViewModel extends ViewModel {
 
     public GamePlayViewModel(GameDataSource gameDataSource,
                              WordDataSource wordDataSource,
-                             UsedWordDataSource usedWordDataSource) {
+                             UsedWordDataSource usedWordDataSource,
+                             Preferences preferences) {
         mGameDataSource = gameDataSource;
         mWordDataSource = wordDataSource;
         mUsedWordDataSource = usedWordDataSource;
         mGameDataCreator = new GameDataCreator();
+        mPreferences = preferences;
 
         mTimer = new Timer(TIMER_TIMEOUT);
         mTimer.addOnTimeoutListener(this::onTimerTimeout);
@@ -279,9 +283,9 @@ public class GamePlayViewModel extends ViewModel {
     }
 
     private String getGameDataName() {
-        String date = new SimpleDateFormat("yyyy-M-d H:m:s", Locale.getDefault())
-                .format(new Date(System.currentTimeMillis()));
-        return "Puzzle - " + date;
+        String num = String.valueOf(mPreferences.getPreviouslySavedGameDataCount());
+        mPreferences.incrementSavedGameDataCount();
+        return "Puzzle - " + num;
     }
 
     private int getMaxCountDownDuration(int usedWordsCount, Difficulty difficulty) {

@@ -14,6 +14,7 @@ import com.aar.app.wsp.features.gamehistory.GameHistoryViewModel;
 import com.aar.app.wsp.features.gameover.GameOverViewModel;
 import com.aar.app.wsp.features.gameplay.GamePlayViewModel;
 import com.aar.app.wsp.features.gamethemeselector.ThemeSelectorViewModel;
+import com.aar.app.wsp.features.settings.Preferences;
 
 import javax.inject.Singleton;
 
@@ -54,14 +55,15 @@ public class AppModule {
     @Provides
     @Singleton
     ViewModelFactory provideViewModelFactory(Application app,
+                                             Preferences preferences,
                                              GameDataSource gameDataSource,
                                              WordDataSource wordDataSource,
                                              UsedWordDataSource usedWordDataSource,
                                              GameThemeDataSource gameThemeDataSource) {
         return new ViewModelFactory(
                 new GameOverViewModel(gameDataSource, usedWordDataSource),
-                new GamePlayViewModel(gameDataSource, wordDataSource, usedWordDataSource),
-                new GameHistoryViewModel(gameDataSource),
+                new GamePlayViewModel(gameDataSource, wordDataSource, usedWordDataSource, preferences),
+                new GameHistoryViewModel(gameDataSource, preferences),
                 new ThemeSelectorViewModel(app, gameThemeDataSource, wordDataSource)
         );
     }

@@ -77,7 +77,7 @@ public class Preferences {
 
     public void resetSaveGameDataCount() {
         mPreferences.edit()
-                .putInt(KEY_PREV_SAVE_GAME_DATA_COUNT, 0)
+                .putInt(KEY_PREV_SAVE_GAME_DATA_COUNT, 1)
                 .apply();
     }
 
@@ -88,6 +88,6 @@ public class Preferences {
     }
 
     public int getPreviouslySavedGameDataCount() {
-        return mPreferences.getInt(KEY_PREV_SAVE_GAME_DATA_COUNT, 0);
+        return mPreferences.getInt(KEY_PREV_SAVE_GAME_DATA_COUNT, 1);
     }
 }

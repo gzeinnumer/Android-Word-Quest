@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.aar.app.wsp.data.sqlite.GameDataSource;
+import com.aar.app.wsp.features.settings.Preferences;
 import com.aar.app.wsp.model.GameDataInfo;
 
 import java.util.ArrayList;
@@ -20,11 +21,13 @@ import io.reactivex.schedulers.Schedulers;
 public class GameHistoryViewModel extends ViewModel {
 
     private GameDataSource mGameDataSource;
+    private Preferences mPreferences;
     private MutableLiveData<List<GameDataInfo>> mOnGameDataInfoLoaded;
 
-    public GameHistoryViewModel(GameDataSource gameDataSource) {
+    public GameHistoryViewModel(GameDataSource gameDataSource, Preferences preferences) {
         mGameDataSource = gameDataSource;
         mOnGameDataInfoLoaded = new MutableLiveData<>();
+        mPreferences = preferences;
     }
 
     @SuppressLint("CheckResult")
@@ -36,7 +39,12 @@ public class GameHistoryViewModel extends ViewModel {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mOnGameDataInfoLoaded::setValue);
+                .subscribe(gameDataInfos -> {
+                    mOnGameDataInfoLoaded.setValue(gameDataInfos);
+                    if (gameDataInfos.size() <= 0) {
+                        mPreferences.resetSaveGameDataCount();
+                    }
+                });
     }
 
     @SuppressLint("CheckResult")
@@ -60,7 +68,10 @@ public class GameHistoryViewModel extends ViewModel {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> mOnGameDataInfoLoaded.setValue(new ArrayList<>()));
+                .subscribe(() -> {
+                    mOnGameDataInfoLoaded.setValue(new ArrayList<>());
+                    mPreferences.resetSaveGameDataCount();
+                });
     }
 
     public LiveData<List<GameDataInfo>> getOnGameDataInfoLoaded() {
