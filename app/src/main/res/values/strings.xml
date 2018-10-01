@@ -36,7 +36,7 @@
     <string name="reverse_matching">Reverse matching</string>
     <string name="pref_grayscale">grayscale</string>
     <string name="grayscale">Grayscale</string>
-    <string name="game_data_desc">:gridSize Grid, :wordCount Words</string>
+    <string name="game_data_desc">:gridSize, :wordCount Words</string>
     <string name="empty_count">-</string>
     <string name="count_divider">/</string>
     <string name="init_duration">00:00</string>

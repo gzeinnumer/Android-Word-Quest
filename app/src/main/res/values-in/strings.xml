@@ -30,7 +30,7 @@
     <string name="reverse_matching">Pencarian Terbalik</string>
     <string name="pref_grayscale">grayscale</string>
     <string name="grayscale">Hitam Putih</string>
-    <string name="game_data_desc">Grid :gridSize, :wordCount Kata</string>
+    <string name="game_data_desc">:gridSize, :wordCount Kata</string>
     <string name="empty_count">-</string>
     <string name="count_divider">/</string>
     <string name="init_duration">00:00</string>
