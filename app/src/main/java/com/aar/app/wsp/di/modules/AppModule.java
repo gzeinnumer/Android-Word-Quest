@@ -52,8 +52,8 @@ public class AppModule {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
+    // TODO: Optimize this
     @Provides
-    @Singleton
     ViewModelFactory provideViewModelFactory(Application app,
                                              Preferences preferences,
                                              GameDataSource gameDataSource,

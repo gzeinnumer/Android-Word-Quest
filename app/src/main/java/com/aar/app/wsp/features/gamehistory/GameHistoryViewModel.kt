@@ -30,11 +30,9 @@ class GameHistoryViewModel(
     }
 
     fun loadGameHistory() {
-        Observable
-            .create(ObservableOnSubscribe { e: ObservableEmitter<List<GameDataInfo>> ->
-                e.onNext(gameDataSource.gameDataInfos)
-                e.onComplete()
-            } as ObservableOnSubscribe<List<GameDataInfo>>)
+        Single.create<List<GameDataInfo>> {
+            it.onSuccess(gameDataSource.gameDataInfos)
+        }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { gameDataInfoList ->
