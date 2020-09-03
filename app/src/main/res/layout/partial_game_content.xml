@@ -22,7 +22,7 @@
             android:id="@+id/flexbox_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="2dp"
+            android:padding="@dimen/_2sdp"
             app:flexWrap="wrap"
             app:justifyContent="center"/>
 
@@ -31,7 +31,7 @@
     <FrameLayout
         android:id="@+id/layoutCurrentWord"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="@dimen/_32sdp"
         app:layout_constraintBottom_toTopOf="@+id/letter_board"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -58,7 +58,7 @@
                 android:layout_gravity="center"
                 tools:text="Text"
                 android:textColor="#683102"
-                android:textSize="18sp"
+                android:textSize="@dimen/_18ssp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -67,7 +67,7 @@
                 android:layout_gravity="center"
                 tools:text="Text 2"
                 android:textColor="#683102"
-                android:textSize="18sp"
+                android:textSize="@dimen/_18ssp"
                 android:textStyle="bold"/>
 
         </TextSwitcher>
@@ -76,21 +76,23 @@
     <com.aar.app.wsp.custom.LetterBoard
         android:id="@+id/letter_board"
         app:gridColumnCount="10"
-        app:gridHeight="31dp"
+        app:gridHeight="@dimen/_31sdp"
         app:gridLineVisibility="true"
         app:gridRowCount="10"
-        app:gridWidth="31dp"
+        app:gridWidth="@dimen/_31sdp"
+        app:streakWidth="@dimen/_16sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:letterColor="@android:color/black"
+        app:letterSize="@dimen/_14ssp"
         app:lineColor="@color/gridLine"
         app:lineWidth="1px"
         app:snapToGrid="START_END"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="@dimen/_4sdp"
         android:visibility="visible"/>
 
     <TextView
@@ -103,13 +105,13 @@
         tools:text="Popup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="6dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="6dp"
+        android:paddingBottom="@dimen/_6sdp"
+        android:paddingLeft="@dimen/_12sdp"
+        android:paddingRight="@dimen/_12sdp"
+        android:paddingTop="@dimen/_6sdp"
         android:textAllCaps="false"
         android:textColor="@color/colorAccent"
-        android:textSize="28sp"
+        android:textSize="@dimen/_28ssp"
         android:textStyle="bold"
         android:visibility="visible">
 
