@@ -33,9 +33,6 @@ import com.aar.app.wsp.model.Difficulty;
 import com.aar.app.wsp.model.GameMode;
 import com.aar.app.wsp.model.UsedWord;
 import com.google.android.flexbox.FlexboxLayout;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 import java.util.List;
 
@@ -86,7 +83,6 @@ public class GamePlayActivity extends FullscreenActivity {
     @BindView(R.id.loading) View mLoading;
     @BindView(R.id.loadingText) TextView mLoadingText;
     @BindView(R.id.content_layout) View mContentLayout;
-    @BindView(R.id.adView) AdView mAdView;
 
     @BindColor(R.color.gray) int mGrayColor;
     @BindString(R.string.hidden_mask) String mHiddenMaskString;
@@ -182,15 +178,6 @@ public class GamePlayActivity extends FullscreenActivity {
             public void onAnimationEnd(Animation animation) {
                 mTextPopup.setVisibility(View.GONE);
                 mTextPopup.setText("");
-            }
-        });
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                mAdView.setVisibility(View.VISIBLE);
             }
         });
     }

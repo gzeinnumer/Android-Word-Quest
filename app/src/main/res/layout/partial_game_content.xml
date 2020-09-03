@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/adView">
+        app:layout_constraintBottom_toTopOf="@id/layoutCurrentWord">
 
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/flexbox_layout"
@@ -27,16 +27,6 @@
             app:justifyContent="center"/>
 
     </ScrollView>
-
-    <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/admob_ads_unit1"
-        ads:layout_constraintBottom_toTopOf="@id/layoutCurrentWord"/>
 
     <FrameLayout
         android:id="@+id/layoutCurrentWord"
