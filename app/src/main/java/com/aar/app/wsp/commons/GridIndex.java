@@ -9,10 +9,6 @@ public class GridIndex {
     public int row;
     public int col;
 
-    public GridIndex() {
-        this(0, 0);
-    }
-
     public GridIndex(int row, int col) {
         set(row, col);
     }
