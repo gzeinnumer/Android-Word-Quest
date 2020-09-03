@@ -1,7 +1,7 @@
 package com.aar.app.wsp.features.gameplay;
 
 import android.animation.ObjectAnimator;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;

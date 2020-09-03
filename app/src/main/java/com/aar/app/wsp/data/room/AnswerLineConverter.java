@@ -1,6 +1,6 @@
 package com.aar.app.wsp.data.room;
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 
 import com.aar.app.wsp.model.UsedWord;
 

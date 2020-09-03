@@ -1,8 +1,8 @@
 package com.aar.app.wsp.features;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.annotation.NonNull;
 
 import com.aar.app.wsp.features.gamehistory.GameHistoryViewModel;
 import com.aar.app.wsp.features.gameover.GameOverViewModel;

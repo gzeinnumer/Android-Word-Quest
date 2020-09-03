@@ -1,6 +1,6 @@
 package com.aar.app.wsp.features.gamethemeselector;
 
-import android.arch.persistence.room.ColumnInfo;
+import androidx.room.ColumnInfo;
 
 public class GameThemeItem {
     @ColumnInfo(name = "id")

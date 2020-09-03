@@ -1,9 +1,9 @@
 package com.aar.app.wsp.features.gameover;
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.aar.app.wsp.commons.SingleLiveEvent;
 import com.aar.app.wsp.data.room.UsedWordDataSource;

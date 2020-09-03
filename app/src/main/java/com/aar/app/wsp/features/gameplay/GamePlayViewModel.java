@@ -1,9 +1,9 @@
 package com.aar.app.wsp.features.gameplay;
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.aar.app.wsp.commons.SingleLiveEvent;
 import com.aar.app.wsp.commons.Timer;
@@ -19,10 +19,7 @@ import com.aar.app.wsp.model.GameTheme;
 import com.aar.app.wsp.model.UsedWord;
 import com.aar.app.wsp.model.Word;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
