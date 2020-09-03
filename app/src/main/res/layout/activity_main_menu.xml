@@ -83,7 +83,7 @@
         app:values="@array/game_difficulty"/>
 
     <Button
-        android:id="@+id/new_game_btn"
+        android:id="@+id/btnNewGame"
         android:layout_width="220dp"
         android:layout_height="45dp"
         android:layout_marginEnd="16dp"
@@ -114,10 +114,10 @@
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_game_btn"/>
+        app:layout_constraintTop_toBottomOf="@+id/btnNewGame"/>
 
     <Button
-        android:id="@+id/settings_button"
+        android:id="@+id/btnSettings"
         android:layout_width="200dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
