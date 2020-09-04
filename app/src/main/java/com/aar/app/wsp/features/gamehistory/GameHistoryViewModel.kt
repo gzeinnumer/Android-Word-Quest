@@ -12,8 +12,9 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class GameHistoryViewModel(
+class GameHistoryViewModel @Inject constructor(
     private val gameDataSource: GameDataSource,
     private val preferences: Preferences
 ) : ViewModel() {

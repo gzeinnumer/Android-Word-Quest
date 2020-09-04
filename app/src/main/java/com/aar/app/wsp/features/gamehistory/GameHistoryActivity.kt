@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import butterknife.ButterKnife
@@ -12,7 +13,6 @@ import com.aar.app.wsp.R
 import com.aar.app.wsp.WordSearchApp
 import com.aar.app.wsp.custom.easyadapter.MultiTypeAdapter
 import com.aar.app.wsp.features.FullscreenActivity
-import com.aar.app.wsp.features.ViewModelFactory
 import com.aar.app.wsp.features.gameplay.GamePlayActivity
 import com.aar.app.wsp.model.GameDataInfo
 import kotlinx.android.synthetic.main.activity_game_history.*
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 class GameHistoryActivity : FullscreenActivity() {
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: GameHistoryViewModel by viewModels { viewModelFactory }
     private val adapter: MultiTypeAdapter = MultiTypeAdapter()
 
