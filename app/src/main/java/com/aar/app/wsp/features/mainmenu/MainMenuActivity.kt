@@ -16,7 +16,7 @@ import com.aar.app.wsp.features.settings.SettingsActivity
 import com.aar.app.wsp.model.Difficulty
 import com.aar.app.wsp.model.GameMode
 import com.aar.app.wsp.model.GameTheme
-import com.github.abdularis.horizontalselector.HorizontalSelector.OnSelectedItemChanged
+import com.github.abdularis.horizontalspinner.HorizontalSelector.OnSelectedItemChanged
 import kotlinx.android.synthetic.main.activity_main_menu.*
 
 class MainMenuActivity : FullscreenActivity() {

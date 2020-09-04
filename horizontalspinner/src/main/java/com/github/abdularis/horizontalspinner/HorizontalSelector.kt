@@ -1,4 +1,4 @@
-package com.github.abdularis.horizontalselector
+package com.github.abdularis.horizontalspinner
 
 import android.content.Context
 import android.util.AttributeSet

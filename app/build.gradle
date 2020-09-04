@@ -60,7 +60,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.4'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
-    implementation project(':horizontalselector')
+    implementation project(':horizontalspinner')
 
     kapt 'androidx.room:room-compiler:2.2.5'
     kapt 'com.google.dagger:dagger-compiler:2.15'

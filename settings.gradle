@@ -1,1 +1,1 @@
-include ':app', ':horizontalselector'
+include ':app', ':horizontalspinner'
