@@ -1,6 +1,8 @@
 package com.aar.app.wsp.features.gameplay;
 
 import android.animation.ObjectAnimator;
+
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,7 +22,6 @@ import android.widget.TextView;
 
 import com.aar.app.wsp.R;
 import com.aar.app.wsp.features.SoundPlayer;
-import com.aar.app.wsp.features.ViewModelFactory;
 import com.aar.app.wsp.WordSearchApp;
 import com.aar.app.wsp.commons.DurationFormatter;
 import com.aar.app.wsp.commons.Util;
@@ -58,7 +59,8 @@ public class GamePlayActivity extends FullscreenActivity {
     @Inject
     SoundPlayer mSoundPlayer;
 
-    @Inject ViewModelFactory mViewModelFactory;
+    @Inject
+    ViewModelProvider.Factory mViewModelFactory;
     private GamePlayViewModel mViewModel;
 
     @BindView(R.id.layoutCurrentWord) ViewGroup mCurrentWordLayout;

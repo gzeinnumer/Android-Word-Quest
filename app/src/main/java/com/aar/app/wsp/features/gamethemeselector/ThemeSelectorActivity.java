@@ -1,6 +1,8 @@
 package com.aar.app.wsp.features.gamethemeselector;
 
 import android.annotation.SuppressLint;
+
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +20,6 @@ import com.aar.app.wsp.R;
 import com.aar.app.wsp.WordSearchApp;
 import com.aar.app.wsp.custom.easyadapter.MultiTypeAdapter;
 import com.aar.app.wsp.features.FullscreenActivity;
-import com.aar.app.wsp.features.ViewModelFactory;
 import com.aar.app.wsp.model.GameTheme;
 
 import javax.inject.Inject;
@@ -41,7 +42,7 @@ public class ThemeSelectorActivity extends FullscreenActivity {
     @BindView(R.id.btnUpdate) Button mBtnUpdate;
 
     @Inject
-    ViewModelFactory mViewModelFactory;
+    ViewModelProvider.Factory mViewModelFactory;
     ThemeSelectorViewModel mViewModel;
 
     private Disposable mUpdateDisposable;

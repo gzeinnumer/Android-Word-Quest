@@ -21,6 +21,8 @@ import com.aar.app.wsp.model.Word;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
@@ -98,6 +100,7 @@ public class GamePlayViewModel extends ViewModel {
     private SingleLiveEvent<AnswerResult> mOnAnswerResult;
     private MutableLiveData<UsedWord> mOnCurrentWordChanged;
 
+    @Inject
     public GamePlayViewModel(GameDataSource gameDataSource,
                              WordDataSource wordDataSource,
                              UsedWordDataSource usedWordDataSource,

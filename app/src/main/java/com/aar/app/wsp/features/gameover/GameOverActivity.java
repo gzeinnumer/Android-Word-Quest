@@ -1,5 +1,6 @@
 package com.aar.app.wsp.features.gameover;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import androidx.core.app.NavUtils;
@@ -8,7 +9,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.aar.app.wsp.R;
-import com.aar.app.wsp.features.ViewModelFactory;
 import com.aar.app.wsp.WordSearchApp;
 import com.aar.app.wsp.commons.DurationFormatter;
 import com.aar.app.wsp.features.gameplay.GamePlayActivity;
@@ -26,7 +26,7 @@ public class GameOverActivity extends FullscreenActivity {
             "com.paperplanes.wsp.presentation.ui.activity.GameOverActivity";
 
     @Inject
-    ViewModelFactory mViewModelFactory;
+    ViewModelProvider.Factory mViewModelFactory;
 
     @BindView(R.id.textCongrat) TextView mTextCongrat;
     @BindView(R.id.game_stat_text) TextView mTextGameStat;

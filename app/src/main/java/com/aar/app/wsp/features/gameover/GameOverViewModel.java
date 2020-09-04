@@ -10,6 +10,8 @@ import com.aar.app.wsp.data.room.UsedWordDataSource;
 import com.aar.app.wsp.data.sqlite.GameDataSource;
 import com.aar.app.wsp.model.GameData;
 
+import javax.inject.Inject;
+
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
@@ -24,6 +26,7 @@ public class GameOverViewModel extends ViewModel {
     private MutableLiveData<GameData> mOnGameDataLoaded = new MutableLiveData<>();
     private SingleLiveEvent<Integer> mOnGameDataReset = new SingleLiveEvent<>();
 
+    @Inject
     public GameOverViewModel(GameDataSource gameDataSource, UsedWordDataSource usedWordDataSource) {
         mGameDataSource = gameDataSource;
         mUsedWordDataSource = usedWordDataSource;

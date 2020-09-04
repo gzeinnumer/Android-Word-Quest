@@ -19,6 +19,8 @@ import com.aar.app.wsp.model.Word;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -41,6 +43,7 @@ public class ThemeSelectorViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<GameThemeItem>> mOnGameThemeLoaded;
 
+    @Inject
     public ThemeSelectorViewModel(Application application,
                                   GameThemeDataSource gameThemeRepository,
                                   WordDataSource wordDataSource) {
