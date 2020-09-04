@@ -1,4 +1,4 @@
-package com.aar.app.wsp.easyadapter;
+package com.aar.app.wsp.custom.easyadapter;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;

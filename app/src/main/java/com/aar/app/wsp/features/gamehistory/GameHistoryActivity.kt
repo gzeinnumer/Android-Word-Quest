@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import butterknife.ButterKnife
 import com.aar.app.wsp.R
 import com.aar.app.wsp.WordSearchApp
-import com.aar.app.wsp.easyadapter.MultiTypeAdapter
+import com.aar.app.wsp.custom.easyadapter.MultiTypeAdapter
 import com.aar.app.wsp.features.FullscreenActivity
 import com.aar.app.wsp.features.ViewModelFactory
 import com.aar.app.wsp.features.gameplay.GamePlayActivity

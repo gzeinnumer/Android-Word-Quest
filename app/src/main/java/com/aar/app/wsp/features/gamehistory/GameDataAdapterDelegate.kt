@@ -9,7 +9,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.aar.app.wsp.R
 import com.aar.app.wsp.commons.DurationFormatter.fromInteger
-import com.aar.app.wsp.easyadapter.AdapterDelegate
+import com.aar.app.wsp.custom.easyadapter.AdapterDelegate
 import com.aar.app.wsp.model.GameDataInfo
 
 class GameDataAdapterDelegate : AdapterDelegate<GameDataInfo, GameDataAdapterDelegate.ViewHolder>(GameDataInfo::class.java) {
