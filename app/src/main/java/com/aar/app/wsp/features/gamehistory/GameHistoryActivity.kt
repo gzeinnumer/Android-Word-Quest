@@ -3,8 +3,8 @@ package com.aar.app.wsp.features.gamehistory
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import butterknife.ButterKnife
@@ -21,16 +21,16 @@ import javax.inject.Inject
 class GameHistoryActivity : FullscreenActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var viewModel: GameHistoryViewModel
-    private lateinit var adapter: MultiTypeAdapter
+    private val viewModel: GameHistoryViewModel by viewModels { viewModelFactory }
+    private val adapter: MultiTypeAdapter = MultiTypeAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_history)
         (application as WordSearchApp).appComponent.inject(this)
         ButterKnife.bind(this)
+
         initRecyclerView()
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(GameHistoryViewModel::class.java)
         viewModel.onGameDataInfoLoaded.observe(this, Observer { gameDataInfoList: List<GameDataInfo> ->
             onGameDataInfoLoaded(gameDataInfoList)
         })
@@ -67,7 +67,6 @@ class GameHistoryActivity : FullscreenActivity() {
             }
         }
 
-        adapter = MultiTypeAdapter()
         adapter.addDelegate(gameDataAdapterDelegate)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
