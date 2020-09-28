@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.core.app.NavUtils
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -40,17 +40,17 @@ class GameOverActivity : FullscreenActivity() {
         ButterKnife.bind(this)
         (application as WordSearchApp).appComponent.inject(this)
         viewModel = ViewModelProviders.of(this, mViewModelFactory).get(GameOverViewModel::class.java)
-        viewModel.onGameDataLoaded.observe(this, Observer { gameData ->
+        viewModel.onGameDataLoaded.observe(this) { gameData ->
             gameData?.let {
                 showGameStat(it)
             }
-        })
-        viewModel.onGameDataReset.observe(this, Observer { gameDataId ->
+        }
+        viewModel.onGameDataReset.observe(this) { gameDataId ->
             val intent = Intent(this@GameOverActivity, GamePlayActivity::class.java)
             intent.putExtra(GamePlayActivity.EXTRA_GAME_DATA_ID, gameDataId)
             startActivity(intent)
             finish()
-        })
+        }
 
         intent.extras?.getInt(EXTRA_GAME_ROUND_ID)?.let { gameId ->
             lifecycleScope.launch { viewModel.loadData(gameId) }

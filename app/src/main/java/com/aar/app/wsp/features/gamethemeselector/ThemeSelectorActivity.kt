@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aar.app.wsp.R
@@ -58,11 +58,11 @@ class ThemeSelectorActivity : FullscreenActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, mViewModelFactory).get(ThemeSelectorViewModel::class.java)
-        viewModel.onGameThemeLoaded.observe(this, Observer { gameThemes: List<GameThemeItem>? ->
+        viewModel.onGameThemeLoaded.observe(this) { gameThemes: List<GameThemeItem>? ->
             adapter.setItems(gameThemes)
             rvThemes.visible()
             progressBar.gone()
-        })
+        }
     }
 
     private fun initRecyclerView() {

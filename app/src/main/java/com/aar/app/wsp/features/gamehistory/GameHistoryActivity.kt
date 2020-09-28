@@ -2,11 +2,10 @@ package com.aar.app.wsp.features.gamehistory
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import butterknife.ButterKnife
@@ -34,9 +33,9 @@ class GameHistoryActivity : FullscreenActivity() {
         ButterKnife.bind(this)
 
         initRecyclerView()
-        viewModel.onGameDataInfoLoaded.observe(this, Observer { gameDataInfoList: List<GameDataInfo> ->
+        viewModel.onGameDataInfoLoaded.observe(this) { gameDataInfoList: List<GameDataInfo> ->
             onGameDataInfoLoaded(gameDataInfoList)
-        })
+        }
         btnClear.setOnClickListener {
             lifecycleScope.launch { viewModel.clear() }
         }
