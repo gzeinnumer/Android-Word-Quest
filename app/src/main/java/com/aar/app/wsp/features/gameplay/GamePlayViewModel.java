@@ -144,7 +144,7 @@ public class GamePlayViewModel extends ViewModel {
             setGameState(new Loading(gid));
             Observable
                     .create((ObservableOnSubscribe<GameData>) e -> {
-                        e.onNext(mGameDataSource.getGameData(gid));
+                        e.onNext(mGameDataSource.getGameDataSync(gid));
                         e.onComplete();
                     })
                     .subscribeOn(Schedulers.io())

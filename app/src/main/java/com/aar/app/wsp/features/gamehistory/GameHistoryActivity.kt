@@ -6,16 +6,19 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import butterknife.ButterKnife
 import com.aar.app.wsp.R
 import com.aar.app.wsp.WordSearchApp
+import com.aar.app.wsp.commons.goneIf
 import com.aar.app.wsp.custom.easyadapter.MultiTypeAdapter
 import com.aar.app.wsp.features.FullscreenActivity
 import com.aar.app.wsp.features.gameplay.GamePlayActivity
 import com.aar.app.wsp.model.GameDataInfo
 import kotlinx.android.synthetic.main.activity_game_history.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GameHistoryActivity : FullscreenActivity() {
@@ -35,22 +38,20 @@ class GameHistoryActivity : FullscreenActivity() {
             onGameDataInfoLoaded(gameDataInfoList)
         })
         btnClear.setOnClickListener {
-            viewModel.clear()
+            lifecycleScope.launch { viewModel.clear() }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadGameHistory()
+        lifecycleScope.launch {
+            viewModel.loadGameHistory()
+        }
     }
 
-    private fun onGameDataInfoLoaded(gameDataInfos: List<GameDataInfo>) {
-        if (gameDataInfos.isEmpty()) {
-            textEmpty.visibility = View.VISIBLE
-        } else {
-            textEmpty.visibility = View.GONE
-        }
-        adapter.setItems(gameDataInfos)
+    private fun onGameDataInfoLoaded(gameDataInfoList: List<GameDataInfo>) {
+        textEmpty.goneIf(gameDataInfoList.isNotEmpty())
+        adapter.setItems(gameDataInfoList)
     }
 
     private fun initRecyclerView() {
@@ -63,7 +64,7 @@ class GameHistoryActivity : FullscreenActivity() {
             }
 
             override fun onDeleteClick(gameDataInfo: GameDataInfo?) {
-                gameDataInfo?.let { viewModel.deleteGameData(it) }
+                gameDataInfo?.let { deleteGameData(gameDataInfo) }
             }
         }
 
@@ -71,5 +72,11 @@ class GameHistoryActivity : FullscreenActivity() {
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun deleteGameData(gameDataInfo: GameDataInfo) {
+        lifecycleScope.launch {
+            viewModel.deleteGameData(gameDataInfo.id)
+        }
     }
 }

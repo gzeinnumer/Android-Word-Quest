@@ -9,15 +9,18 @@ import com.aar.app.wsp.model.GameDataInfo
 import com.aar.app.wsp.model.GameMode.Companion.getById
 import com.aar.app.wsp.model.Grid
 import com.aar.app.wsp.model.UsedWord
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
 /**
  * Created by abdularis on 18/07/17.
  */
-class GameDataSource @Inject constructor(private val mHelper: DbHelper, private val mUsedWordDataSource: UsedWordDataSource) {
-    fun getGameData(gid: Int): GameData? {
-        val db = mHelper.readableDatabase
+class GameDataSource @Inject constructor(private val dbHelper: DbHelper, private val usedWordDataSource: UsedWordDataSource) {
+    suspend fun getGameData(gid: Int): GameData? = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val cols = arrayOf(
             DbContract.GameRound._ID,
             DbContract.GameRound.COL_NAME,
@@ -30,30 +33,36 @@ class GameDataSource @Inject constructor(private val mHelper: DbHelper, private 
         )
         val sel = DbContract.GameRound._ID + "=?"
         val selArgs = arrayOf(gid.toString())
-        val c = db.query(DbContract.GameRound.TABLE_NAME, cols, sel, selArgs, null, null, null)
-        var gd: GameData? = null
-        if (c.moveToFirst()) {
-            gd = GameData()
-            gd.id = c.getInt(0)
-            gd.name = c.getString(1)
-            gd.duration = c.getInt(2)
-            val grid = Grid(c.getInt(3), c.getInt(4))
-            val gridData = c.getString(5)
-            if (gridData != null && gridData.length > 0) {
-                StringGridGenerator().setGrid(gridData, grid.array)
+        db.query(DbContract.GameRound.TABLE_NAME, cols, sel, selArgs, null, null, null)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val gameData = GameData()
+                gameData.id = cursor.getInt(0)
+                gameData.name = cursor.getString(1)
+                gameData.duration = cursor.getInt(2)
+                val grid = Grid(cursor.getInt(3), cursor.getInt(4))
+                val gridData = cursor.getString(5)
+                if (gridData != null && gridData.isNotEmpty()) {
+                    StringGridGenerator().setGrid(gridData, grid.array)
+                }
+                gameData.grid = grid
+                gameData.gameMode = getById(cursor.getInt(6))
+                gameData.maxDuration = cursor.getInt(7)
+                gameData.addUsedWords(usedWordDataSource.getUsedWords(gid))
+                return@use gameData
             }
-            gd.grid = grid
-            gd.gameMode = getById(c.getInt(6))
-            gd.maxDuration = c.getInt(7)
-            gd.addUsedWords(mUsedWordDataSource.getUsedWords(gid))
+            return@use null
         }
-        c.close()
-        return gd
+    }
+
+    fun getGameDataSync(gid: Int): GameData? {
+        return runBlocking {
+            getGameData(gid)
+        }
     }
 
     val gameDataInfos: List<GameDataInfo>
         get() {
-            val db = mHelper.readableDatabase
+            val db = dbHelper.readableDatabase
             val infoList: MutableList<GameDataInfo> = ArrayList()
             val c = db.rawQuery(getGameDataInfoQuery(-1), null)
             if (c.moveToFirst()) {
@@ -66,8 +75,21 @@ class GameDataSource @Inject constructor(private val mHelper: DbHelper, private 
             return infoList
         }
 
+    suspend fun getGameDataInfoList(): List<GameDataInfo> = withContext(Dispatchers.IO) {
+        val infoList = arrayListOf<GameDataInfo>()
+        dbHelper.readableDatabase.rawQuery(getGameDataInfoQuery(-1), null)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast) {
+                    infoList.add(getGameDataInfoFromCursor(cursor))
+                    cursor.moveToNext()
+                }
+            }
+        }
+        infoList
+    }
+
     fun getGameDataInfo(gid: Int): GameDataInfo? {
-        val db = mHelper.readableDatabase
+        val db = dbHelper.readableDatabase
         val c = db.rawQuery(getGameDataInfoQuery(gid), null)
         var gameData: GameDataInfo? = null
         if (c.moveToFirst()) {
@@ -78,7 +100,7 @@ class GameDataSource @Inject constructor(private val mHelper: DbHelper, private 
     }
 
     fun saveGameData(gameRound: GameData): Long {
-        val db = mHelper.writableDatabase
+        val db = dbHelper.writableDatabase
         val values = ContentValues()
         values.put(DbContract.GameRound.COL_NAME, gameRound.name)
         values.put(DbContract.GameRound.COL_DURATION, gameRound.duration)
@@ -90,27 +112,31 @@ class GameDataSource @Inject constructor(private val mHelper: DbHelper, private 
         val gid = db.insert(DbContract.GameRound.TABLE_NAME, "null", values)
         gameRound.id = gid.toInt()
         for (usedWord in gameRound.usedWords) usedWord.gameDataId = gid.toInt()
-        mUsedWordDataSource.insertAll(gameRound.usedWords)
-        gameRound.usedWords = mUsedWordDataSource.getUsedWords(gid.toInt())
+        usedWordDataSource.insertAll(gameRound.usedWords)
+        gameRound.usedWords = usedWordDataSource.getUsedWords(gid.toInt())
         return gid
     }
 
-    fun deleteGameData(gid: Int) {
-        val db = mHelper.writableDatabase
+    suspend fun deleteGameData(gid: Int) = withContext(Dispatchers.IO) {
         val sel = DbContract.GameRound._ID + "=?"
         val selArgs = arrayOf(gid.toString())
-        db.delete(DbContract.GameRound.TABLE_NAME, sel, selArgs)
-        mUsedWordDataSource.removeUsedWords(gid)
+        dbHelper.writableDatabase.delete(DbContract.GameRound.TABLE_NAME, sel, selArgs)
+        usedWordDataSource.removeUsedWords(gid)
     }
 
     fun deleteGameDatas() {
-        val db = mHelper.writableDatabase
+        val db = dbHelper.writableDatabase
         db.delete(DbContract.GameRound.TABLE_NAME, null, null)
-        mUsedWordDataSource.removeAll()
+        usedWordDataSource.removeAll()
+    }
+
+    suspend fun clearGameData() = withContext(Dispatchers.IO) {
+        dbHelper.writableDatabase.delete(DbContract.GameRound.TABLE_NAME, null, null)
+        usedWordDataSource.removeAll()
     }
 
     fun saveGameDataDuration(gid: Int, newDuration: Int) {
-        val db = mHelper.readableDatabase
+        val db = dbHelper.readableDatabase
         val values = ContentValues()
         values.put(DbContract.GameRound.COL_DURATION, newDuration)
         val where = DbContract.GameRound._ID + "=?"
@@ -119,7 +145,7 @@ class GameDataSource @Inject constructor(private val mHelper: DbHelper, private 
     }
 
     fun markWordAsAnswered(usedWord: UsedWord?) {
-        mUsedWordDataSource.updateUsedWord(usedWord)
+        usedWordDataSource.updateUsedWord(usedWord)
     }
 
     private fun getGameDataInfoQuery(gid: Int): String {
@@ -143,7 +169,7 @@ class GameDataSource @Inject constructor(private val mHelper: DbHelper, private 
         gdi.duration = c.getInt(2)
         gdi.gridRowCount = c.getInt(3)
         gdi.gridColCount = c.getInt(4)
-        gdi.usedWordsCount = mUsedWordDataSource.getUsedWordsCount(gdi.id)
+        gdi.usedWordsCount = usedWordDataSource.getUsedWordsCount(gdi.id)
         return gdi
     }
 
