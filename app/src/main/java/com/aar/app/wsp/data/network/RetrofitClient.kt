@@ -23,12 +23,12 @@ class RetrofitClient private constructor() {
         private var INSTANCE: RetrofitClient? = null
 
         @JvmStatic
-        val instance: RetrofitClient?
+        val instance: RetrofitClient
             get() {
                 if (INSTANCE == null) {
                     INSTANCE = RetrofitClient()
                 }
-                return INSTANCE
+                return INSTANCE!!
             }
     }
 
