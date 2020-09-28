@@ -49,7 +49,7 @@ class ThemeSelectorViewModel @Inject constructor(
                 val words: MutableList<Word> = ArrayList()
                 var idx = 0
                 for (themeResponse in wordsUpdateResponse.data!!) {
-                    themes.add(GameTheme(++idx, themeResponse.name))
+                    themes.add(GameTheme(++idx, themeResponse.name.orEmpty()))
                     for (str in themeResponse.words!!) {
                         words.add(Word(0, idx, str))
                     }
