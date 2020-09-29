@@ -144,7 +144,7 @@ class GameDataSource @Inject constructor(private val dbHelper: DbHelper, private
         db.update(DbContract.GameRound.TABLE_NAME, values, where, whereArgs)
     }
 
-    fun markWordAsAnswered(usedWord: UsedWord?) {
+    fun markWordAsAnswered(usedWord: UsedWord) {
         usedWordDataSource.updateUsedWord(usedWord)
     }
 
