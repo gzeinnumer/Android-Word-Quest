@@ -23,6 +23,7 @@ import com.aar.app.wsp.R
 import com.aar.app.wsp.WordSearchApp
 import com.aar.app.wsp.commons.DurationFormatter.fromInteger
 import com.aar.app.wsp.commons.Util
+import com.aar.app.wsp.commons.orZero
 import com.aar.app.wsp.custom.LetterBoard.OnLetterSelectionListener
 import com.aar.app.wsp.custom.StreakView.StreakLine
 import com.aar.app.wsp.features.FullscreenActivity
@@ -97,8 +98,8 @@ class GamePlayActivity : FullscreenActivity() {
                 val gid = extras.getInt(EXTRA_GAME_DATA_ID)
                 viewModel.loadGameRound(gid)
             } else {
-                val gameMode = extras[EXTRA_GAME_MODE] as GameMode?
-                val difficulty = extras[EXTRA_GAME_DIFFICULTY] as Difficulty?
+                val gameMode = extras[EXTRA_GAME_MODE] as GameMode
+                val difficulty = extras[EXTRA_GAME_DIFFICULTY] as Difficulty
                 val gameThemeId = extras.getInt(EXTRA_GAME_THEME_ID)
                 val rowCount = extras.getInt(EXTRA_ROW_COUNT)
                 val colCount = extras.getInt(EXTRA_COL_COUNT)
@@ -148,21 +149,21 @@ class GamePlayActivity : FullscreenActivity() {
 
     private fun onAnswerResult(answerResult: AnswerResult) {
         if (answerResult.correct) {
-            val item = findUsedWordViewItemByUsedWordId(answerResult.usedWord.id)
+            val item = findUsedWordViewItemByUsedWordId(answerResult.usedWord?.id.orZero())
             if (item != null) {
                 val uw = answerResult.usedWord
                 if (preferences.grayscale()) {
-                    uw.answerLine?.color = resources.getColor(R.color.gray)
+                    uw?.answerLine?.color = resources.getColor(R.color.gray)
                 }
 
                 val str = item.findViewById<TextView>(R.id.textStr)
-                item.background.setColorFilter(uw.answerLine!!.color, PorterDuff.Mode.MULTIPLY)
+                item.background.setColorFilter(uw?.answerLine!!.color, PorterDuff.Mode.MULTIPLY)
                 str.text = uw.string
                 str.setTextColor(Color.WHITE)
                 str.paintFlags = str.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 item.startAnimation(AnimationUtils.loadAnimation(this, R.anim.zoom_in_out))
                 textPopup.visibility = View.VISIBLE
-                textPopup.text = uw.string
+                textPopup.text = uw.string.orEmpty()
                 textPopup.startAnimation(popupTextAnimation)
             }
             showAnsweredWordsCount(answerResult.totalAnsweredWord)
@@ -175,18 +176,22 @@ class GamePlayActivity : FullscreenActivity() {
 
     private fun onGameStateChanged(gameState: GameState) {
         showLoading(false, null)
-        if (gameState is Generating) {
-            val state = gameState
-            var text = getString(R.string.text_generating)
-            text = text.replace(":row".toRegex(), state.rowCount.toString())
-            text = text.replace(":col".toRegex(), state.colCount.toString())
-            showLoading(true, text)
-        } else if (gameState is Loading) {
-            showLoading(true, getString(R.string.lbl_load_game_data))
-        } else if (gameState is Finished) {
-            showFinishGame(gameState)
-        } else if (gameState is Playing) {
-            onGameRoundLoaded(gameState.mGameData)
+        when (gameState) {
+            is Generating -> {
+                var text = getString(R.string.text_generating)
+                text = text.replace(":row".toRegex(), gameState.rowCount.toString())
+                text = text.replace(":col".toRegex(), gameState.colCount.toString())
+                showLoading(true, text)
+            }
+            is Loading -> {
+                showLoading(true, getString(R.string.lbl_load_game_data))
+            }
+            is Finished -> {
+                showFinishGame(gameState)
+            }
+            is Playing -> {
+                gameState.gameData?.let { onGameRoundLoaded(it) }
+            }
         }
     }
 
@@ -306,7 +311,7 @@ class GamePlayActivity : FullscreenActivity() {
             override fun onAnimationEnd(animation: Animation) {
                 Handler().postDelayed({
                     val intent = Intent(this@GamePlayActivity, GameOverActivity::class.java)
-                    intent.putExtra(GameOverActivity.EXTRA_GAME_ROUND_ID, state.mGameData.id)
+                    intent.putExtra(GameOverActivity.EXTRA_GAME_ROUND_ID, state.gameData?.id.orZero())
                     startActivity(intent)
                     finish()
                 }, 800)
