@@ -51,11 +51,41 @@ class GamePlayActivity : FullscreenActivity() {
     private var letterAdapter: ArrayLetterGridDataAdapter? = null
     private var popupTextAnimation: Animation? = null
 
+    private val extraGameMode: GameMode by lazy {
+        (intent.extras?.get(EXTRA_GAME_MODE) as? GameMode) ?: GameMode.Normal
+    }
+
+    private val extraDifficulty: Difficulty by lazy {
+        (intent.extras?.get(EXTRA_GAME_DIFFICULTY) as? Difficulty) ?: Difficulty.Easy
+    }
+
+    private val extraGameThemeId: Int by lazy {
+        intent.extras?.getInt(EXTRA_GAME_THEME_ID).orZero()
+    }
+
+    private val extraRowCount: Int by lazy {
+        intent.extras?.getInt(EXTRA_ROW_COUNT).orZero()
+    }
+
+    private val extraColumnCount: Int by lazy {
+        intent.extras?.getInt(EXTRA_COL_COUNT).orZero()
+    }
+
+    private val extraGameId: Int by lazy {
+        intent.extras?.getInt(EXTRA_GAME_DATA_ID).orZero()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_play)
         ButterKnife.bind(this)
         (application as WordSearchApp).appComponent.inject(this)
+
+        initViews()
+        initViewModel()
+    }
+
+    private fun initViews() {
         textCurrentWord.setInAnimation(this, android.R.anim.slide_in_left)
         textCurrentWord.setOutAnimation(this, android.R.anim.slide_out_right)
         letter_board.streakView.setEnableOverrideStreakLineColor(preferences.grayscale())
@@ -68,11 +98,7 @@ class GamePlayActivity : FullscreenActivity() {
             }
 
             override fun onSelectionDrag(streakLine: StreakLine, str: String) {
-                if (str.isEmpty()) {
-                    text_selection.text = "..."
-                } else {
-                    text_selection.text = str
-                }
+                text_selection.text = if (str.isEmpty()) "..." else str
             }
 
             override fun onSelectionEnd(streakLine: StreakLine, str: String) {
@@ -81,31 +107,7 @@ class GamePlayActivity : FullscreenActivity() {
                 text_selection.text = str
             }
         })
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(GamePlayViewModel::class.java)
-        viewModel.onTimer.observe(this, Observer { duration: Int -> showDuration(duration) })
-        viewModel.onCountDown.observe(this, Observer { countDown: Int -> showCountDown(countDown) })
-        viewModel.onGameState.observe(this, Observer { gameState: GameState -> onGameStateChanged(gameState) })
-        viewModel.onAnswerResult.observe(this, Observer { answerResult: AnswerResult -> onAnswerResult(answerResult) })
-        viewModel.onCurrentWordChanged.observe(this, Observer { usedWord: UsedWord ->
-            textCurrentWord.setText(usedWord.string)
-            progressWordDuration.max = usedWord.maxDuration * 100
-            animateProgress(progressWordDuration, usedWord.remainingDuration * 100)
-        })
-        viewModel.onCurrentWordCountDown.observe(this, Observer { duration: Int -> animateProgress(progressWordDuration, duration * 100) })
-        val extras = intent.extras
-        if (extras != null) {
-            if (extras.containsKey(EXTRA_GAME_DATA_ID)) {
-                val gid = extras.getInt(EXTRA_GAME_DATA_ID)
-                viewModel.loadGameRound(gid)
-            } else {
-                val gameMode = extras[EXTRA_GAME_MODE] as GameMode
-                val difficulty = extras[EXTRA_GAME_DIFFICULTY] as Difficulty
-                val gameThemeId = extras.getInt(EXTRA_GAME_THEME_ID)
-                val rowCount = extras.getInt(EXTRA_ROW_COUNT)
-                val colCount = extras.getInt(EXTRA_COL_COUNT)
-                viewModel.generateNewGameRound(rowCount, colCount, gameThemeId, gameMode, difficulty)
-            }
-        }
+
         if (!preferences.showGridLine()) {
             letter_board.gridLineBackground.visibility = View.INVISIBLE
         } else {
@@ -124,6 +126,36 @@ class GamePlayActivity : FullscreenActivity() {
                 textPopup.text = ""
             }
         })
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(GamePlayViewModel::class.java)
+        viewModel.onTimer.observe(this, Observer { duration: Int -> showDuration(duration) })
+        viewModel.onCountDown.observe(this, Observer { countDown: Int -> showCountDown(countDown) })
+        viewModel.onGameState.observe(this, Observer { gameState: GameState -> onGameStateChanged(gameState) })
+        viewModel.onAnswerResult.observe(this, Observer { answerResult: AnswerResult -> onAnswerResult(answerResult) })
+        viewModel.onCurrentWordChanged.observe(this, Observer { usedWord: UsedWord ->
+            textCurrentWord.setText(usedWord.string)
+            progressWordDuration.max = usedWord.maxDuration * 100
+            animateProgress(progressWordDuration, usedWord.remainingDuration * 100)
+        })
+        viewModel.onCurrentWordCountDown.observe(this, Observer { duration: Int -> animateProgress(progressWordDuration, duration * 100) })
+
+        if (shouldOpenExistingGameData()) {
+            viewModel.loadGameRound(extraGameId)
+        } else {
+            viewModel.generateNewGameRound(
+                rowCount = extraRowCount,
+                colCount = extraColumnCount,
+                gameThemeId = extraGameThemeId,
+                gameMode = extraGameMode,
+                difficulty = extraDifficulty
+            )
+        }
+    }
+
+    private fun shouldOpenExistingGameData(): Boolean {
+        return intent.extras?.containsKey(EXTRA_GAME_DATA_ID) ?: false
     }
 
     override fun onStart() {
@@ -212,17 +244,21 @@ class GamePlayActivity : FullscreenActivity() {
         showWordsCount(gameData.usedWords.size)
         showAnsweredWordsCount(gameData.answeredWordsCount)
         doneLoadingContent()
-        if (gameData.gameMode === GameMode.CountDown) {
-            progressDuration.visibility = View.VISIBLE
-            progressDuration.max = gameData.maxDuration * PROGRESS_SCALE
-            progressDuration.progress = gameData.remainingDuration * PROGRESS_SCALE
-            layoutCurrentWord.visibility = View.GONE
-        } else if (gameData.gameMode === GameMode.Marathon) {
-            progressDuration.visibility = View.GONE
-            layoutCurrentWord.visibility = View.VISIBLE
-        } else {
-            progressDuration.visibility = View.GONE
-            layoutCurrentWord.visibility = View.GONE
+        when {
+            gameData.gameMode === GameMode.CountDown -> {
+                progressDuration.visibility = View.VISIBLE
+                progressDuration.max = gameData.maxDuration * PROGRESS_SCALE
+                progressDuration.progress = gameData.remainingDuration * PROGRESS_SCALE
+                layoutCurrentWord.visibility = View.GONE
+            }
+            gameData.gameMode === GameMode.Marathon -> {
+                progressDuration.visibility = View.GONE
+                layoutCurrentWord.visibility = View.VISIBLE
+            }
+            else -> {
+                progressDuration.visibility = View.GONE
+                layoutCurrentWord.visibility = View.GONE
+            }
         }
     }
 
@@ -272,7 +308,7 @@ class GamePlayActivity : FullscreenActivity() {
             letterAdapter = ArrayLetterGridDataAdapter(grid)
             letter_board.dataAdapter = letterAdapter
         } else {
-            letterAdapter!!.grid = grid
+            letterAdapter?.grid = grid
         }
     }
 
@@ -329,28 +365,28 @@ class GamePlayActivity : FullscreenActivity() {
     }
 
     //
-    private fun createUsedWordTextView(uw: UsedWord, gameData: GameData): View {
-        val v = layoutInflater.inflate(R.layout.item_word, flexbox_layout, false)
-        val str = v.findViewById<TextView>(R.id.textStr)
-        if (uw.isAnswered) {
+    private fun createUsedWordTextView(usedWord: UsedWord, gameData: GameData): View {
+        val view = layoutInflater.inflate(R.layout.item_word, flexbox_layout, false)
+        val str = view.findViewById<TextView>(R.id.textStr)
+        if (usedWord.isAnswered) {
             if (preferences.grayscale()) {
-                uw.answerLine?.color = resources.getColor(R.color.gray)
+                usedWord.answerLine?.color = resources.getColor(R.color.gray)
             }
 
-            v.background.setColorFilter(uw.answerLine!!.color, PorterDuff.Mode.MULTIPLY)
-            str.text = uw.string
+            view.background.setColorFilter(usedWord.answerLine!!.color, PorterDuff.Mode.MULTIPLY)
+            str.text = usedWord.string
             str.setTextColor(Color.WHITE)
             str.paintFlags = str.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-            letter_board.addStreakLine(STREAK_LINE_MAPPER.map(uw.answerLine!!))
+            letter_board.addStreakLine(STREAK_LINE_MAPPER.map(usedWord.answerLine!!))
         } else {
             if (gameData.gameMode === GameMode.Hidden) {
-                str.text = getHiddenMask(uw.string)
+                str.text = getHiddenMask(usedWord.string)
             } else {
-                str.text = uw.string
+                str.text = usedWord.string
             }
         }
-        v.tag = uw.id
-        return v
+        view.tag = usedWord.id
+        return view
     }
 
     private fun getHiddenMask(string: String): String {
