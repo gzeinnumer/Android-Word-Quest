@@ -96,8 +96,10 @@ class GamePlayViewModel @Inject constructor(
     }
 
     fun pauseGame() {
-        if (currentState is Playing) {
-            if (!currentGameData!!.isFinished && !currentGameData!!.isGameOver) {
+        if (currentState !is Playing) return
+
+        currentGameData?.let {
+            if (!it.isFinished && !it.isGameOver) {
                 timer.stop()
                 setGameState(Paused())
             }
@@ -131,50 +133,55 @@ class GamePlayViewModel @Inject constructor(
     }
 
     @SuppressLint("CheckResult")
-    fun generateNewGameRound(rowCount: Int, colCount: Int, gameThemeId: Int,
-                             gameMode: GameMode, difficulty: Difficulty) {
-        if (currentState !is Generating) {
-            val gameName = gameDataName
-            setGameState(Generating(rowCount, colCount, gameName))
-            val maxChar = max(rowCount, colCount)
-            val flowableWords: Flowable<List<Word>>
-            flowableWords = if (gameThemeId == GameTheme.NONE.id) {
-                wordDataSource.getWords(maxChar)
-            } else {
-                wordDataSource.getWords(gameThemeId, maxChar)
-            }
-            flowableWords.toObservable()
-                .flatMap { words: List<Word>? ->
-                    Flowable.fromIterable(words)
-                        .distinct(Word::string)
-                        .map { word: Word ->
-                            word.string = word.string.toUpperCase(Locale.getDefault())
-                            word
-                        }
-                        .toList()
-                        .toObservable()
-                }
-                .flatMap { words: List<Word>? ->
-                    val gameData = gameDataCreator.newGameData(words!!, rowCount, colCount, gameName, gameMode)
-                    if (gameMode === GameMode.CountDown) {
-                        gameData.maxDuration = getMaxCountDownDuration(gameData.usedWords.size, difficulty)
-                    } else if (gameMode === GameMode.Marathon) {
-                        val maxDuration = getMaxDurationPerWord(difficulty)
-                        for (usedWord in gameData.usedWords) {
-                            usedWord.maxDuration = maxDuration
-                        }
-                    }
-                    Observable.just(gameData)
-                }
-                .doOnNext { gameRound: GameData? -> gameDataSource.saveGameData(gameRound!!) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { gameData: GameData? ->
-                    currentDuration = 0
-                    currentGameData = gameData
-                    startGame()
-                }
+    fun generateNewGameRound(
+        rowCount: Int,
+        colCount: Int,
+        gameThemeId: Int,
+        gameMode: GameMode,
+        difficulty: Difficulty
+    ) {
+        if (currentState is Generating) return
+
+        val gameName = gameDataName
+        setGameState(Generating(rowCount, colCount, gameName))
+        val maxChar = max(rowCount, colCount)
+        val flowableWords: Flowable<List<Word>>
+        flowableWords = if (gameThemeId == GameTheme.NONE.id) {
+            wordDataSource.getWords(maxChar)
+        } else {
+            wordDataSource.getWords(gameThemeId, maxChar)
         }
+        flowableWords.toObservable()
+            .flatMap { words: List<Word>? ->
+                Flowable.fromIterable(words)
+                    .distinct(Word::string)
+                    .map { word: Word ->
+                        word.string = word.string.toUpperCase(Locale.getDefault())
+                        word
+                    }
+                    .toList()
+                    .toObservable()
+            }
+            .flatMap { words: List<Word>? ->
+                val gameData = gameDataCreator.newGameData(words!!, rowCount, colCount, gameName, gameMode)
+                if (gameMode === GameMode.CountDown) {
+                    gameData.maxDuration = getMaxCountDownDuration(gameData.usedWords.size, difficulty)
+                } else if (gameMode === GameMode.Marathon) {
+                    val maxDuration = getMaxDurationPerWord(difficulty)
+                    for (usedWord in gameData.usedWords) {
+                        usedWord.maxDuration = maxDuration
+                    }
+                }
+                Observable.just(gameData)
+            }
+            .doOnNext { gameRound: GameData? -> gameDataSource.saveGameData(gameRound!!) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { gameData: GameData? ->
+                currentDuration = 0
+                currentGameData = gameData
+                startGame()
+            }
     }
 
     fun answerWord(answerStr: String, answerLine: AnswerLine?, reverseMatching: Boolean) {
@@ -214,9 +221,14 @@ class GamePlayViewModel @Inject constructor(
 
     private fun startGame() {
         setGameState(Playing(currentGameData))
-        if (!currentGameData!!.isFinished && !currentGameData!!.isGameOver) {
-            if (currentGameData!!.gameMode === GameMode.Marathon) nextWord()
-            timer.start()
+        currentGameData?.let {
+            if (!it.isFinished && !it.isGameOver) {
+                if (it.gameMode == GameMode.Marathon) {
+                    nextWord()
+                }
+
+                timer.start()
+            }
         }
     }
 
@@ -234,45 +246,37 @@ class GamePlayViewModel @Inject constructor(
 
     private fun getMaxCountDownDuration(usedWordsCount: Int, difficulty: Difficulty): Int {
         return when {
-            difficulty === Difficulty.Easy -> {
-                usedWordsCount * 19 // 19s per word
-            }
-            difficulty === Difficulty.Medium -> {
-                usedWordsCount * 10 // 10s per word
-            }
-            else -> {
-                usedWordsCount * 5 // 5s per word
-            }
+            difficulty === Difficulty.Easy -> usedWordsCount * 19 // 19s per word
+            difficulty === Difficulty.Medium -> usedWordsCount * 10 // 10s per word
+            else -> usedWordsCount * 5 // 5s per word
         }
     }
 
     private fun getMaxDurationPerWord(difficulty: Difficulty): Int {
         return when {
-            difficulty === Difficulty.Easy -> {
-                25 // 19s per word
-            }
-            difficulty === Difficulty.Medium -> {
-                16 // 10s per word
-            }
-            else -> {
-                10 // 5s per word
-            }
+            difficulty === Difficulty.Easy -> 25 // 19s per word
+            difficulty === Difficulty.Medium -> 16 // 10s per word
+            else -> 10 // 5s per word
         }
     }
 
     private fun nextWord() {
-        if (currentGameData != null && currentGameData!!.gameMode === GameMode.Marathon) {
-            currentUsedWord = null
-            for (usedWord in currentGameData!!.usedWords) {
-                if (!usedWord.isAnswered && !usedWord.isTimeout) {
-                    currentUsedWord = usedWord
-                    break
+        currentGameData?.let {
+            if (it.gameMode === GameMode.Marathon) {
+                currentUsedWord = null
+
+                for (usedWord in it.usedWords) {
+                    if (!usedWord.isAnswered && !usedWord.isTimeout) {
+                        currentUsedWord = usedWord
+                        break
+                    }
                 }
-            }
-            if (currentUsedWord != null) {
-                timer.stop()
-                timer.start()
-                onCurrentWordChangedLiveData.value = currentUsedWord
+
+                currentUsedWord?.let {
+                    timer.stop()
+                    timer.start()
+                    onCurrentWordChangedLiveData.value = currentUsedWord
+                }
             }
         }
     }
@@ -283,8 +287,9 @@ class GamePlayViewModel @Inject constructor(
 
     private fun findUsedWord(word: String, enableReverse: Boolean): UsedWord? {
         val answerStrRev = Util.getReverseString(word)
-        for (usedWord in currentGameData!!.usedWords) {
+        for (usedWord in currentGameData?.usedWords.orEmpty()) {
             if (usedWord.isAnswered) continue
+
             val currUsedWord = usedWord.string
             if (currUsedWord.equals(word, ignoreCase = true) ||
                 currUsedWord.equals(answerStrRev, ignoreCase = true) && enableReverse) {
@@ -296,6 +301,7 @@ class GamePlayViewModel @Inject constructor(
 
     private fun matchCurrentUsedWord(word: String, enableReverse: Boolean): Boolean {
         if (currentUsedWord == null) return false
+
         val answerStrRev = Util.getReverseString(word)
         val currUsedWord = currentUsedWord!!.string
         return currUsedWord.equals(word, ignoreCase = true) ||
@@ -303,37 +309,42 @@ class GamePlayViewModel @Inject constructor(
     }
 
     private fun onTimerTimeout() {
-        if (currentGameData != null && timer.isStarted) {
-            currentGameData!!.duration = ++currentDuration
-            val gameMode = currentGameData!!.gameMode
-            if (gameMode === GameMode.CountDown) {
-                onCountDownLiveData.value = currentGameData!!.remainingDuration
-                if (currentGameData!!.remainingDuration <= 0) {
-                    val win = currentGameData!!.answeredWordsCount ==
-                        currentGameData!!.usedWords.size
-                    timer.stop()
-                    finishGame(win)
-                }
-            } else if (gameMode === GameMode.Marathon && currentUsedWord != null) {
-                currentUsedWord!!.duration = currentUsedWord!!.duration + 1
-                onCurrentWordCountDownLiveData.value = currentUsedWord!!.maxDuration - currentUsedWord!!.duration
-                Completable
-                    .create { e: CompletableEmitter ->
-                        usedWordDataSource.updateUsedWordDuration(
-                            currentUsedWord!!.id,
-                            currentUsedWord!!.duration)
-                        e.onComplete()
+        currentGameData?.let { gameData ->
+            if (timer.isStarted) {
+                gameData.duration = ++currentDuration
+                val gameMode = gameData.gameMode
+                if (gameMode === GameMode.CountDown) {
+                    onCountDownLiveData.value = gameData.remainingDuration
+                    if (gameData.remainingDuration <= 0) {
+                        val win = gameData.answeredWordsCount ==
+                            gameData.usedWords.size
+                        timer.stop()
+                        finishGame(win)
                     }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
-                if (currentUsedWord!!.isTimeout) {
-                    timer.stop()
-                    finishGame(false)
+                } else if (gameMode == GameMode.Marathon) {
+                    currentUsedWord?.let { usedWord ->
+                        usedWord.duration = usedWord.duration + 1
+                        onCurrentWordCountDownLiveData.value = usedWord.maxDuration - usedWord.duration
+                        Completable
+                            .create { e: CompletableEmitter ->
+                                usedWordDataSource.updateUsedWordDuration(
+                                    usedWord.id,
+                                    usedWord.duration)
+                                e.onComplete()
+                            }
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe()
+
+                        if (usedWord.isTimeout) {
+                            timer.stop()
+                            finishGame(false)
+                        }
+                    }
                 }
+                onTimerLiveData.value = currentDuration
+                gameDataSource.saveGameDataDuration(gameData.id, currentDuration)
             }
-            onTimerLiveData.value = currentDuration
-            gameDataSource.saveGameDataDuration(currentGameData!!.id, currentDuration)
         }
     }
 
