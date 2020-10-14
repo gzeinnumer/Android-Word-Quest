@@ -10,8 +10,8 @@ import com.aar.app.wsp.model.UsedWord.AnswerLine
 class StreakLineMapper : Mapper<AnswerLine, StreakLine>() {
     override fun map(obj: AnswerLine): StreakLine {
         return StreakLine().apply {
-            startIndex[obj.startRow] = obj.startCol
-            endIndex[obj.endRow] = obj.endCol
+            startIndex.set(obj.startRow, obj.startCol)
+            endIndex.set(obj.endRow, obj.endCol)
             color = obj.color
         }
     }

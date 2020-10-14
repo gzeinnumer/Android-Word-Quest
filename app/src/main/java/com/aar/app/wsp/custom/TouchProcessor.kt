@@ -42,9 +42,9 @@ internal class TouchProcessor(
     }
 
     internal interface OnTouchProcessed {
-        fun onDown(event: MotionEvent?)
-        fun onUp(event: MotionEvent?)
-        fun onMove(event: MotionEvent?)
+        fun onDown(event: MotionEvent)
+        fun onUp(event: MotionEvent)
+        fun onMove(event: MotionEvent)
     }
 
 }

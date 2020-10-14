@@ -7,8 +7,7 @@ class GridIndex @JvmOverloads constructor(
     @JvmField var row: Int = 0,
     @JvmField var col: Int = 0
 ) {
-
-    operator fun set(row: Int, col: Int) {
+    fun set(row: Int, col: Int) {
         this.row = row
         this.col = col
     }
