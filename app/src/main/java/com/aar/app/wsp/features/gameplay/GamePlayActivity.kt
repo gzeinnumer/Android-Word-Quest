@@ -15,15 +15,17 @@ import android.view.animation.AnimationUtils
 import android.view.animation.DecelerateInterpolator
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import butterknife.ButterKnife
 import com.aar.app.wsp.R
 import com.aar.app.wsp.WordSearchApp
 import com.aar.app.wsp.commons.DurationFormatter.fromInteger
 import com.aar.app.wsp.commons.Util
+import com.aar.app.wsp.commons.gone
 import com.aar.app.wsp.commons.orZero
+import com.aar.app.wsp.commons.visible
 import com.aar.app.wsp.custom.LetterBoard.OnLetterSelectionListener
 import com.aar.app.wsp.custom.StreakView.StreakLine
 import com.aar.app.wsp.features.FullscreenActivity
@@ -46,7 +48,7 @@ class GamePlayActivity : FullscreenActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: GamePlayViewModel
+    private val viewModel: GamePlayViewModel by viewModels { viewModelFactory }
 
     private var letterAdapter: ArrayLetterGridDataAdapter? = null
     private var popupTextAnimation: Animation? = null
@@ -83,6 +85,8 @@ class GamePlayActivity : FullscreenActivity() {
 
         initViews()
         initViewModel()
+
+        loadOrGenerateNewGame()
     }
 
     private fun initViews() {
@@ -93,7 +97,7 @@ class GamePlayActivity : FullscreenActivity() {
         letter_board.setOnLetterSelectionListener(object : OnLetterSelectionListener {
             override fun onSelectionBegin(streakLine: StreakLine, str: String) {
                 streakLine.color = Util.getRandomColorWithAlpha(170)
-                text_sel_layout.visibility = View.VISIBLE
+                text_sel_layout.visible()
                 text_selection.text = str
             }
 
@@ -103,7 +107,7 @@ class GamePlayActivity : FullscreenActivity() {
 
             override fun onSelectionEnd(streakLine: StreakLine, str: String) {
                 viewModel.answerWord(str, STREAK_LINE_MAPPER.revMap(streakLine), preferences.reverseMatching())
-                text_sel_layout.visibility = View.GONE
+                text_sel_layout.gone()
                 text_selection.text = str
             }
         })
@@ -111,10 +115,10 @@ class GamePlayActivity : FullscreenActivity() {
         if (!preferences.showGridLine()) {
             letter_board.gridLineBackground.visibility = View.INVISIBLE
         } else {
-            letter_board.gridLineBackground.visibility = View.VISIBLE
+            letter_board.gridLineBackground.visible()
         }
         letter_board.streakView.isSnapToGrid = preferences.snapToGrid
-        finished_text.visibility = View.GONE
+        finished_text.gone()
         popupTextAnimation = AnimationUtils.loadAnimation(this, R.anim.popup_text)
         popupTextAnimation?.duration = 1000
         popupTextAnimation?.interpolator = DecelerateInterpolator()
@@ -122,14 +126,13 @@ class GamePlayActivity : FullscreenActivity() {
             override fun onAnimationRepeat(animation: Animation) {}
             override fun onAnimationStart(animation: Animation) {}
             override fun onAnimationEnd(animation: Animation) {
-                textPopup.visibility = View.GONE
+                textPopup.gone()
                 textPopup.text = ""
             }
         })
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(GamePlayViewModel::class.java)
         viewModel.onTimer.observe(this, Observer { duration: Int -> showDuration(duration) })
         viewModel.onCountDown.observe(this, Observer { countDown: Int -> showCountDown(countDown) })
         viewModel.onGameState.observe(this, Observer { gameState: GameState -> onGameStateChanged(gameState) })
@@ -140,7 +143,9 @@ class GamePlayActivity : FullscreenActivity() {
             animateProgress(progressWordDuration, usedWord.remainingDuration * 100)
         })
         viewModel.onCurrentWordCountDown.observe(this, Observer { duration: Int -> animateProgress(progressWordDuration, duration * 100) })
+    }
 
+    private fun loadOrGenerateNewGame() {
         if (shouldOpenExistingGameData()) {
             viewModel.loadGameRound(extraGameId)
         } else {
@@ -194,7 +199,7 @@ class GamePlayActivity : FullscreenActivity() {
                 str.setTextColor(Color.WHITE)
                 str.paintFlags = str.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 item.startAnimation(AnimationUtils.loadAnimation(this, R.anim.zoom_in_out))
-                textPopup.visibility = View.VISIBLE
+                textPopup.visible()
                 textPopup.text = uw.string.orEmpty()
                 textPopup.startAnimation(popupTextAnimation)
             }
@@ -230,12 +235,12 @@ class GamePlayActivity : FullscreenActivity() {
     private fun onGameRoundLoaded(gameData: GameData) {
         if (gameData.isFinished) {
             letter_board.streakView.isInteractive = false
-            finished_text.visibility = View.VISIBLE
-            layoutComplete.visibility = View.VISIBLE
+            finished_text.visible()
+            layoutComplete.visible()
             textComplete.setText(R.string.lbl_complete)
         } else if (gameData.isGameOver) {
             letter_board.streakView.isInteractive = false
-            layoutComplete.visibility = View.VISIBLE
+            layoutComplete.visible()
             textComplete.setText(R.string.lbl_game_over)
         }
         showLetterGrid(gameData.grid!!.array)
@@ -246,18 +251,18 @@ class GamePlayActivity : FullscreenActivity() {
         doneLoadingContent()
         when {
             gameData.gameMode === GameMode.CountDown -> {
-                progressDuration.visibility = View.VISIBLE
+                progressDuration.visible()
                 progressDuration.max = gameData.maxDuration * PROGRESS_SCALE
                 progressDuration.progress = gameData.remainingDuration * PROGRESS_SCALE
-                layoutCurrentWord.visibility = View.GONE
+                layoutCurrentWord.gone()
             }
             gameData.gameMode === GameMode.Marathon -> {
-                progressDuration.visibility = View.GONE
-                layoutCurrentWord.visibility = View.VISIBLE
+                progressDuration.gone()
+                layoutCurrentWord.visible()
             }
             else -> {
-                progressDuration.visibility = View.GONE
-                layoutCurrentWord.visibility = View.GONE
+                progressDuration.gone()
+                layoutCurrentWord.gone()
             }
         }
     }
@@ -280,15 +285,15 @@ class GamePlayActivity : FullscreenActivity() {
 
     private fun showLoading(enable: Boolean, text: String?) {
         if (enable) {
-            loading.visibility = View.VISIBLE
-            loadingText.visibility = View.VISIBLE
-            content_layout.visibility = View.GONE
+            loading.visible()
+            loadingText.visible()
+            content_layout.gone()
             loadingText.text = text
         } else {
-            loading.visibility = View.GONE
-            loadingText.visibility = View.GONE
+            loading.gone()
+            loadingText.gone()
             if (content_layout.visibility == View.GONE) {
-                content_layout.visibility = View.VISIBLE
+                content_layout.visible()
                 content_layout.scaleY = .5f
                 content_layout.alpha = 0f
                 content_layout.animate()
@@ -360,7 +365,7 @@ class GamePlayActivity : FullscreenActivity() {
             textComplete.setText(R.string.lbl_game_over)
             Handler().postDelayed({ soundPlayer.play(SoundPlayer.Sound.Lose) }, 600)
         }
-        layoutComplete.visibility = View.VISIBLE
+        layoutComplete.visible()
         layoutComplete.startAnimation(anim)
     }
 
