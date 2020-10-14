@@ -47,10 +47,10 @@ class StreakView @JvmOverloads constructor(
     }
 
     private val rect: RectF = RectF()
-    private var _width = 0
+    private var streakLineWidth = DEFAULT_STREAK_LINE_WIDTH_PIXEL
     private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var gridId = -1
-    private var _snapToGrid: SnapType = SnapType.NONE
+    private var snapToGridType: SnapType = SnapType.NONE
     private val touchProcessor: TouchProcessor = TouchProcessor(OnTouchProcessedListener(), 3.0f)
     private var lines: Stack<StreakLine> = Stack()
     private var interactionListener: OnInteractionListener? = null
@@ -62,25 +62,24 @@ class StreakView @JvmOverloads constructor(
     var isRememberStreakLine = false
 
     var streakWidth: Int
-        get() = _width
+        get() = streakLineWidth
         set(width) {
-            _width = width
+            streakLineWidth = width
             invalidate()
         }
     var isSnapToGrid: SnapType
-        get() = _snapToGrid
+        get() = snapToGridType
         set(snapToGrid) {
-            check(!(_snapToGrid != snapToGrid && gridId == -1 && grid == null)) { "setGrid() first to set the grid object!" }
-            _snapToGrid = snapToGrid
+            check(!(snapToGridType != snapToGrid && gridId == -1 && grid == null)) { "setGrid() first to set the grid object!" }
+            snapToGridType = snapToGrid
         }
 
     init {
         paint.color = Color.GREEN
-        _width = 26
         attrs?.let {
             val a = context.obtainStyledAttributes(it, R.styleable.StreakView, 0, 0)
             paint.color = a.getInteger(R.styleable.StreakView_streakColor, paint.color)
-            _width = a.getDimensionPixelSize(R.styleable.StreakView_streakWidth, _width)
+            streakLineWidth = a.getDimensionPixelSize(R.styleable.StreakView_streakWidth, streakLineWidth)
             gridId = a.getResourceId(R.styleable.StreakView_strekGrid, gridId)
             isSnapToGrid = SnapType.fromId(a.getInt(R.styleable.StreakView_snapToGrid, 0))
             isInteractive = a.getBoolean(R.styleable.StreakView_interactive, isInteractive)
@@ -150,7 +149,7 @@ class StreakView @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        if (gridId != -1 && _snapToGrid != SnapType.NONE) {
+        if (gridId != -1 && snapToGridType != SnapType.NONE) {
             grid = rootView.findViewById<View>(gridId) as GridBehavior
         }
     }
@@ -158,7 +157,7 @@ class StreakView @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var measuredWidth = MeasureSpec.getSize(widthMeasureSpec)
         var measuredHeight = MeasureSpec.getSize(heightMeasureSpec)
-        if (_snapToGrid != SnapType.NONE) {
+        if (snapToGridType != SnapType.NONE) {
             grid?.let {
                 measuredWidth = it.requiredWidth
                 measuredHeight = it.requiredHeight
@@ -175,7 +174,7 @@ class StreakView @JvmOverloads constructor(
             if (v.y < 0) rot = -rot
             canvas.save()
             if (!java.lang.Double.isNaN(rot)) canvas.rotate(rot.toFloat(), line.start.x, line.start.y)
-            val halfWidth = _width / 2
+            val halfWidth = streakLineWidth / 2
             if (_enableOverrideStreakLineColor) {
                 paint.color = _overrideStreakLineColor
             } else {
@@ -205,7 +204,7 @@ class StreakView @JvmOverloads constructor(
             val rowIdx = grid?.getRowIndex(event.y.toInt()).orZero()
             line.startIndex.set(rowIdx, colIdx)
 
-            if (_snapToGrid != SnapType.NONE) {
+            if (snapToGridType != SnapType.NONE) {
                 val centerCol = grid?.getCenterColFromIndex(colIdx)?.toFloat() ?: 0f
                 val centerRow = grid?.getCenterRowFromIndex(rowIdx)?.toFloat() ?: 0f
 
@@ -226,7 +225,7 @@ class StreakView @JvmOverloads constructor(
             val rowIdx = grid?.getRowIndex(event.y.toInt()).orZero()
             line.endIndex.set(rowIdx, colIdx)
 
-            if (_snapToGrid != SnapType.NONE) {
+            if (snapToGridType != SnapType.NONE) {
                 val centerCol = grid?.getCenterColFromIndex(colIdx)?.toFloat() ?: 0f
                 val centerRow = grid?.getCenterRowFromIndex(rowIdx)?.toFloat() ?: 0f
                 line.end.set(centerCol, centerRow)
@@ -246,12 +245,12 @@ class StreakView @JvmOverloads constructor(
             val rowIdx = grid?.getRowIndex(event.y.toInt()).orZero()
             line.endIndex.set(rowIdx, colIdx)
 
-            if (_snapToGrid == SnapType.ALWAYS_SNAP) {
+            if (snapToGridType == SnapType.ALWAYS_SNAP) {
                 val centerCol = grid?.getCenterColFromIndex(colIdx)?.toFloat() ?: 0f
                 val centerRow = grid?.getCenterRowFromIndex(rowIdx)?.toFloat() ?: 0f
                 line.end.set(centerCol, centerRow)
             } else {
-                val halfWidth = _width / 2
+                val halfWidth = streakLineWidth / 2
                 val x = max(min(event.x, width - halfWidth.toFloat()), halfWidth.toFloat())
                 val y = max(min(event.y, height - halfWidth.toFloat()), halfWidth.toFloat())
                 line.end.set(x, y)
@@ -275,5 +274,9 @@ class StreakView @JvmOverloads constructor(
         var startIndex: GridIndex = GridIndex(-1, -1)
         var endIndex: GridIndex = GridIndex(-1, -1)
         var color = Color.RED
+    }
+
+    companion object {
+        private const val DEFAULT_STREAK_LINE_WIDTH_PIXEL = 26
     }
 }
