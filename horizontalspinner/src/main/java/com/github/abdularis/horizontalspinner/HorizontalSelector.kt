@@ -17,16 +17,16 @@ class HorizontalSelector @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    init {
-        init(context, attrs)
-    }
-
     private lateinit var nextInAnim: Animation
     private lateinit var nextOutAnim: Animation
     private lateinit var previousInAnim: Animation
     private lateinit var previousOutAnim: Animation
     private lateinit var middleText: TextSwitcher
     private var dataValues: ArrayList<String> = ArrayList()
+
+    init {
+        init(context, attrs)
+    }
 
     var currentIndex = 0
         private set

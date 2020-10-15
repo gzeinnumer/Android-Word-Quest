@@ -12,7 +12,7 @@ import kotlin.math.min
  */
 class GameDataCreator {
 
-    fun newGameData(words: List<Word>,
+    fun newGameData(words: MutableList<Word>,
                     rowCount: Int, colCount: Int,
                     name: String?,
                     gameMode: GameMode

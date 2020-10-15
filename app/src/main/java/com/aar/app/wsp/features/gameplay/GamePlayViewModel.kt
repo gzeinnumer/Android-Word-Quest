@@ -152,7 +152,7 @@ class GamePlayViewModel @Inject constructor(
             wordDataSource.getWords(gameThemeId, maxChar)
         }
         flowableWords.toObservable()
-            .flatMap { words: List<Word>? ->
+            .flatMap { words: List<Word> ->
                 Flowable.fromIterable(words)
                     .distinct(Word::string)
                     .map { word: Word ->
@@ -162,8 +162,8 @@ class GamePlayViewModel @Inject constructor(
                     .toList()
                     .toObservable()
             }
-            .flatMap { words: List<Word>? ->
-                val gameData = gameDataCreator.newGameData(words!!, rowCount, colCount, gameName, gameMode)
+            .flatMap { words: MutableList<Word> ->
+                val gameData = gameDataCreator.newGameData(words, rowCount, colCount, gameName, gameMode)
                 if (gameMode === GameMode.CountDown) {
                     gameData.maxDuration = getMaxCountDownDuration(gameData.usedWords.size, difficulty)
                 } else if (gameMode === GameMode.Marathon) {
