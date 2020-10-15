@@ -11,7 +11,16 @@ import android.widget.TextSwitcher
 import kotlin.math.max
 import kotlin.math.min
 
-class HorizontalSelector : FrameLayout {
+class HorizontalSelector @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+
+    init {
+        init(context, attrs)
+    }
+
     private lateinit var nextInAnim: Animation
     private lateinit var nextOutAnim: Animation
     private lateinit var previousInAnim: Animation
@@ -25,14 +34,6 @@ class HorizontalSelector : FrameLayout {
 
     interface OnSelectedItemChanged {
         fun onSelectedItemChanged(newItem: String?)
-    }
-
-    constructor(context: Context) : super(context) {
-        init(context, null)
-    }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init(context, attrs)
     }
 
     val currentValue: String?

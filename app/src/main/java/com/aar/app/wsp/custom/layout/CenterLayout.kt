@@ -12,9 +12,11 @@ import kotlin.math.min
  * Center layout merupakan layout untuk membuat semua child view berada ditengah-tengah
  * relative terhadap posisi CenterLayout object
  */
-open class CenterLayout : ViewGroup {
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+open class CenterLayout @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ViewGroup(context, attrs, defStyleAttr) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var measuredWidth = 0

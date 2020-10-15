@@ -15,18 +15,18 @@ import java.util.*
  *
  * Render grid of letters
  */
-class LetterGrid : GridBehavior, Observer {
+class LetterGrid @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null
+) : GridBehavior(context, attrs), Observer {
+
+    init {
+        init(context, attrs)
+    }
+
     private lateinit var paint: Paint
     private lateinit var charBounds: Rect
     private var gridDataAdapter: LetterGridDataAdapter? = null
-
-    constructor(context: Context) : super(context) {
-        init(context, null)
-    }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init(context, attrs)
-    }
 
     var letterSize: Float
         get() = paint.textSize
