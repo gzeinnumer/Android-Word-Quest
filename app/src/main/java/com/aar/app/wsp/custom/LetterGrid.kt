@@ -77,8 +77,8 @@ class LetterGrid @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        val gridColCount = colCount
-        val gridRowCount = rowCount
+        val gridColCount = getColCount()
+        val gridRowCount = getRowCount()
         val halfWidth = gridWidth / 2
         val halfHeight = gridHeight / 2
         var x: Int
