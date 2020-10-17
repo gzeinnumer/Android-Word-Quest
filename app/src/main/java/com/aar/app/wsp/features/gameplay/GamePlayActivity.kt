@@ -311,7 +311,9 @@ class GamePlayActivity : FullscreenActivity() {
     private fun showLetterGrid(grid: Array<CharArray>) {
         if (letterAdapter == null) {
             letterAdapter = ArrayLetterGridDataAdapter(grid)
-            letter_board.dataAdapter = letterAdapter
+            letterAdapter?.let {
+                letter_board.dataAdapter = it
+            }
         } else {
             letterAdapter?.grid = grid
         }

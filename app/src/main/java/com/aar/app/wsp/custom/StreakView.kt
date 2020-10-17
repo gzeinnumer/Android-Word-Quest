@@ -263,9 +263,9 @@ class StreakView @JvmOverloads constructor(
 
     //
     interface OnInteractionListener {
-        fun onTouchBegin(streakLine: StreakLine?)
-        fun onTouchDrag(streakLine: StreakLine?)
-        fun onTouchEnd(streakLine: StreakLine?)
+        fun onTouchBegin(streakLine: StreakLine)
+        fun onTouchDrag(streakLine: StreakLine)
+        fun onTouchEnd(streakLine: StreakLine)
     }
 
     class StreakLine {
