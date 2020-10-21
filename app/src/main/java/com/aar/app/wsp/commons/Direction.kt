@@ -9,9 +9,9 @@ import kotlin.math.abs
  */
 enum class Direction(
     @JvmField
-    val xOff: Int,
+    val xOffset: Int,
     @JvmField
-    val yOff: Int
+    val yOffset: Int
 ) {
     NONE(0, 0),
     EAST(1, 0),

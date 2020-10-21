@@ -4,6 +4,8 @@ import com.aar.app.wsp.commons.Direction;
 import com.aar.app.wsp.commons.Util;
 import com.aar.app.wsp.model.Word;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class StringListGridGenerator extends GridGenerator<List<Word>, List<Word
     private static final int MIN_GRID_ITERATION_ATTEMPT = 1;
 
     @Override
-    public List<Word> setGrid(List<Word> dataInput, char[][] grid) {
+    public List<Word> setGrid(List<Word> dataInput, @NotNull char[][] grid) {
         List<Word> usedWords = new ArrayList<>();
         int usedCount;
         for (int i = 0; i < MIN_GRID_ITERATION_ATTEMPT; i++) {
@@ -49,7 +51,7 @@ public class StringListGridGenerator extends GridGenerator<List<Word>, List<Word
         return dir;
     }
 
-    private boolean tryPlaceWord(String word, char gridArr[][]) {
+    private boolean tryPlaceWord(String word, char[][] gridArr) {
         Direction startDir = getRandomDirection();
         Direction currDir = startDir;
 
@@ -58,21 +60,15 @@ public class StringListGridGenerator extends GridGenerator<List<Word>, List<Word
         int startRow;
         int startCol;
 
-        /*
-            coba seluruh kemungkinan arah
-         */
+        // coba seluruh kemungkinan arah
         do {
 
-            /*
-                coba seluruh kemungkinan row dengan arah currDir
-             */
+            // coba seluruh kemungkinan row dengan arah currDir
             startRow = Util.getRandomInt() % gridArr.length;
             row = startRow;
             do {
 
-                /*
-                    coba seluruh kemungkinan column dan row dengan arah currDir
-                 */
+                // coba seluruh kemungkinan column dan row dengan arah currDir
                 startCol = Util.getRandomInt() % gridArr[0].length;
                 col = startCol;
                 do {
@@ -105,7 +101,13 @@ public class StringListGridGenerator extends GridGenerator<List<Word>, List<Word
      * @param word the actual word to be checked
      * @return true if it is a valid placement, false otherwise
      */
-    private boolean isValidPlacement(int row, int col, Direction dir, char gridArr[][], String word) {
+    private boolean isValidPlacement(
+            int row,
+            int col,
+            Direction dir,
+            char[][] gridArr,
+            String word
+    ) {
         int wLen = word.length();
         if (dir == Direction.EAST && (col + wLen) > gridArr[0].length) return false;
         if (dir == Direction.WEST && (col - wLen) < 0) return false;
@@ -122,8 +124,8 @@ public class StringListGridGenerator extends GridGenerator<List<Word>, List<Word
         for (int i = 0; i < wLen; i++) {
             if (gridArr[row][col] != Util.NULL_CHAR && gridArr[row][col] != word.charAt(i))
                 return false;
-            col += dir.xOff;
-            row += dir.yOff;
+            col += dir.xOffset;
+            row += dir.yOffset;
         }
 
         return true;
@@ -132,12 +134,12 @@ public class StringListGridGenerator extends GridGenerator<List<Word>, List<Word
     /**
      * Letakan word pada posisi awal row, col dengan arah dir pada grid array.
      */
-    private void placeWordAt(int row, int col, Direction dir, char gridArr[][], String word) {
+    private void placeWordAt(int row, int col, Direction dir, char[][] gridArr, String word) {
         for (int i = 0; i < word.length(); i++) {
             gridArr[row][col] = word.charAt(i);
 
-            col += dir.xOff;
-            row += dir.yOff;
+            col += dir.xOffset;
+            row += dir.yOffset;
         }
     }
 }

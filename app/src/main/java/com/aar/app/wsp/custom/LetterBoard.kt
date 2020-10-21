@@ -204,7 +204,7 @@ class LetterBoard @JvmOverloads constructor(
             val count = getIndexLength(start, end)
             val buff = CharArray(count)
             for (i in 0 until count) {
-                buff[i] = _dataAdapter.getLetter(start.row + dir.yOff * i, start.col + dir.xOff * i)
+                buff[i] = _dataAdapter.getLetter(start.row + dir.yOffset * i, start.col + dir.xOffset * i)
             }
             return String(buff)
         }
