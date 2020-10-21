@@ -8,7 +8,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import butterknife.ButterKnife
 import com.aar.app.wsp.R
 import com.aar.app.wsp.WordSearchApp
 import com.aar.app.wsp.commons.goneIf
@@ -30,7 +29,6 @@ class GameHistoryActivity : FullscreenActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_history)
         (application as WordSearchApp).appComponent.inject(this)
-        ButterKnife.bind(this)
 
         initRecyclerView()
         viewModel.onGameDataInfoLoaded.observe(this) { gameDataInfoList: List<GameDataInfo> ->

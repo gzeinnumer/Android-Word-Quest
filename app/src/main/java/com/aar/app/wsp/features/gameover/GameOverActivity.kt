@@ -3,21 +3,18 @@ package com.aar.app.wsp.features.gameover
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.core.app.NavUtils
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.aar.app.wsp.R
 import com.aar.app.wsp.WordSearchApp
 import com.aar.app.wsp.commons.DurationFormatter.fromInteger
 import com.aar.app.wsp.features.FullscreenActivity
 import com.aar.app.wsp.features.gameplay.GamePlayActivity
 import com.aar.app.wsp.model.GameData
+import kotlinx.android.synthetic.main.activity_game_over.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,18 +23,10 @@ class GameOverActivity : FullscreenActivity() {
     @Inject
     var mViewModelFactory: ViewModelProvider.Factory? = null
 
-    @JvmField
-    @BindView(R.id.textCongrat)
-    var mTextCongrat: TextView? = null
-
-    @JvmField
-    @BindView(R.id.game_stat_text)
-    var mTextGameStat: TextView? = null
     private lateinit var viewModel: GameOverViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_over)
-        ButterKnife.bind(this)
         (application as WordSearchApp).appComponent.inject(this)
         viewModel = ViewModelProviders.of(this, mViewModelFactory).get(GameOverViewModel::class.java)
         viewModel.onGameDataLoaded.observe(this) { gameData ->
@@ -55,17 +44,14 @@ class GameOverActivity : FullscreenActivity() {
         intent.extras?.getInt(EXTRA_GAME_ROUND_ID)?.let { gameId ->
             lifecycleScope.launch { viewModel.loadData(gameId) }
         }
-    }
 
-    @OnClick(R.id.main_menu_btn)
-    fun onMainMenuClick() {
-        onBackPressed()
-    }
-
-    @OnClick(R.id.btnReplay)
-    fun onReplayClick() {
-        lifecycleScope.launch {
-            viewModel.resetCurrentGameData()
+        main_menu_btn.setOnClickListener {
+            onBackPressed()
+        }
+        btnReplay.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.resetCurrentGameData()
+            }
         }
     }
 
@@ -84,17 +70,17 @@ class GameOverActivity : FullscreenActivity() {
 
     private fun showGameStat(gd: GameData) {
         if (gd.isGameOver) {
-            mTextCongrat!!.setText(R.string.lbl_game_over)
-            mTextGameStat!!.visibility = View.GONE
+            textCongrat.setText(R.string.lbl_game_over)
+            game_stat_text.visibility = View.GONE
         } else {
             val strGridSize = gd.grid!!.rowCount.toString() + " x " + gd.grid!!.colCount
             var str = getString(R.string.finish_text)
             str = str.replace(":gridSize".toRegex(), strGridSize)
             str = str.replace(":uwCount".toRegex(), gd.usedWords.size.toString())
             str = str.replace(":duration".toRegex(), fromInteger(gd.duration))
-            mTextCongrat!!.setText(R.string.congratulations)
-            mTextGameStat!!.visibility = View.VISIBLE
-            mTextGameStat!!.text = str
+            textCongrat.setText(R.string.congratulations)
+            game_stat_text.visibility = View.VISIBLE
+            game_stat_text.text = str
         }
     }
 

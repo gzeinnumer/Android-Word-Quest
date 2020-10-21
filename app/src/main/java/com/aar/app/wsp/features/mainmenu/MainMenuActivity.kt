@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
-import butterknife.BindArray
-import butterknife.ButterKnife
 import com.aar.app.wsp.R
 import com.aar.app.wsp.features.FullscreenActivity
 import com.aar.app.wsp.features.gamehistory.GameHistoryActivity
@@ -21,13 +19,13 @@ import kotlinx.android.synthetic.main.activity_main_menu.*
 
 class MainMenuActivity : FullscreenActivity() {
 
-    @BindArray(R.array.game_round_dimension_values)
-    lateinit var gameRoundDimValues: IntArray
+    private val gameRoundDimValues: IntArray by lazy {
+        resources.getIntArray(R.array.game_round_dimension_values)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
-        ButterKnife.bind(this)
 
         imageEnjoy.startAnimation(AnimationUtils.loadAnimation(this, R.anim.tag_enjoy))
         selectorGameMode.onSelectedItemChangedListener = object : OnSelectedItemChanged {

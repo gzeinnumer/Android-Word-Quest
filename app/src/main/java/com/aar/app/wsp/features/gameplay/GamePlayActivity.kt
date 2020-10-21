@@ -18,7 +18,6 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import butterknife.ButterKnife
 import com.aar.app.wsp.R
 import com.aar.app.wsp.WordSearchApp
 import com.aar.app.wsp.commons.DurationFormatter.fromInteger
@@ -80,7 +79,6 @@ class GamePlayActivity : FullscreenActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_play)
-        ButterKnife.bind(this)
         (application as WordSearchApp).appComponent.inject(this)
 
         initViews()
