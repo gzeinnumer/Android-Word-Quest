@@ -9,12 +9,11 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/text_duration"
+        android:id="@+id/text_overall_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/init_duration"
@@ -25,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/finished_text"
+        android:id="@+id/text_game_finished"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -41,7 +40,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-        app:layout_constraintStart_toEndOf="@+id/text_duration"
+        app:layout_constraintStart_toEndOf="@+id/text_overall_duration"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
@@ -49,13 +48,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/answered_text_count"
+            android:id="@+id/text_answered_string_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/empty_count"
@@ -70,7 +68,7 @@
             android:textSize="16sp"/>
 
         <TextView
-            android:id="@+id/words_count"
+            android:id="@+id/text_words_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/empty_count"
@@ -80,7 +78,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/text_sel_layout"
+        android:id="@+id/text_selection_layout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginEnd="8dp"
@@ -91,7 +89,7 @@
         android:gravity="center"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-        app:layout_constraintStart_toEndOf="@+id/text_duration">
+        app:layout_constraintStart_toEndOf="@+id/text_overall_duration">
 
         <TextView
             android:id="@+id/text_selection"
@@ -105,7 +103,7 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progressDuration"
+        android:id="@+id/progress_overall_duration"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="7dp"

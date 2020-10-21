@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/text_duration"
+        android:id="@+id/text_overall_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -58,9 +58,9 @@
         android:textColor="#a4a4a4"
         android:textSize="12sp"
         tools:text="-"
-        app:layout_constraintBottom_toBottomOf="@+id/text_duration"
-        app:layout_constraintStart_toEndOf="@+id/text_duration"
-        app:layout_constraintTop_toTopOf="@+id/text_duration"/>
+        app:layout_constraintBottom_toBottomOf="@+id/text_overall_duration"
+        app:layout_constraintStart_toEndOf="@+id/text_overall_duration"
+        app:layout_constraintTop_toTopOf="@+id/text_overall_duration"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

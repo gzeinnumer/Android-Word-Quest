@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/layoutCurrentWord">
+        app:layout_constraintBottom_toTopOf="@id/layout_current_selected_word">
 
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/flexbox_layout"
@@ -29,7 +29,7 @@
     </ScrollView>
 
     <FrameLayout
-        android:id="@+id/layoutCurrentWord"
+        android:id="@+id/layout_current_selected_word"
         android:layout_width="0dp"
         android:layout_height="@dimen/_32sdp"
         app:layout_constraintBottom_toTopOf="@+id/letter_board"
@@ -37,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ProgressBar
-            android:id="@+id/progressWordDuration"
+            android:id="@+id/progress_word_duration"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -47,7 +47,7 @@
             android:progressDrawable="@drawable/bg_progress_2"/>
 
         <TextSwitcher
-            android:id="@+id/textCurrentWord"
+            android:id="@+id/text_current_selected_word"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
@@ -96,7 +96,7 @@
         android:visibility="visible"/>
 
     <TextView
-        android:id="@+id/textPopup"
+        android:id="@+id/text_popup_correct_word"
         app:layout_constraintBottom_toBottomOf="@id/letter_board"
         app:layout_constraintLeft_toLeftOf="@id/letter_board"
         app:layout_constraintRight_toRightOf="@id/letter_board"

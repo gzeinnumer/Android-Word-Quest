@@ -90,14 +90,14 @@ class GamePlayActivity : FullscreenActivity() {
     }
 
     private fun initViews() {
-        textCurrentWord.setInAnimation(this, android.R.anim.slide_in_left)
-        textCurrentWord.setOutAnimation(this, android.R.anim.slide_out_right)
+        text_current_selected_word.setInAnimation(this, android.R.anim.slide_in_left)
+        text_current_selected_word.setOutAnimation(this, android.R.anim.slide_out_right)
         letter_board.streakView.setEnableOverrideStreakLineColor(preferences.grayscale())
         letter_board.streakView.setOverrideStreakLineColor(resources.getColor(R.color.gray))
         letter_board.selectionListener = object : OnLetterSelectionListener {
             override fun onSelectionBegin(streakLine: StreakLine, str: String) {
                 streakLine.color = Util.getRandomColorWithAlpha(170)
-                text_sel_layout.visible()
+                text_selection_layout.visible()
                 text_selection.text = str
             }
 
@@ -107,7 +107,7 @@ class GamePlayActivity : FullscreenActivity() {
 
             override fun onSelectionEnd(streakLine: StreakLine, str: String) {
                 viewModel.answerWord(str, STREAK_LINE_MAPPER.revMap(streakLine), preferences.reverseMatching())
-                text_sel_layout.gone()
+                text_selection_layout.gone()
                 text_selection.text = str
             }
         }
@@ -118,7 +118,7 @@ class GamePlayActivity : FullscreenActivity() {
             letter_board.gridLineBackground.visible()
         }
         letter_board.streakView.isSnapToGrid = preferences.snapToGrid
-        finished_text.gone()
+        text_game_finished.gone()
         popupTextAnimation = AnimationUtils.loadAnimation(this, R.anim.popup_text)
         popupTextAnimation?.duration = 1000
         popupTextAnimation?.interpolator = DecelerateInterpolator()
@@ -126,8 +126,8 @@ class GamePlayActivity : FullscreenActivity() {
             override fun onAnimationRepeat(animation: Animation) {}
             override fun onAnimationStart(animation: Animation) {}
             override fun onAnimationEnd(animation: Animation) {
-                textPopup.gone()
-                textPopup.text = ""
+                text_popup_correct_word.gone()
+                text_popup_correct_word.text = ""
             }
         })
     }
@@ -138,11 +138,11 @@ class GamePlayActivity : FullscreenActivity() {
         viewModel.onGameState.observe(this, Observer { gameState: GameState -> onGameStateChanged(gameState) })
         viewModel.onAnswerResult.observe(this, Observer { answerResult: AnswerResult -> onAnswerResult(answerResult) })
         viewModel.onCurrentWordChanged.observe(this, Observer { usedWord: UsedWord ->
-            textCurrentWord.setText(usedWord.string)
-            progressWordDuration.max = usedWord.maxDuration * 100
-            animateProgress(progressWordDuration, usedWord.remainingDuration * 100)
+            text_current_selected_word.setText(usedWord.string)
+            progress_word_duration.max = usedWord.maxDuration * 100
+            animateProgress(progress_word_duration, usedWord.remainingDuration * 100)
         })
-        viewModel.onCurrentWordCountDown.observe(this, Observer { duration: Int -> animateProgress(progressWordDuration, duration * 100) })
+        viewModel.onCurrentWordCountDown.observe(this, Observer { duration: Int -> animateProgress(progress_word_duration, duration * 100) })
     }
 
     private fun loadOrGenerateNewGame() {
@@ -199,9 +199,9 @@ class GamePlayActivity : FullscreenActivity() {
                 str.setTextColor(Color.WHITE)
                 str.paintFlags = str.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 item.startAnimation(AnimationUtils.loadAnimation(this, R.anim.zoom_in_out))
-                textPopup.visible()
-                textPopup.text = uw.string.orEmpty()
-                textPopup.startAnimation(popupTextAnimation)
+                text_popup_correct_word.visible()
+                text_popup_correct_word.text = uw.string.orEmpty()
+                text_popup_correct_word.startAnimation(popupTextAnimation)
             }
             showAnsweredWordsCount(answerResult.totalAnsweredWord)
             soundPlayer.play(SoundPlayer.Sound.Correct)
@@ -235,13 +235,13 @@ class GamePlayActivity : FullscreenActivity() {
     private fun onGameRoundLoaded(gameData: GameData) {
         if (gameData.isFinished) {
             letter_board.streakView.isInteractive = false
-            finished_text.visible()
-            layoutComplete.visible()
-            textComplete.setText(R.string.lbl_complete)
+            text_game_finished.visible()
+            layout_complete_popup.visible()
+            text_complete_popup.setText(R.string.lbl_complete)
         } else if (gameData.isGameOver) {
             letter_board.streakView.isInteractive = false
-            layoutComplete.visible()
-            textComplete.setText(R.string.lbl_game_over)
+            layout_complete_popup.visible()
+            text_complete_popup.setText(R.string.lbl_game_over)
         }
         showLetterGrid(gameData.grid!!.array)
         showDuration(gameData.duration)
@@ -251,18 +251,18 @@ class GamePlayActivity : FullscreenActivity() {
         doneLoadingContent()
         when {
             gameData.gameMode === GameMode.CountDown -> {
-                progressDuration.visible()
-                progressDuration.max = gameData.maxDuration * PROGRESS_SCALE
-                progressDuration.progress = gameData.remainingDuration * PROGRESS_SCALE
-                layoutCurrentWord.gone()
+                progress_overall_duration.visible()
+                progress_overall_duration.max = gameData.maxDuration * PROGRESS_SCALE
+                progress_overall_duration.progress = gameData.remainingDuration * PROGRESS_SCALE
+                layout_current_selected_word.gone()
             }
             gameData.gameMode === GameMode.Marathon -> {
-                progressDuration.gone()
-                layoutCurrentWord.visible()
+                progress_overall_duration.gone()
+                layout_current_selected_word.visible()
             }
             else -> {
-                progressDuration.gone()
-                layoutCurrentWord.gone()
+                progress_overall_duration.gone()
+                layout_current_selected_word.gone()
             }
         }
     }
@@ -320,11 +320,11 @@ class GamePlayActivity : FullscreenActivity() {
     }
 
     private fun showDuration(duration: Int) {
-        text_duration.text = fromInteger(duration)
+        text_overall_duration.text = fromInteger(duration)
     }
 
     private fun showCountDown(countDown: Int) {
-        animateProgress(progressDuration, countDown * PROGRESS_SCALE)
+        animateProgress(progress_overall_duration, countDown * PROGRESS_SCALE)
     }
 
     private fun showUsedWords(usedWords: List<UsedWord>, gameData: GameData) {
@@ -335,11 +335,11 @@ class GamePlayActivity : FullscreenActivity() {
     }
 
     private fun showAnsweredWordsCount(count: Int) {
-        answered_text_count.text = count.toString()
+        text_answered_string_count.text = count.toString()
     }
 
     private fun showWordsCount(count: Int) {
-        words_count.text = count.toString()
+        text_words_count.text = count.toString()
     }
 
     private fun showFinishGame(state: Finished) {
@@ -361,14 +361,14 @@ class GamePlayActivity : FullscreenActivity() {
             }
         })
         if (state.win) {
-            textComplete.setText(R.string.lbl_complete)
+            text_complete_popup.setText(R.string.lbl_complete)
             Handler().postDelayed({ soundPlayer.play(SoundPlayer.Sound.Winning) }, 600)
         } else {
-            textComplete.setText(R.string.lbl_game_over)
+            text_complete_popup.setText(R.string.lbl_game_over)
             Handler().postDelayed({ soundPlayer.play(SoundPlayer.Sound.Lose) }, 600)
         }
-        layoutComplete.visible()
-        layoutComplete.startAnimation(anim)
+        layout_complete_popup.visible()
+        layout_complete_popup.startAnimation(anim)
     }
 
     //
