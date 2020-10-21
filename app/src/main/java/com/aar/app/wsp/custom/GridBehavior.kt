@@ -18,8 +18,8 @@ abstract class GridBehavior @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private var _gridWidth = 0
-    private var _gridHeight = 0
+    private var _gridWidth = DEFAULT_GRID_WIDTH_PIXEL
+    private var _gridHeight = DEFAULT_GRID_HEIGHT_PIXEL
 
     var gridWidth: Int
         get() = (_gridWidth * scaleX).toInt()
@@ -41,7 +41,12 @@ abstract class GridBehavior @JvmOverloads constructor(
     abstract fun setRowCount(rowCount: Int)
 
     init {
-        init(context, attrs)
+        attrs?.let {
+            val a = context.obtainStyledAttributes(attrs, R.styleable.GridBehavior, 0, 0)
+            _gridWidth = a.getDimensionPixelSize(R.styleable.GridBehavior_gridWidth, _gridWidth)
+            _gridHeight = a.getDimensionPixelSize(R.styleable.GridBehavior_gridHeight, _gridHeight)
+            a.recycle()
+        }
     }
 
     /**
@@ -102,14 +107,8 @@ abstract class GridBehavior @JvmOverloads constructor(
         setMeasuredDimension(measuredWidth, measuredHeight)
     }
 
-    private fun init(context: Context, attrs: AttributeSet?) {
-        _gridWidth = 50
-        _gridHeight = 50
-        if (attrs != null) {
-            val a = context.obtainStyledAttributes(attrs, R.styleable.GridBehavior, 0, 0)
-            _gridWidth = a.getDimensionPixelSize(R.styleable.GridBehavior_gridWidth, _gridWidth)
-            _gridHeight = a.getDimensionPixelSize(R.styleable.GridBehavior_gridHeight, _gridHeight)
-            a.recycle()
-        }
+    companion object {
+        private const val DEFAULT_GRID_WIDTH_PIXEL = 50
+        private const val DEFAULT_GRID_HEIGHT_PIXEL = 50
     }
 }

@@ -94,7 +94,7 @@ class GamePlayActivity : FullscreenActivity() {
         textCurrentWord.setOutAnimation(this, android.R.anim.slide_out_right)
         letter_board.streakView.setEnableOverrideStreakLineColor(preferences.grayscale())
         letter_board.streakView.setOverrideStreakLineColor(resources.getColor(R.color.gray))
-        letter_board.setOnLetterSelectionListener(object : OnLetterSelectionListener {
+        letter_board.selectionListener = object : OnLetterSelectionListener {
             override fun onSelectionBegin(streakLine: StreakLine, str: String) {
                 streakLine.color = Util.getRandomColorWithAlpha(170)
                 text_sel_layout.visible()
@@ -110,7 +110,7 @@ class GamePlayActivity : FullscreenActivity() {
                 text_sel_layout.gone()
                 text_selection.text = str
             }
-        })
+        }
 
         if (!preferences.showGridLine()) {
             letter_board.gridLineBackground.visibility = View.INVISIBLE

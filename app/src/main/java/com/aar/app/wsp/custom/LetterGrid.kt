@@ -20,13 +20,16 @@ class LetterGrid @JvmOverloads constructor(
     attrs: AttributeSet? = null
 ) : GridBehavior(context, attrs), Observer {
 
+    private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val charBounds: Rect = Rect()
+    private var gridDataAdapter: LetterGridDataAdapter? = SampleLetterGridDataAdapter(
+        DEFAULT_LETTER_GRID_SAMPLE_SIZE,
+        DEFAULT_LETTER_GRID_SAMPLE_SIZE
+    )
+
     init {
         init(context, attrs)
     }
-
-    private lateinit var paint: Paint
-    private lateinit var charBounds: Rect
-    private var gridDataAdapter: LetterGridDataAdapter? = null
 
     var letterSize: Float
         get() = paint.textSize
@@ -99,15 +102,17 @@ class LetterGrid @JvmOverloads constructor(
     }
 
     private fun init(context: Context, attrs: AttributeSet?) {
-        paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        paint.textSize = 32.0f
-        charBounds = Rect()
-        if (attrs != null) {
+        paint.textSize = DEFAULT_TEXT_SIZE
+        attrs?.let {
             val a = context.obtainStyledAttributes(attrs, R.styleable.LetterGrid, 0, 0)
             paint.textSize = a.getDimension(R.styleable.LetterGrid_letterSize, paint.textSize)
             paint.color = a.getColor(R.styleable.LetterGrid_letterColor, Color.GRAY)
             a.recycle()
         }
-        dataAdapter = SampleLetterGridDataAdapter(8, 8)
+    }
+
+    companion object {
+        private const val DEFAULT_LETTER_GRID_SAMPLE_SIZE = 8
+        private const val DEFAULT_TEXT_SIZE = 32f
     }
 }

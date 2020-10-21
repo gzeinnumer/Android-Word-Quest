@@ -30,14 +30,13 @@ class LetterBoard @JvmOverloads constructor(
     attrs: AttributeSet? = null
 ) : CenterLayout(context, attrs), Observer {
 
-    lateinit var gridLineBackground: GridLine
-    lateinit var streakView: StreakView
-    lateinit var letterGrid: LetterGrid
+    val gridLineBackground: GridLine = GridLine(context)
+    val streakView: StreakView = StreakView(context)
+    private val letterGrid: LetterGrid = LetterGrid(context)
+    private var initialized = false
     private lateinit var _dataAdapter: LetterGridDataAdapter
 
-    private var initialized = false
     var selectionListener: OnLetterSelectionListener? = null
-        private set
 
     init {
         init(context, attrs)
@@ -108,60 +107,53 @@ class LetterBoard @JvmOverloads constructor(
         streakView.removeAllStreakLine()
     }
 
-    fun setGridWidth(width: Int) {
+    private fun setGridWidth(width: Int) {
         gridLineBackground.gridWidth = width
         letterGrid.gridWidth = width
     }
 
-    fun setGridHeight(height: Int) {
+    private fun setGridHeight(height: Int) {
         gridLineBackground.gridHeight = height
         letterGrid.gridHeight = height
     }
 
-    fun setGridLineVisibility(visible: Boolean) {
+    private fun setGridLineVisibility(visible: Boolean) {
         if (!visible) gridLineBackground.visibility = INVISIBLE else gridLineBackground.visibility = VISIBLE
     }
 
-    fun setGridLineColor(color: Int) {
+    private fun setGridLineColor(color: Int) {
         gridLineBackground.lineColor = color
     }
 
-    fun setGridLineWidth(width: Int) {
+    private fun setGridLineWidth(width: Int) {
         gridLineBackground.lineWidth = width
     }
 
-    fun setLetterSize(size: Float) {
+    private fun setLetterSize(size: Float) {
         letterGrid.letterSize = size
     }
 
-    fun setLetterColor(color: Int) {
+    private fun setLetterColor(color: Int) {
         letterGrid.letterColor = color
     }
 
-    fun setStreakWidth(width: Int) {
+    private fun setStreakWidth(width: Int) {
         streakView.streakWidth = width
     }
 
-    fun setOnLetterSelectionListener(listener: OnLetterSelectionListener?) {
-        selectionListener = listener
-    }
-
     private fun init(context: Context, attrs: AttributeSet?) {
-        gridLineBackground = GridLine(context)
-        streakView = StreakView(context)
-        letterGrid = LetterGrid(context)
-        var gridWidth = 50
-        var gridHeight = 50
-        var gridColCount = 8
-        var gridRowCount = 8
+        var gridWidth = DEFAULT_GRID_WIDTH_PIXEL
+        var gridHeight = DEFAULT_GRID_HEIGHT_PIXEL
+        var gridColCount = DEFAULT_GRID_SIZE
+        var gridRowCount = DEFAULT_GRID_SIZE
         var lineColor = Color.GRAY
-        var lineWidth = 2
-        var letterSize = 32.0f
+        var lineWidth = DEFAULT_LINE_WIDTH_PIXEL
+        var letterSize = DEFAULT_LETTER_SIZE_PIXEL
         var letterColor = Color.GRAY
-        var streakWidth = 35
+        var streakWidth = DEFAULT_STREAK_WIDTH_PIXEL
         var snapToGrid = 0
         var gridLineVisibility = true
-        if (attrs != null) {
+        attrs?.let {
             val a = context.obtainStyledAttributes(attrs, R.styleable.LetterBoard, 0, 0)
             gridWidth = a.getDimensionPixelSize(R.styleable.LetterBoard_gridWidth, gridWidth)
             gridHeight = a.getDimensionPixelSize(R.styleable.LetterBoard_gridHeight, gridHeight)
@@ -244,5 +236,14 @@ class LetterBoard @JvmOverloads constructor(
         fun onSelectionBegin(streakLine: StreakLine, str: String)
         fun onSelectionDrag(streakLine: StreakLine, str: String)
         fun onSelectionEnd(streakLine: StreakLine, str: String)
+    }
+
+    companion object {
+        private const val DEFAULT_GRID_WIDTH_PIXEL = 50
+        private const val DEFAULT_GRID_HEIGHT_PIXEL = 50
+        private const val DEFAULT_GRID_SIZE = 8
+        private const val DEFAULT_LINE_WIDTH_PIXEL = 2
+        private const val DEFAULT_LETTER_SIZE_PIXEL = 32.0f
+        private const val DEFAULT_STREAK_WIDTH_PIXEL = 35
     }
 }
