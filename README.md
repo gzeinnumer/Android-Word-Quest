@@ -1,6 +1,4 @@
-# Android Word Quest [Deprecated]
-
-[This is the latest version](https://github.com/abdularis/Android-Word-Quest)
+# Android Word Quest
 
 Find listed words in grid of letters in horizontal, vertical and diagonal direction. customize grid size, select different game mode and other settings.
 
